@@ -1,0 +1,21 @@
+{
+  "_comment": "Second page of cost-query-legacy.json.",
+  "properties": {
+    "nextLink": null,
+    "columns": [
+      { "name": "PreTaxCost", "type": "Number" },
+      { "name": "UsageDate", "type": "Number" },
+      { "name": "ResourceId", "type": "String" },
+      { "name": "Currency", "type": "String" }
+    ],
+    "rows": [
+      [
+        30.75,
+        20261001,
+        "/subscriptions/00000000-0000-0000-0000-000000000001/resourcegroups/rg-data/providers/microsoft.sql/servers/sql1/databases/db1",
+        "EUR"
+      ],
+      [7, 20261001, "", "EUR"]
+    ]
+  }
+}

@@ -1,22 +1,38 @@
 import type { Subscription } from './azure/subscriptions';
+import type { ResourceCost } from './cost/normalise';
 
 /** Requests from popup/content script to the background worker. */
 export type Request =
   | { type: 'getAuthState' }
   | { type: 'signIn' }
   | { type: 'signOut' }
-  | { type: 'listSubscriptions' };
+  | { type: 'listSubscriptions' }
+  | { type: 'getTopCosts'; subscriptionId: string; force?: boolean };
 
 /** Error kinds the UI can show a specific message for. */
-export type ErrorKind = 'notSignedIn' | 'auth' | 'azure' | 'unknown';
+export type ErrorKind =
+  | 'notSignedIn'
+  | 'noCostAccess'
+  | 'rateLimited'
+  | 'auth'
+  | 'azure'
+  | 'unknown';
 
-export type Result<T> = { ok: true; data: T } | { ok: false; kind: ErrorKind; message: string };
+export type Result<T> =
+  | { ok: true; data: T }
+  | { ok: false; kind: ErrorKind; message: string; retryAt?: number };
+
+export interface TopCost extends ResourceCost {
+  name: string;
+  type: string;
+}
 
 export interface ResponseMap {
   getAuthState: { signedIn: boolean };
   signIn: { signedIn: boolean };
   signOut: { signedIn: boolean };
   listSubscriptions: Subscription[];
+  getTopCosts: { subscriptionId: string; fetchedAt: number; top: TopCost[] };
 }
 
 export async function sendRequest<R extends Request>(

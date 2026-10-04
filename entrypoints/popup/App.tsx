@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { Subscription } from '@/lib/azure/subscriptions';
 import { sendRequest } from '@/lib/messages';
+import { TopCosts } from './TopCosts';
 
 type View =
   | { kind: 'loading' }
@@ -68,25 +69,40 @@ function App() {
 
       {view.kind === 'signedIn' && (
         <>
-          <h2>Subscriptions</h2>
           {view.error && <p className="error">{view.error}</p>}
           {!view.error && !view.subscriptions && <p className="muted">Loading…</p>}
           {view.subscriptions?.length === 0 && (
             <p className="muted">No subscriptions visible to this account.</p>
           )}
           {view.subscriptions && view.subscriptions.length > 0 && (
-            <ul>
-              {view.subscriptions.map((s) => (
-                <li key={s.subscriptionId}>
-                  <span>{s.displayName}</span>
-                  <span className="muted">{s.state}</span>
-                </li>
-              ))}
-            </ul>
+            <SubscriptionCosts subscriptions={view.subscriptions} />
           )}
         </>
       )}
     </main>
+  );
+}
+
+function SubscriptionCosts({ subscriptions }: { subscriptions: Subscription[] }) {
+  const firstEnabled = subscriptions.find((s) => s.state === 'Enabled') ?? subscriptions[0];
+  const [selected, setSelected] = useState(firstEnabled?.subscriptionId ?? '');
+
+  return (
+    <>
+      <label className="field">
+        <span>Subscription</span>
+        <select value={selected} onChange={(e) => setSelected(e.target.value)}>
+          {subscriptions.map((s) => (
+            <option key={s.subscriptionId} value={s.subscriptionId}>
+              {s.displayName}
+              {s.state === 'Enabled' ? '' : ` (${s.state})`}
+            </option>
+          ))}
+        </select>
+      </label>
+      <h2>Top 5 this month</h2>
+      {selected && <TopCosts key={selected} subscriptionId={selected} />}
+    </>
   );
 }
 

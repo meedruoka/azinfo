@@ -1,0 +1,43 @@
+{
+  "_comment": "Hand-made in a Microsoft Customer Agreement layout: Cost, BillingMonth as an ISO string, extra CostUSD column, columns in a different order.",
+  "properties": {
+    "nextLink": null,
+    "columns": [
+      { "name": "ResourceId", "type": "String" },
+      { "name": "BillingMonth", "type": "Datetime" },
+      { "name": "Currency", "type": "String" },
+      { "name": "CostUSD", "type": "Number" },
+      { "name": "Cost", "type": "Number" }
+    ],
+    "rows": [
+      [
+        "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-ai/providers/microsoft.cognitiveservices/accounts/ai-one",
+        "2026-10-01T00:00:00",
+        "GBP",
+        2.5,
+        2.0
+      ],
+      [
+        "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-ai/providers/microsoft.cognitiveservices/accounts/ai-one",
+        "2026-09-01T00:00:00",
+        "GBP",
+        1.25,
+        1.0
+      ],
+      [
+        "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-vm/providers/microsoft.compute/virtualmachines/vm-1",
+        "2026-10-01T00:00:00",
+        "GBP",
+        "62.5",
+        "50"
+      ],
+      [
+        "/subscriptions/00000000-0000-0000-0000-000000000002/resourcegroups/rg-vm/providers/microsoft.compute/virtualmachines/vm-1",
+        "2026-08-01T00:00:00",
+        "GBP",
+        99,
+        99
+      ]
+    ]
+  }
+}

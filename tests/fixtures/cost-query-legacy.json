@@ -1,0 +1,35 @@
+{
+  "_comment": "Hand-made in the documented legacy (EA / pay-as-you-go) layout: PreTaxCost, numeric UsageDate. Two pages; page 2 is cost-query-legacy-page2.json.",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.CostManagement/Query/00000000-0000-0000-0000-000000000000",
+  "name": "00000000-0000-0000-0000-000000000000",
+  "type": "Microsoft.CostManagement/query",
+  "properties": {
+    "nextLink": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.CostManagement/Query?api-version=2021-10-01&$skiptoken=AQAAAA%3D%3D",
+    "columns": [
+      { "name": "PreTaxCost", "type": "Number" },
+      { "name": "UsageDate", "type": "Number" },
+      { "name": "ResourceId", "type": "String" },
+      { "name": "Currency", "type": "String" }
+    ],
+    "rows": [
+      [
+        12.5,
+        20260901,
+        "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/RG-Web/providers/Microsoft.Web/sites/App-One",
+        "EUR"
+      ],
+      [
+        4.25,
+        20261001,
+        "/subscriptions/00000000-0000-0000-0000-000000000001/resourcegroups/rg-web/providers/microsoft.web/sites/app-one",
+        "EUR"
+      ],
+      [
+        100,
+        20260901,
+        "/subscriptions/00000000-0000-0000-0000-000000000001/resourcegroups/rg-data/providers/microsoft.sql/servers/sql1/databases/db1",
+        "EUR"
+      ]
+    ]
+  }
+}
