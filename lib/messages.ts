@@ -10,6 +10,9 @@ export type Request =
   | { type: 'listSubscriptions' }
   | { type: 'getTopCosts'; subscriptionId: string; force?: boolean }
   | { type: 'getResourceCost'; subscriptionId: string; resourceId: string; force?: boolean }
+  /** null resets to the build default. Signs out: tokens belong to the old authority. */
+  | { type: 'setAuthority'; authority: string | null }
+  | { type: 'clearCache' }
   | {
       type: 'getResourceGroupCosts';
       subscriptionId: string;
@@ -50,6 +53,8 @@ export interface ResponseMap {
   signIn: { signedIn: boolean };
   signOut: { signedIn: boolean };
   listSubscriptions: Subscription[];
+  setAuthority: { authority: string };
+  clearCache: { cleared: true };
   getTopCosts: { subscriptionId: string; fetchedAt: number; top: TopCost[] };
   /** `cost` is null when the resource has no cost rows this month or last. */
   getResourceCost: {

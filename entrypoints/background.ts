@@ -1,5 +1,5 @@
 import { type AuthService, createAuthService, NotSignedInError } from '@/lib/auth/auth-service';
-import { readAuthConfig } from '@/lib/auth/config';
+import { defaultAuthority, readAuthConfig } from '@/lib/auth/config';
 import { TokenError } from '@/lib/auth/token-endpoint';
 import { ArmError } from '@/lib/azure/arm-client';
 import { CostRateLimitError } from '@/lib/azure/cost-client';
@@ -10,22 +10,35 @@ import { type ResourceCost, topByMtd } from '@/lib/cost/normalise';
 import { resourcesInGroup, totalOf } from '@/lib/cost/resource-group';
 import { assessSpike, monthProgress } from '@/lib/cost/spike';
 import type { ErrorKind, Request, ResponseMap, Result } from '@/lib/messages';
-import { spikeThresholdPctItem } from '@/lib/settings';
+import {
+  authorityItem,
+  normaliseAuthority,
+  readCacheTtlMs,
+  readSpikeThresholdPct,
+} from '@/lib/settings';
 
 // Service worker: owns auth, Azure API calls and the cache.
 // It is the only network-facing part of the extension.
 export default defineBackground(() => {
-  let authService: AuthService | undefined;
+  let auth: { authority: string; service: AuthService } | undefined;
   let costService: CostService | undefined;
 
   // Created on first use so a missing client ID surfaces as a popup error
-  // instead of a crashed worker.
-  const getAuth = () =>
-    (authService ??= createAuthService({
-      config: readAuthConfig(),
-      redirectUri: browser.identity.getRedirectURL(),
-      launchWebAuthFlow: (details) => browser.identity.launchWebAuthFlow(details),
-    }));
+  // instead of a crashed worker; recreated when the authority setting changes.
+  async function getAuth(): Promise<AuthService> {
+    const config = await readAuthConfig();
+    if (auth?.authority !== config.authority) {
+      auth = {
+        authority: config.authority,
+        service: createAuthService({
+          config,
+          redirectUri: browser.identity.getRedirectURL(),
+          launchWebAuthFlow: (details) => browser.identity.launchWebAuthFlow(details),
+        }),
+      };
+    }
+    return auth.service;
+  }
 
   // Dev-only switch to exercise the rate-limit path once per worker start.
   // MODE is a build-time constant, so production builds drop this entirely.
@@ -34,7 +47,8 @@ export default defineBackground(() => {
 
   const getCosts = () =>
     (costService ??= createCostService({
-      getAccessToken: () => getAuth().getAccessToken(),
+      getAccessToken: async () => (await getAuth()).getAccessToken(),
+      ttlMs: readCacheTtlMs,
       client: {
         takeSimulated429: () => {
           const take = simulate429;
@@ -45,8 +59,22 @@ export default defineBackground(() => {
     }));
 
   async function handle(request: Request): Promise<ResponseMap[Request['type']]> {
-    const auth = getAuth();
+    const auth = await getAuth();
     switch (request.type) {
+      case 'setAuthority': {
+        const authority = request.authority === null ? null : normaliseAuthority(request.authority);
+        if (request.authority !== null && authority === null) {
+          throw new Error(`Not a valid tenant: ${request.authority}`);
+        }
+        // Tokens belong to the old authority: sign out and drop its cost data.
+        await auth.signOut();
+        await getCosts().clear();
+        await authorityItem.setValue(authority);
+        return { authority: authority ?? defaultAuthority() };
+      }
+      case 'clearCache':
+        await getCosts().clear();
+        return { cleared: true };
       case 'getAuthState':
         if (await auth.isSignedIn()) return { signedIn: true };
         // Session storage is empty after a browser restart: try a silent
@@ -130,7 +158,7 @@ export default defineBackground(() => {
  * moment, so days elapsed must too.
  */
 async function spikeSettings(fetchedAt: number) {
-  const thresholdPct = await spikeThresholdPctItem.getValue();
+  const thresholdPct = await readSpikeThresholdPct();
   const progress = monthProgress(fetchedAt);
   return {
     context: { thresholdPct, daysElapsed: progress.daysElapsed },

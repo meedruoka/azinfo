@@ -46,11 +46,16 @@ function App() {
     <main>
       <header>
         <h1>azinfo</h1>
-        {view.kind === 'signedIn' && (
-          <button type="button" onClick={signOut}>
-            Sign out
+        <div className="actions">
+          <button type="button" className="link" onClick={() => browser.runtime.openOptionsPage()}>
+            Options
           </button>
-        )}
+          {view.kind === 'signedIn' && (
+            <button type="button" onClick={signOut}>
+              Sign out
+            </button>
+          )}
+        </div>
       </header>
 
       {view.kind === 'loading' && <p className="muted">Loading…</p>}

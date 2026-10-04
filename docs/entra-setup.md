@@ -59,16 +59,41 @@ silently while your Microsoft session in the browser is still active.
 
 1. Copy `.env.example` to `.env.local`.
 2. Set `WXT_ENTRA_CLIENT_ID` to the client ID.
-3. Set `WXT_ENTRA_AUTHORITY`:
-   - `organizations` for work or school accounts (the default).
-   - Your tenant's domain or ID (for example `yourname.onmicrosoft.com`) if you
-     sign in with a **personal Microsoft account** (outlook.com, gmail address
-     and so on). Personal accounts can't use the `organizations` endpoint.
+3. Optionally set `WXT_ENTRA_AUTHORITY`. It's only the **default** tenant for
+   a fresh install; users change it on the options page (see below).
 4. Run `pnpm build:local` and reload the extension on `chrome://extensions`.
 
-## Store builds
+## Which tenant to sign in to
+
+On the **options page** (popup → Options), set *Microsoft Entra tenant*:
+
+- `organizations` for work or school accounts (the default).
+- Your tenant's domain or ID (for example `yourname.onmicrosoft.com`) for a
+  **personal Microsoft account** (Outlook, Gmail address and so on). Personal
+  accounts can't use the `organizations` endpoint. The domain is shown under
+  your name in the Azure portal's account menu.
+
+Changing the tenant signs you out, because tokens belong to one tenant.
+
+## Admin consent for organisations
+
+Users approve azinfo's permission the first time they sign in. Many
+organisations block that for apps from unverified publishers. Users then see
+*"Need admin approval"*, and a tenant administrator grants consent once for
+everyone: **Entra admin center → Enterprise applications → azinfo →
+Permissions → Grant admin consent**. Alternatively, the administrator can open
+`https://login.microsoftonline.com/<tenant>/adminconsent?client_id=<client ID>`.
+See the publisher verification note in [store-listing.md](store-listing.md).
+
+## Production and store builds
+
+Store builds use a **separate production registration** (`azinfo`), set up
+the same way. That way the dev registration can change without affecting
+users. Put its client ID in `.env.production.local`, together with
+`WXT_ENTRA_AUTHORITY=organizations` (see the release checklist in
+[store-listing.md](store-listing.md)).
 
 When the extension is first uploaded, each store assigns an ID. Add each
-store's redirect URI (`https://<store-id>.chromiumapp.org/`) to the same
-registration, under the same platform. The code reads the redirect URI from
+store's redirect URI (`https://<store-id>.chromiumapp.org/`) to the production
+registration, under the SPA platform. The code reads the redirect URI from
 `chrome.identity.getRedirectURL()` at runtime, so nothing is hard-coded.

@@ -33,7 +33,7 @@ export const COST_CACHE_PREFIX = 'cost.v1.';
 
 export interface CostServiceDeps {
   getAccessToken: () => Promise<string>;
-  ttlMs?: () => number;
+  ttlMs?: () => number | Promise<number>;
   now?: () => number;
   client?: Omit<CostClientDeps, 'onRateLimited' | 'now'>;
 }

@@ -2,7 +2,7 @@
   "name": "azinfo",
   "description": "Azure cost info on Azure portal resource pages (Chrome and Edge extension)",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -13,6 +13,8 @@
     "build:local:edge": "wxt build -b edge --mode development",
     "zip": "wxt zip",
     "zip:edge": "wxt zip -b edge",
+    "check:manifest": "node scripts/check-manifest.mjs",
+    "render:icons": "node scripts/render-icons.mjs",
     "compile": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

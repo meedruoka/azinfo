@@ -12,6 +12,8 @@ Not affiliated with Microsoft.
 | `pnpm build:local` / `pnpm build:local:edge` | One-off build with the pinned dev ID, no dev server, in `.output/chrome-mv3-dev` / `.output/edge-mv3-dev`. Load it with "Load unpacked" in your own browser |
 | `pnpm build` / `pnpm build:edge` | Production build in `.output/chrome-mv3` / `.output/edge-mv3` |
 | `pnpm zip` / `pnpm zip:edge` | Store-ready zip |
+| `pnpm check:manifest` | Checks the built production manifests against the spec's permissions (run after both builds) |
+| `pnpm render:icons` | Renders `assets-src/icon.svg` to `public/icon/*.png` and `store/logo-300.png` with headless Edge. Slow on this machine; about a minute per size |
 | `pnpm test` | Vitest (MSW blocks any unmocked network request) |
 | `pnpm lint` / `pnpm format` | Biome check / fix |
 | `pnpm compile` | TypeScript type check |
@@ -45,6 +47,19 @@ reload. Production builds contain only the permissions in the spec.
 Create an Entra app registration and a `.env.local` as described in
 [docs/entra-setup.md](docs/entra-setup.md). Design decision:
 [docs/decisions/001-auth.md](docs/decisions/001-auth.md).
+
+Settings (tenant, cache duration, spike threshold, clear cached data) are on the
+options page: popup → **Options**.
+
+## Docs
+
+| Document | Contents |
+|---|---|
+| [docs/entra-setup.md](docs/entra-setup.md) | App registration, tenant setting, admin consent, production registration |
+| [docs/permissions.md](docs/permissions.md) | Every permission and host, with store justifications |
+| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy (fill in placeholders before publishing) |
+| [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
+| [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query |
 
 ## Development rule
 
