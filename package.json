@@ -1,0 +1,40 @@
+{
+  "name": "azinfo",
+  "description": "Azure cost info on Azure portal resource pages (Chrome and Edge extension)",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:edge": "wxt -b edge",
+    "build": "wxt build",
+    "build:edge": "wxt build -b edge",
+    "build:local": "wxt build --mode development",
+    "build:local:edge": "wxt build -b edge --mode development",
+    "zip": "wxt zip",
+    "zip:edge": "wxt zip -b edge",
+    "compile": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@wxt-dev/module-react": "^1.1.5",
+    "msw": "^2.15.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.3",
+    "web-ext": "^10.5.0",
+    "wxt": "^0.21.3"
+  }
+}

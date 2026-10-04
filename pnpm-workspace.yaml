@@ -1,0 +1,3 @@
+allowBuilds:
+  # MSW's postinstall only copies a browser service worker; tests use msw/node.
+  msw: false
