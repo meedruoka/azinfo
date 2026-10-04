@@ -21,8 +21,12 @@ export interface AuthDeps {
 
 /** No usable session: the user must click Sign in. */
 export class NotSignedInError extends Error {
-  constructor(readonly reason: string) {
-    super(`Not signed in (${reason})`);
+  /** `detail`: the browser's or Entra's own explanation, if any (never tokens). */
+  constructor(
+    readonly reason: string,
+    readonly detail?: string,
+  ) {
+    super(`Not signed in (${reason})${detail ? `: ${detail}` : ''}`);
     this.name = 'NotSignedInError';
   }
 }
@@ -62,14 +66,21 @@ export function createAuthService(deps: AuthDeps) {
               timeoutMsForNonInteractive: SILENT_TIMEOUT_MS,
             },
       );
-    } catch {
-      // Window closed by the user, or the silent flow could not finish.
-      throw new NotSignedInError(interactive ? 'flow_cancelled' : 'silent_failed');
+    } catch (e) {
+      // Window closed by the user, the sign-in page failed to load (e.g. an
+      // unknown tenant makes Entra answer with an error page, so no window
+      // opens), or the silent flow could not finish. Keep the browser's text.
+      throw new NotSignedInError(
+        interactive ? 'flow_cancelled' : 'silent_failed',
+        e instanceof Error ? e.message : String(e),
+      );
     }
     if (!redirectedTo) throw new NotSignedInError('no_redirect');
 
     const result = parseAuthorizeRedirect(redirectedTo, state);
-    if (!result.ok) throw new NotSignedInError(result.error);
+    if (!result.ok) {
+      throw new NotSignedInError(result.error, result.description?.split(/\r?\n/)[0]);
+    }
 
     const tokens = await redeemCode(deps.config, result.code, verifier, deps.redirectUri, now());
     await tokenItem.setValue(tokens);

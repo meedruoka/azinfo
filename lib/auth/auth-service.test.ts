@@ -139,6 +139,22 @@ describe('auth service', () => {
     expect(await signedInIntentItem.getValue()).toBe(true);
   });
 
+  it("keeps Entra's error description from the redirect", async () => {
+    const flow = vi.fn(async (details: WebAuthFlowDetails) => {
+      const state = new URL(details.url).searchParams.get('state');
+      return `${REDIRECT}?error=access_denied&error_description=${encodeURIComponent(
+        'AADSTS65004: User declined to consent.\r\nTrace ID: x',
+      )}&state=${state}`;
+    });
+    const err = await service(flow)
+      .signIn()
+      .catch((e) => e);
+    expect(err).toBeInstanceOf(NotSignedInError);
+    expect(err.message).toBe(
+      'Not signed in (access_denied): AADSTS65004: User declined to consent.',
+    );
+  });
+
   it('reports a cancelled interactive window as not signed in', async () => {
     const flow = vi.fn(async (details: WebAuthFlowDetails) => {
       if (!details.interactive) {
@@ -152,6 +168,7 @@ describe('auth service', () => {
       .catch((e) => e);
     expect(err).toBeInstanceOf(NotSignedInError);
     expect(err.reason).toBe('flow_cancelled');
+    expect(err.message).toBe('Not signed in (flow_cancelled): The user did not approve access.');
     expect(await tokenItem.getValue()).toBeNull();
   });
 });
