@@ -30,7 +30,9 @@ export function defaultAuthority(): string {
 export async function readAuthConfig(): Promise<AuthConfig> {
   const clientId = import.meta.env.WXT_ENTRA_CLIENT_ID;
   if (!clientId) {
-    throw new Error('WXT_ENTRA_CLIENT_ID is not set. Copy .env.example to .env.local.');
+    throw new Error(
+      'WXT_ENTRA_CLIENT_ID is not set: .env.local for dev builds, .env.production.local for store builds (see .env.example).',
+    );
   }
   return { clientId, authority: (await authorityItem.getValue()) ?? defaultAuthority() };
 }
