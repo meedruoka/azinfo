@@ -66,12 +66,15 @@ Personal subscription, 2026-10-04, Chrome:
 | Top 5 matches Cost analysis (this month, actual cost, by resource) | Pass |
 | Second popup open within the TTL makes no `query` request | Pass |
 | Simulated 429 (`WXT_DEV_SIMULATE_429`) shows "rate limited, retrying", then data | Pass |
-| Cost column accepted by this subscription (`Cost` or `PreTaxCost`) | Not recorded yet |
-| Response `columns` layout | Not recorded yet |
+| Cost column accepted by this subscription | `Cost`, first try (no 400 fallback) |
+| Response `columns` layout | `Cost:Number`, `BillingMonth:Datetime`, `ResourceId:String`, `Currency:String` (MCA-style), 1 page |
 
-The unit-test fixtures (`tests/fixtures/cost-query-*.json`) are hand-made in
-the documented legacy and MCA layouts. Add an anonymised real response once
-the layout is recorded.
+The layout was recorded from the `[azinfo] cost query` console line, which
+logs column names and counts only. `tests/fixtures/cost-query-real-layout.json`
+uses that exact layout with synthetic values. The legacy (`PreTaxCost`,
+numeric `UsageDate`) and wider MCA fixtures are hand-made from the
+documentation. The `PreTaxCost` path is still unverified against a real
+legacy subscription.
 
 ## Consequences
 

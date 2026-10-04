@@ -64,7 +64,11 @@ describe('runCostQuery', () => {
 
   it('treats HTTP 204 as no data', async () => {
     server.use(http.post(QUERY_URL, () => new HttpResponse(null, { status: 204 })));
-    expect(await runCostQuery(SUB, BODY, 'AT', noSleep())).toEqual({ columns: [], rows: [] });
+    expect(await runCostQuery(SUB, BODY, 'AT', noSleep())).toEqual({
+      columns: [],
+      rows: [],
+      pages: 1,
+    });
   });
 
   it('waits for the longest Cost Management retry header, then succeeds', async () => {

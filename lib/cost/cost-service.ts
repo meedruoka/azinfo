@@ -83,11 +83,15 @@ export function createCostService(deps: CostServiceDeps) {
     } finally {
       await setStatus(subscriptionId, null);
     }
-    const resources = normaliseCostRows(
-      response.result.columns,
-      response.result.rows,
-      monthsFor(response.at),
-    );
+    const { columns, rows, pages } = response.result;
+    // Shape only (no costs, IDs or tokens): shows which layout Azure returned.
+    console.info('[azinfo] cost query', {
+      costColumn,
+      columns: columns.map((c) => `${c.name}:${c.type}`),
+      rows: rows.length,
+      pages,
+    });
+    const resources = normaliseCostRows(columns, rows, monthsFor(response.at));
     return { subscriptionId, resources, fetchedAt: response.at, costColumn };
   }
 

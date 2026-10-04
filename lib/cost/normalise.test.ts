@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import legacy from '@/tests/fixtures/cost-query-legacy.json';
 import legacyPage2 from '@/tests/fixtures/cost-query-legacy-page2.json';
 import mca from '@/tests/fixtures/cost-query-mca.json';
+import realLayout from '@/tests/fixtures/cost-query-real-layout.json';
 import {
   CostShapeError,
   detectColumns,
@@ -45,6 +46,29 @@ describe('normaliseCostRows', () => {
     // Cost (billing currency) is used, not CostUSD; August is outside the window.
     expect(vm).toMatchObject({ mtd: 50, lastMonth: 0, currency: 'GBP' });
     expect(ai).toMatchObject({ mtd: 2, lastMonth: 1, currency: 'GBP' });
+  });
+
+  it('handles the layout recorded from a real personal subscription', () => {
+    const sub = '/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test';
+    const result = normaliseCostRows(
+      realLayout.properties.columns,
+      realLayout.properties.rows,
+      OCT,
+    );
+    expect(Object.values(result)).toEqual([
+      {
+        resourceId: `${sub}/providers/microsoft.cognitiveservices/accounts/test-ai`,
+        mtd: 3.21,
+        lastMonth: 5.5,
+        currency: 'EUR',
+      },
+      {
+        resourceId: `${sub}/providers/microsoft.storage/storageaccounts/teststore`,
+        mtd: 0.4,
+        lastMonth: 0,
+        currency: 'EUR',
+      },
+    ]);
   });
 
   it('returns nothing for an empty result (HTTP 204 or no rows)', () => {

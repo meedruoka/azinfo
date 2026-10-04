@@ -1,0 +1,32 @@
+{
+  "_comment": "Column layout recorded from a real personal-subscription response on 2026-10-04 (costColumn Cost, 1 page). Values and IDs are synthetic.",
+  "properties": {
+    "nextLink": null,
+    "columns": [
+      { "name": "Cost", "type": "Number" },
+      { "name": "BillingMonth", "type": "Datetime" },
+      { "name": "ResourceId", "type": "String" },
+      { "name": "Currency", "type": "String" }
+    ],
+    "rows": [
+      [
+        3.21,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.cognitiveservices/accounts/test-ai",
+        "EUR"
+      ],
+      [
+        5.5,
+        "2026-09-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.cognitiveservices/accounts/test-ai",
+        "EUR"
+      ],
+      [
+        0.4,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.storage/storageaccounts/teststore",
+        "EUR"
+      ]
+    ]
+  }
+}

@@ -26,6 +26,8 @@ export type QueryColumn = z.infer<typeof QueryColumn>;
 export interface QueryResult {
   columns: QueryColumn[];
   rows: unknown[][];
+  /** Number of pages fetched (nextLinks followed + 1). */
+  pages: number;
 }
 
 export interface RetryPolicy {
@@ -75,6 +77,7 @@ export async function runCostQuery(
   const rows: unknown[][] = [];
   const seen = new Set<string>();
   let next: string | null | undefined = costQueryUrl(subscriptionId);
+  let pages = 0;
 
   for (let page = 0; next; page++) {
     // Partial data would show wrong totals, so stop with an error instead.
@@ -83,12 +86,13 @@ export async function runCostQuery(
     seen.add(next);
 
     const result = await postWithRetry(next, body, accessToken, deps);
+    pages++;
     if (!result) break; // 204: no data for the period.
     if (page === 0) columns = result.properties.columns;
     rows.push(...result.properties.rows);
     next = result.properties.nextLink;
   }
-  return { columns, rows };
+  return { columns, rows, pages };
 }
 
 async function postWithRetry(
