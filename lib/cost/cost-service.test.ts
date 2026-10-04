@@ -72,6 +72,16 @@ describe('cost service', () => {
     expect(requests).toHaveLength(3);
   });
 
+  it('refetches at a month boundary even within the TTL', async () => {
+    respondWith(() => HttpResponse.json(mca));
+    const costs = service();
+    now = Date.UTC(2026, 8, 30, 23, 0); // 30 Sep 23:00 UTC
+    await costs.getSubscriptionCosts(SUB);
+    now = Date.UTC(2026, 9, 1, 0, 30); // 1 Oct 00:30 UTC, 1.5 h later
+    await costs.getSubscriptionCosts(SUB);
+    expect(requests).toHaveLength(2);
+  });
+
   it('shares one request between concurrent callers', async () => {
     respondWith(() => HttpResponse.json(mca));
     const costs = service();

@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { changeFrom, panelStateFromResult } from './panel-state';
+import type { AssessedCost } from '../messages';
+import { changeFrom, groupPanelStateFromResult, panelStateFromResult } from './panel-state';
 
 const ID = '/subscriptions/s/resourcegroups/rg/providers/microsoft.web/sites/app';
 const AT = 1_700_000_000_000;
+const SPIKE_CONTEXT = { thresholdPct: 50, daysElapsed: 9 };
 
 describe('changeFrom', () => {
   it.each([
@@ -19,29 +21,43 @@ describe('changeFrom', () => {
 });
 
 describe('panelStateFromResult', () => {
-  it('shows data with the change', () => {
+  it('shows data with the change, projection and spike flag', () => {
     expect(
       panelStateFromResult({
         ok: true,
         data: {
           resourceId: ID,
           fetchedAt: AT,
-          cost: { resourceId: ID, mtd: 3, lastMonth: 12, currency: 'EUR' },
+          cost: { resourceId: ID, mtd: 30, lastMonth: 12, currency: 'EUR' },
+          assessment: { projected: 103.3, spike: true },
+          spikeContext: SPIKE_CONTEXT,
         },
       }),
     ).toEqual({
       kind: 'data',
-      mtd: 3,
+      mtd: 30,
       lastMonth: 12,
       currency: 'EUR',
-      change: { kind: 'percent', value: -75 },
+      change: { kind: 'percent', value: 150 },
+      projected: 103.3,
+      spike: true,
+      spikeContext: SPIKE_CONTEXT,
       fetchedAt: AT,
     });
   });
 
   it('shows "no data" when the resource has no cost rows', () => {
     expect(
-      panelStateFromResult({ ok: true, data: { resourceId: ID, fetchedAt: AT, cost: null } }),
+      panelStateFromResult({
+        ok: true,
+        data: {
+          resourceId: ID,
+          fetchedAt: AT,
+          cost: null,
+          assessment: null,
+          spikeContext: SPIKE_CONTEXT,
+        },
+      }),
     ).toEqual({ kind: 'noData', fetchedAt: AT });
   });
 
@@ -55,5 +71,38 @@ describe('panelStateFromResult', () => {
     expect(panelStateFromResult({ ok: false, kind, message: 'boom', retryAt: AT })).toEqual(
       expected,
     );
+  });
+});
+
+describe('groupPanelStateFromResult', () => {
+  const row = (name: string, spike: boolean): AssessedCost => ({
+    resourceId: `${ID}-${name}`,
+    name,
+    type: 'microsoft.web/sites',
+    mtd: 1,
+    lastMonth: 1,
+    currency: 'EUR',
+    assessment: { projected: 3, spike },
+  });
+
+  it('counts spikes and keeps the worker order', () => {
+    const state = groupPanelStateFromResult({
+      ok: true,
+      data: {
+        resourceGroupId: '/subscriptions/s/resourcegroups/rg',
+        fetchedAt: AT,
+        resources: [row('a', true), row('b', false), row('c', true)],
+        total: { mtd: 3, lastMonth: 3, currency: 'EUR' },
+        spikeContext: SPIKE_CONTEXT,
+      },
+    });
+    expect(state).toMatchObject({ kind: 'group', spikes: 2 });
+    expect(state.kind === 'group' && state.resources.map((r) => r.name)).toEqual(['a', 'b', 'c']);
+  });
+
+  it('maps errors the same way as for a resource', () => {
+    expect(groupPanelStateFromResult({ ok: false, kind: 'noCostAccess', message: '' })).toEqual({
+      kind: 'noCostAccess',
+    });
   });
 });

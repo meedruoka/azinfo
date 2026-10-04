@@ -9,6 +9,8 @@
   --border: #d1d1d1;
   --accent: #0f6cbd;
   --error: #c50f1f;
+  --warn-fg: #8a3707;
+  --warn-bg: #fdf0e6;
   --shadow: 0 4px 16px rgb(0 0 0 / 0.18);
 }
 
@@ -21,6 +23,8 @@
     --border: #4a4a4a;
     --accent: #479ef5;
     --error: #ff99a4;
+    --warn-fg: #ffb882;
+    --warn-bg: #3d2a1e;
     --shadow: 0 4px 16px rgb(0 0 0 / 0.5);
   }
 }
@@ -63,7 +67,7 @@ button {
 }
 
 .azinfo-card {
-  width: 280px;
+  width: 320px;
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -158,6 +162,61 @@ button.primary {
   border-color: var(--accent);
   background: var(--accent);
   color: #ffffff;
+}
+
+.spike-note {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+dd.spike,
+.spike-badge {
+  color: var(--warn-fg);
+  font-weight: 600;
+}
+
+.spike-badge {
+  margin-right: 4px;
+}
+
+.list-label {
+  margin: 8px 0 4px;
+}
+
+.table-scroll {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+td {
+  padding: 4px 0;
+  vertical-align: top;
+  border-top: 1px solid var(--border);
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+  padding-left: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.row-name {
+  overflow-wrap: anywhere;
 }
 
 button.link {

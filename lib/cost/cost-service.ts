@@ -101,7 +101,11 @@ export function createCostService(deps: CostServiceDeps) {
 
   async function load(key: string, force: boolean): Promise<SubscriptionCosts> {
     const cached = force ? null : await cache.get(key);
-    if (cached) return cached.value;
+    // An entry from a previous UTC month labels last month's cost as "this
+    // month", so it is stale even within the TTL.
+    if (cached && monthsFor(cached.value.fetchedAt).current === monthsFor(now()).current) {
+      return cached.value;
+    }
     // Reuse the column the subscription accepted last time, even if expired.
     const previous = await storage.getItem<{ value: SubscriptionCosts }>(
       `local:${COST_CACHE_PREFIX}${key}`,

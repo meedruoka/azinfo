@@ -1,10 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from 'wxt/utils/storage';
 import { describeResourceId } from '@/lib/azure/resource-id';
 import { costStatusItem } from '@/lib/cost/cost-service';
 import { formatMoney, formatPercent, formatTime } from '@/lib/format';
+import type { AssessedCost, Result, SpikeContext } from '@/lib/messages';
 import { sendRequest } from '@/lib/messages';
-import { type PanelState, panelStateFromResult } from '@/lib/panel/panel-state';
+import {
+  errorState,
+  groupPanelStateFromResult,
+  type PanelState,
+  panelStateFromResult,
+} from '@/lib/panel/panel-state';
 import type { PortalContext } from '@/lib/portal/parse-portal-url';
 
 /** Per-browser convenience only: whether the panel is shrunk to a pill. */
@@ -18,20 +24,92 @@ export interface PanelProps {
   request?: typeof sendRequest;
 }
 
-/** Hidden except on resource pages (resource groups arrive in M4). */
-export function Panel({ context, request = sendRequest }: PanelProps) {
-  if (context?.kind !== 'resource') return null;
-  // Keyed by resource: navigating remounts, dropping any in-flight answer.
-  return <ResourcePanel key={context.resourceId} context={context} request={request} />;
-}
-
 type ResourceContext = Extract<PortalContext, { kind: 'resource' }>;
+type GroupContext = Extract<PortalContext, { kind: 'resourceGroup' }>;
+
+/** Shown on resource and resource-group pages; hidden everywhere else. */
+export function Panel({ context, request = sendRequest }: PanelProps) {
+  // Keyed by ID: navigating remounts, dropping any in-flight answer.
+  if (context?.kind === 'resource') {
+    return <ResourcePanel key={context.resourceId} context={context} request={request} />;
+  }
+  if (context?.kind === 'resourceGroup') {
+    return <GroupPanel key={context.resourceId} context={context} request={request} />;
+  }
+  return null;
+}
 
 function ResourcePanel({
   context,
   request,
 }: {
   context: ResourceContext;
+  request: typeof sendRequest;
+}) {
+  const fetchState = useCallback(
+    async (force: boolean) =>
+      panelStateFromResult(
+        await request({
+          type: 'getResourceCost',
+          subscriptionId: context.subscriptionId,
+          resourceId: context.resourceId,
+          force,
+        }),
+      ),
+    [context.subscriptionId, context.resourceId, request],
+  );
+  const { type } = describeResourceId(context.resourceId);
+  return (
+    <CostPanel
+      subscriptionId={context.subscriptionId}
+      title={context.name}
+      subtitle={type}
+      titleTooltip={context.resourceId}
+      fetchState={fetchState}
+      request={request}
+    />
+  );
+}
+
+function GroupPanel({ context, request }: { context: GroupContext; request: typeof sendRequest }) {
+  const fetchState = useCallback(
+    async (force: boolean) =>
+      groupPanelStateFromResult(
+        await request({
+          type: 'getResourceGroupCosts',
+          subscriptionId: context.subscriptionId,
+          resourceGroupId: context.resourceId,
+          force,
+        }),
+      ),
+    [context.subscriptionId, context.resourceId, request],
+  );
+  return (
+    <CostPanel
+      subscriptionId={context.subscriptionId}
+      title={context.resourceGroup}
+      subtitle="Resource group"
+      titleTooltip={context.resourceId}
+      fetchState={fetchState}
+      request={request}
+    />
+  );
+}
+
+/** Loading, stale-answer protection, rate-limit status, collapse and sign-in. */
+function CostPanel({
+  subscriptionId,
+  title,
+  subtitle,
+  titleTooltip,
+  fetchState,
+  request,
+}: {
+  subscriptionId: string;
+  title: string;
+  subtitle: string;
+  titleTooltip: string;
+  fetchState: (force: boolean) => Promise<PanelState>;
   request: typeof sendRequest;
 }) {
   const [state, setState] = useState<PanelState>({ kind: 'loading' });
@@ -42,16 +120,11 @@ function ResourcePanel({
     async (force = false) => {
       const id = ++latest.current;
       setState({ kind: 'loading' });
-      const res = await request({
-        type: 'getResourceCost',
-        subscriptionId: context.subscriptionId,
-        resourceId: context.resourceId,
-        force,
-      });
+      const next = await fetchState(force);
       // Ignore answers overtaken by a newer request or an unmount.
-      if (id === latest.current) setState(panelStateFromResult(res));
+      if (id === latest.current) setState(next);
     },
-    [context.subscriptionId, context.resourceId, request],
+    [fetchState],
   );
 
   useEffect(() => {
@@ -70,12 +143,12 @@ function ResourcePanel({
   useEffect(
     () =>
       costStatusItem.watch((all) => {
-        const status = all[context.subscriptionId];
+        const status = all[subscriptionId];
         setState((s) =>
           s.kind === 'loading' ? { kind: 'loading', rateLimitedUntil: status?.retryAt } : s,
         );
       }),
-    [context.subscriptionId],
+    [subscriptionId],
   );
 
   const toggle = (next: boolean) => {
@@ -85,9 +158,9 @@ function ResourcePanel({
 
   const signIn = async () => {
     setState({ kind: 'loading' });
-    const res = await request({ type: 'signIn' });
+    const res: Result<unknown> = await request({ type: 'signIn' });
     if (res.ok) await load();
-    else setState(panelStateFromResult(res));
+    else setState(errorState(res));
   };
 
   if (collapsed) {
@@ -104,16 +177,15 @@ function ResourcePanel({
     );
   }
 
-  const { type } = describeResourceId(context.resourceId);
   return (
     <section className="azinfo-card" aria-label="azinfo cost panel">
       <header>
         <div className="title">
           <span className="brand">azinfo</span>
-          <span className="resource" title={context.resourceId}>
-            {context.name}
+          <span className="resource" title={titleTooltip}>
+            {title}
           </span>
-          <span className="type">{type}</span>
+          <span className="type">{subtitle}</span>
         </div>
         <button type="button" className="icon" onClick={() => toggle(true)} aria-label="Collapse">
           –
@@ -145,7 +217,7 @@ function Body({
     case 'notSignedIn':
       return (
         <>
-          <p>Sign in to see this resource's cost.</p>
+          <p>Sign in to see costs.</p>
           <button type="button" className="primary" onClick={onSignIn}>
             Sign in
           </button>
@@ -192,18 +264,110 @@ function Body({
     case 'data':
       return (
         <>
+          {state.spike && <SpikeNote context={state.spikeContext} />}
           <dl>
             <dt>This month so far</dt>
             <dd className="big">{formatMoney(state.mtd, state.currency)}</dd>
+            <dt>Projected month-end</dt>
+            <dd className={state.spike ? 'spike' : undefined}>
+              {projectionText(state.projected, state.currency, state.spikeContext)}
+            </dd>
             <dt>Last month</dt>
             <dd>{formatMoney(state.lastMonth, state.currency)}</dd>
             <dt>So far vs. all of last month</dt>
-            <dd>{changeText(state)}</dd>
+            <dd>{changeText(state.change)}</dd>
           </dl>
           <Footer fetchedAt={state.fetchedAt} onRefresh={onRetry} />
         </>
       );
+    case 'group':
+      return <GroupBody state={state} onRefresh={onRetry} />;
   }
+}
+
+function GroupBody({
+  state,
+  onRefresh,
+}: {
+  state: Extract<PanelState, { kind: 'group' }>;
+  onRefresh: () => void;
+}) {
+  if (state.resources.length === 0) {
+    return (
+      <>
+        <p>No resources in this group have cost this month or last.</p>
+        <Footer fetchedAt={state.fetchedAt} onRefresh={onRefresh} />
+      </>
+    );
+  }
+  return (
+    <>
+      {state.spikes > 0 && <SpikeNote context={state.spikeContext} count={state.spikes} />}
+      {state.total && (
+        <dl>
+          <dt>Group this month so far</dt>
+          <dd className="big">{formatMoney(state.total.mtd, state.total.currency)}</dd>
+          <dt>Group last month</dt>
+          <dd>{formatMoney(state.total.lastMonth, state.total.currency)}</dd>
+        </dl>
+      )}
+      <p className="muted small list-label">Resources with cost this month or last</p>
+      <ResourceTable resources={state.resources} />
+      <Footer fetchedAt={state.fetchedAt} onRefresh={onRefresh} />
+    </>
+  );
+}
+
+function ResourceTable({ resources }: { resources: AssessedCost[] }) {
+  return (
+    <div className="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Resource</th>
+            <th className="num">This month</th>
+            <th className="num">Last month</th>
+          </tr>
+        </thead>
+        <tbody>
+          {resources.map((r) => (
+            <tr key={r.resourceId} title={r.resourceId}>
+              <td>
+                <div className="row-name">
+                  {r.assessment.spike && (
+                    <span
+                      className="spike-badge"
+                      title="Projected spike"
+                      role="img"
+                      aria-label="Spike"
+                    >
+                      ▲
+                    </span>
+                  )}
+                  {r.name}
+                </div>
+                <div className="type">{r.type}</div>
+              </td>
+              <td className="num">{formatMoney(r.mtd, r.currency)}</td>
+              <td className="num">{formatMoney(r.lastMonth, r.currency)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function SpikeNote({ context, count }: { context: SpikeContext; count?: number }): ReactNode {
+  const what =
+    count === undefined
+      ? 'Projected month-end is'
+      : `${count} resource${count === 1 ? '' : 's'} projected`;
+  return (
+    <p className="spike-note">
+      ▲ {what} more than {context.thresholdPct}% above last month.
+    </p>
+  );
 }
 
 function Footer({ fetchedAt, onRefresh }: { fetchedAt: number; onRefresh: () => void }) {
@@ -217,10 +381,16 @@ function Footer({ fetchedAt, onRefresh }: { fetchedAt: number; onRefresh: () => 
   );
 }
 
-function changeText(state: Extract<PanelState, { kind: 'data' }>): string {
-  switch (state.change.kind) {
+function projectionText(projected: number | null, currency: string, context: SpikeContext) {
+  if (projected === null) return 'From tomorrow';
+  const amount = formatMoney(projected, currency);
+  return context.daysElapsed < 5 ? `${amount} (early estimate)` : amount;
+}
+
+function changeText(change: Extract<PanelState, { kind: 'data' }>['change']): string {
+  switch (change.kind) {
     case 'percent':
-      return formatPercent(state.change.value);
+      return formatPercent(change.value);
     case 'new':
       return 'New this month';
     case 'none':
@@ -233,7 +403,12 @@ export function pillText(state: PanelState): string {
     case 'loading':
       return state.rateLimitedUntil ? 'rate limited…' : '…';
     case 'data':
-      return formatMoney(state.mtd, state.currency);
+      return `${formatMoney(state.mtd, state.currency)}${state.spike ? ' · spike' : ''}`;
+    case 'group': {
+      const total = state.total ? formatMoney(state.total.mtd, state.total.currency) : 'mixed';
+      const spikes = state.spikes ? ` · ${state.spikes} spike${state.spikes === 1 ? '' : 's'}` : '';
+      return state.resources.length ? `${total}${spikes}` : 'no cost';
+    }
     case 'notSignedIn':
       return 'sign in';
     case 'noCostAccess':

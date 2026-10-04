@@ -6,8 +6,11 @@ import { CostRateLimitError } from '@/lib/azure/cost-client';
 import { describeResourceId } from '@/lib/azure/resource-id';
 import { listSubscriptions } from '@/lib/azure/subscriptions';
 import { type CostService, createCostService } from '@/lib/cost/cost-service';
-import { topByMtd } from '@/lib/cost/normalise';
+import { type ResourceCost, topByMtd } from '@/lib/cost/normalise';
+import { resourcesInGroup, totalOf } from '@/lib/cost/resource-group';
+import { assessSpike, monthProgress } from '@/lib/cost/spike';
 import type { ErrorKind, Request, ResponseMap, Result } from '@/lib/messages';
+import { spikeThresholdPctItem } from '@/lib/settings';
 
 // Service worker: owns auth, Azure API calls and the cache.
 // It is the only network-facing part of the extension.
@@ -81,10 +84,34 @@ export default defineBackground(() => {
           force: request.force,
         });
         const resourceId = request.resourceId.toLowerCase();
+        const cost = costs.resources[resourceId] ?? null;
+        const spike = await spikeSettings(costs.fetchedAt);
         return {
           resourceId,
           fetchedAt: costs.fetchedAt,
-          cost: costs.resources[resourceId] ?? null,
+          cost,
+          assessment: cost ? spike.assess(cost) : null,
+          spikeContext: spike.context,
+        };
+      }
+      case 'getResourceGroupCosts': {
+        const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
+          force: request.force,
+        });
+        const inGroup = resourcesInGroup(costs.resources, request.resourceGroupId).sort(
+          (a, b) => b.mtd - a.mtd,
+        );
+        const spike = await spikeSettings(costs.fetchedAt);
+        return {
+          resourceGroupId: request.resourceGroupId.toLowerCase(),
+          fetchedAt: costs.fetchedAt,
+          resources: inGroup.map((r) => ({
+            ...r,
+            ...describeResourceId(r.resourceId),
+            assessment: spike.assess(r),
+          })),
+          total: totalOf(inGroup),
+          spikeContext: spike.context,
         };
       }
     }
@@ -97,6 +124,19 @@ export default defineBackground(() => {
     return true; // Keep the channel open for the async response.
   });
 });
+
+/**
+ * Spike evaluation as of the data's fetch time: month-to-date reflects that
+ * moment, so days elapsed must too.
+ */
+async function spikeSettings(fetchedAt: number) {
+  const thresholdPct = await spikeThresholdPctItem.getValue();
+  const progress = monthProgress(fetchedAt);
+  return {
+    context: { thresholdPct, daysElapsed: progress.daysElapsed },
+    assess: (r: ResourceCost) => assessSpike(r.mtd, r.lastMonth, progress, thresholdPct),
+  };
+}
 
 function toErrorResult(e: unknown): Result<never> {
   // Error messages never contain tokens (see TokenError / ArmError).
