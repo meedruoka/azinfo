@@ -16,7 +16,7 @@ export default defineConfig({
     name: 'azinfo',
     description:
       'Azure cost info next to the resource you are viewing in the Azure portal. Not affiliated with Microsoft.',
-    permissions: ['storage'],
+    permissions: ['identity', 'storage'],
     host_permissions: [
       'https://portal.azure.com/*',
       'https://management.azure.com/*',

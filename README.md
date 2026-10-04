@@ -40,6 +40,12 @@ needed for packing a `.crx`, never for the ID itself.
 Dev builds also get `tabs`, `scripting` and `http://localhost/*` from WXT for hot
 reload. Production builds contain only the permissions in the spec.
 
+## Sign-in setup
+
+Create an Entra app registration and a `.env.local` as described in
+[docs/entra-setup.md](docs/entra-setup.md). Design decision:
+[docs/decisions/001-auth.md](docs/decisions/001-auth.md).
+
 ## Development rule
 
 Develop and test only against a personal Azure subscription and a personal Entra

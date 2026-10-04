@@ -27,3 +27,7 @@ web-ext.config.ts
 
 # Dev signing key (private half). The public key lives in wxt.config.ts.
 .keys
+
+# Local Entra settings (client ID, authority)
+.env.local
+.env.*.local
