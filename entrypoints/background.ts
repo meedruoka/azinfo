@@ -74,6 +74,19 @@ export default defineBackground(() => {
         }));
         return { subscriptionId: costs.subscriptionId, fetchedAt: costs.fetchedAt, top };
       }
+      case 'getResourceCost': {
+        // Served from the subscription's cached query: navigating between
+        // resources makes no extra Azure calls while the cache is fresh.
+        const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
+          force: request.force,
+        });
+        const resourceId = request.resourceId.toLowerCase();
+        return {
+          resourceId,
+          fetchedAt: costs.fetchedAt,
+          cost: costs.resources[resourceId] ?? null,
+        };
+      }
     }
   }
 

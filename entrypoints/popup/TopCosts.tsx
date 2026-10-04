@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { costStatusItem } from '@/lib/cost/cost-service';
+import { formatMoney, formatTime } from '@/lib/format';
 import { type ResponseMap, sendRequest } from '@/lib/messages';
 
 type TopCostsData = ResponseMap['getTopCosts'];
@@ -100,17 +101,4 @@ export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
       </p>
     </>
   );
-}
-
-function formatMoney(amount: number, currency: string): string {
-  try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
-  } catch {
-    // Unknown currency code: show it as text rather than guess.
-    return `${amount.toFixed(2)} ${currency}`;
-  }
-}
-
-function formatTime(epochMs: number): string {
-  return new Date(epochMs).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 }

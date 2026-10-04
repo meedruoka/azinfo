@@ -14,13 +14,17 @@ export interface SubscriptionCosts {
   costColumn: CostColumnName;
 }
 
-/** Per-subscription fetch state, in session storage so the popup can watch it. */
+/** Per-subscription fetch state that the popup and in-portal panel watch. */
 export type CostStatus = { state: 'rateLimited'; retryAt: number };
 
-export const costStatusItem = storage.defineItem<Record<string, CostStatus>>(
-  'session:cost.status',
-  { fallback: {} },
-);
+/**
+ * In local storage, not session: content scripts can't read session storage
+ * at its default access level, and widening that level would expose tokens.
+ * It only holds a retry time.
+ */
+export const costStatusItem = storage.defineItem<Record<string, CostStatus>>('local:cost.status', {
+  fallback: {},
+});
 
 export const DEFAULT_COST_TTL_MS = 4 * 60 * 60 * 1000;
 

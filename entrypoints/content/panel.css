@@ -1,0 +1,168 @@
+/* Lives inside the shadow root; WXT resets inherited portal styles first.
+   px rather than rem: rem would scale with the portal's root font size. */
+
+:host,
+.azinfo-root {
+  --bg: #ffffff;
+  --fg: #1b1b1b;
+  --muted: #605e5c;
+  --border: #d1d1d1;
+  --accent: #0f6cbd;
+  --error: #c50f1f;
+  --shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host,
+  .azinfo-root {
+    --bg: #292929;
+    --fg: #f3f3f3;
+    --muted: #adadad;
+    --border: #4a4a4a;
+    --accent: #479ef5;
+    --error: #ff99a4;
+    --shadow: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+
+.azinfo-root {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000000;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--fg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.azinfo-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.pill-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.azinfo-card {
+  width: 280px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.resource {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.type {
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+button.icon {
+  border: none;
+  background: none;
+  padding: 0 4px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+dt {
+  color: var(--muted);
+}
+
+dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+dd.big {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 12px;
+}
+
+.error {
+  color: var(--error);
+}
+
+.footer {
+  margin: 8px 0 0;
+}
+
+button.primary,
+.azinfo-card > button {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+}
+
+button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+button.link {
+  padding: 0;
+  border: none;
+  background: none;
+  text-decoration: underline;
+}
