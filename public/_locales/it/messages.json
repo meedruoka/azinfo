@@ -1,0 +1,152 @@
+{
+  "extDescription": {
+    "message": "Costi di Azure accanto alla risorsa che stai visualizzando nel portale di Azure. Non affiliato a Microsoft."
+  },
+
+  "signIn": { "message": "Accedi" },
+  "signOut": { "message": "Esci" },
+  "retry": { "message": "Riprova" },
+  "refresh": { "message": "Aggiorna" },
+  "save": { "message": "Salva" },
+  "loading": { "message": "Caricamento…" },
+  "resource": { "message": "Risorsa" },
+  "thisMonth": { "message": "Questo mese" },
+  "lastMonth": { "message": "Mese scorso" },
+  "updatedAt": {
+    "message": "Aggiornato alle $1. I dati sui costi di Azure hanno diverse ore di ritardo."
+  },
+  "rateLimitedRetrying": { "message": "Limitato da Azure, nuovo tentativo alle $1…" },
+
+  "popupOptions": { "message": "Opzioni" },
+  "popupSigningIn": { "message": "Accesso in corso…" },
+  "popupSignInPrompt": { "message": "Accedi con l'account Microsoft che usi per Azure." },
+  "popupLoadingTenants": { "message": "Caricamento dei tenant…" },
+  "popupNoSubscriptions": { "message": "Nessuna sottoscrizione visibile per questo account." },
+  "popupSubscription": { "message": "Sottoscrizione" },
+  "popupTenantNeedsSignIn": { "message": "$1 richiede l'accesso." },
+  "popupTenantFailed": { "message": "Impossibile leggere $1: $2" },
+  "popupTop5": { "message": "Top 5 di questo mese" },
+  "popupLoadingCosts": { "message": "Caricamento dei costi…" },
+  "popupNoCosts": { "message": "Nessun costo delle risorse questo mese o il mese scorso." },
+  "popupNoCostAccess": {
+    "message": "Nessun accesso ai dati sui costi di questa sottoscrizione (richiede il ruolo Cost Management Reader)."
+  },
+  "popupRateLimited": {
+    "message": "Azure sta limitando le query sui costi. Riprova tra un minuto."
+  },
+
+  "panelLabel": { "message": "Pannello dei costi di azinfo" },
+  "panelPillLabel": { "message": "Pannello dei costi di azinfo: $1. Espandi." },
+  "panelCollapse": { "message": "Comprimi" },
+  "panelResourceGroup": { "message": "Gruppo di risorse" },
+  "panelLoadingCost": { "message": "Caricamento del costo…" },
+  "panelSignInToSee": { "message": "Accedi per vedere i costi." },
+  "panelOtherTenant": {
+    "message": "Questa sottoscrizione si trova in un altro tenant, che richiede un accesso una tantum."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Questa sottoscrizione si trova in un altro tenant ($1), che richiede un accesso una tantum."
+  },
+  "panelSignInToTenant": { "message": "Accedi a questo tenant" },
+  "panelNoCostAccess": {
+    "message": "Nessun accesso ai dati sui costi di questa sottoscrizione. È necessario il ruolo Cost Management Reader."
+  },
+  "panelNoData": {
+    "message": "Nessun costo registrato per questa risorsa questo mese o il mese scorso."
+  },
+  "panelNoDataHint": {
+    "message": "Alcune risorse vengono fatturate tramite un'altra, ad esempio un'app web tramite il suo App Service plan."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure sta limitando le query sui costi. Riprova dopo le $1."
+  },
+  "panelRateLimited": { "message": "Azure sta limitando le query sui costi." },
+  "panelThisMonthSoFar": { "message": "Questo mese finora" },
+  "panelProjected": { "message": "Previsione a fine mese" },
+  "panelVsLastMonth": { "message": "Finora vs. tutto il mese scorso" },
+  "panelGroupThisMonth": { "message": "Gruppo questo mese finora" },
+  "panelGroupLastMonth": { "message": "Gruppo mese scorso" },
+  "panelGroupNoCost": {
+    "message": "Nessuna risorsa di questo gruppo ha costi questo mese o il mese scorso."
+  },
+  "panelGroupListLabel": { "message": "Risorse con costi questo mese o il mese scorso" },
+  "panelSpikeTitle": { "message": "Picco previsto" },
+  "panelSpikeLabel": { "message": "Picco" },
+  "panelSpikeNote": {
+    "message": "▲ La previsione a fine mese supera di oltre il $1% il mese scorso."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 risorsa prevista oltre il $2% sopra il mese scorso."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 risorse previste oltre il $2% sopra il mese scorso."
+  },
+  "panelFromTomorrow": { "message": "Da domani" },
+  "panelEarlyEstimate": { "message": "$1 (stima preliminare)" },
+  "panelNewThisMonth": { "message": "Nuovo questo mese" },
+  "panelByMeter": { "message": "Questo mese per contatore" },
+  "panelMeterOther": { "message": "Altro" },
+  "panelTipsHeading": { "message": "Suggerimenti di risparmio (Azure Advisor)" },
+  "panelTipsNone": { "message": "Nessun suggerimento di risparmio da Azure Advisor." },
+  "panelTipsUnavailable": { "message": "Suggerimenti di risparmio non disponibili." },
+  "panelTipsNoAccess": {
+    "message": "Suggerimenti di risparmio non disponibili: nessun accesso ad Azure Advisor."
+  },
+  "panelTipBadge": { "message": "consiglio" },
+  "panelTipBadgeTitle": { "message": "Suggerimento di risparmio di Azure Advisor" },
+  "panelSaveYear": { "message": "Risparmia ~$1/anno" },
+  "panelSavingsEstimated": { "message": "Risparmio stimato: $1" },
+  "impactHigh": { "message": "Alto" },
+  "impactMedium": { "message": "Medio" },
+  "impactLow": { "message": "Basso" },
+
+  "pillSpike": { "message": "picco" },
+  "pillSpikes_one": { "message": "$1 picco" },
+  "pillSpikes_other": { "message": "$1 picchi" },
+  "pillTips_one": { "message": "$1 consiglio" },
+  "pillTips_other": { "message": "$1 consigli" },
+  "pillMixed": { "message": "misto" },
+  "pillNoCost": { "message": "nessun costo" },
+  "pillSignIn": { "message": "accedi" },
+  "pillNoAccess": { "message": "nessun accesso" },
+  "pillRateLimited": { "message": "limitato" },
+  "pillRateLimitedWaiting": { "message": "limitato…" },
+  "pillError": { "message": "errore" },
+
+  "optTitle": { "message": "Opzioni di azinfo" },
+  "optSignInTitle": { "message": "Accesso" },
+  "optSignInThrough": { "message": "Accedi tramite il tenant" },
+  "optReset": { "message": "Ripristina predefinito" },
+  "optSignInHelp": {
+    "message": "Il tenant tramite cui accedi. Gli altri tenant vengono trovati automaticamente dopo l'accesso e il pannello dei costi segue il tenant che stai visualizzando nel portale. Account aziendali o dell'istituto di istruzione: $1. Account Microsoft personali (Outlook, Gmail e così via): il tuo tenant, ad esempio $2, mostrato sotto il tuo nome nel menu dell'account del portale di Azure. Modificarlo ti disconnette."
+  },
+  "optSavedSignedOut": {
+    "message": "Salvato: $1. Sei stato disconnesso; accedi di nuovo dal pulsante della barra degli strumenti."
+  },
+  "optInvalidTenant": {
+    "message": "Inserisci organizations, common, un dominio del tenant (contoso.onmicrosoft.com) o un ID tenant."
+  },
+  "optCostTitle": { "message": "Dati sui costi" },
+  "optReuseFor": { "message": "Riutilizza i dati sui costi per" },
+  "optHours": { "message": "ore" },
+  "optCacheHelp": {
+    "message": "Azure aggiorna i dati sui costi ogni poche ore. Un periodo più breve significa più query, che Azure limita."
+  },
+  "optSpikeTitle": { "message": "Avviso di picco" },
+  "optSpikeLabel": { "message": "Segnala quando la previsione a fine mese supera di oltre il" },
+  "optSpikeUnit": { "message": "% il mese scorso" },
+  "optSpikeHelp": {
+    "message": "Verificato dal giorno 6 del mese, quando sono disponibili 5 giorni completi di dati. Mai segnalato se il mese scorso non ha avuto costi."
+  },
+  "optDefault": { "message": "Predefinito: $1." },
+  "optNumberRange": { "message": "Inserisci un numero da $1 a $2." },
+  "optSaved": { "message": "Salvato." },
+  "optCachedTitle": { "message": "Dati nella cache" },
+  "optCachedHelp": {
+    "message": "Rimuove i dati sui costi, i suggerimenti di risparmio e l'elenco dei tenant salvati su questo dispositivo. L'accesso e queste impostazioni restano."
+  },
+  "optClearCache": { "message": "Svuota la cache" },
+  "optCacheCleared": {
+    "message": "Cache svuotata. La prossima visualizzazione interrogherà di nuovo Azure."
+  }
+}

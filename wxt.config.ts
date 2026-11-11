@@ -14,8 +14,9 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: ({ mode }) => ({
     name: 'azinfo',
-    description:
-      'Azure cost info next to the resource you are viewing in the Azure portal. Not affiliated with Microsoft.',
+    // Translated per browser language from public/_locales/<lang>/messages.json.
+    description: '__MSG_extDescription__',
+    default_locale: 'en',
     permissions: ['identity', 'storage'],
     host_permissions: [
       'https://portal.azure.com/*',

@@ -15,6 +15,8 @@ export type PortalContext =
       resourceId: string;
       /** Resource name as shown in the URL, original casing. */
       name: string;
+      /** Tenant from the URL's `#@<domain or ID>`, lowercased, if present. */
+      tenant?: string;
     }
   | {
       kind: 'resourceGroup';
@@ -22,6 +24,8 @@ export type PortalContext =
       resourceGroup: string;
       /** ARM ID of the resource group, lowercased. */
       resourceId: string;
+      /** Tenant from the URL's `#@<domain or ID>`, lowercased, if present. */
+      tenant?: string;
     };
 
 const PORTAL_HOST = 'portal.azure.com';
@@ -40,6 +44,9 @@ export function parsePortalUrl(href: string): PortalContext | null {
   if (!segments) return null;
 
   // Optional "@tenant" prefix, then "resource".
+  const tenant = segments[0]?.startsWith('@')
+    ? segments[0].slice(1).toLowerCase() || undefined
+    : undefined;
   let i = segments[0]?.startsWith('@') ? 1 : 0;
   if (lower(segments[i]) !== 'resource') return null;
   i++;
@@ -58,7 +65,7 @@ export function parsePortalUrl(href: string): PortalContext | null {
   const rgId = `/subscriptions/${sub}/resourcegroups/${resourceGroup}`.toLowerCase();
 
   if (lower(segments[i]) !== 'providers') {
-    return { kind: 'resourceGroup', subscriptionId: sub, resourceGroup, resourceId: rgId };
+    return { kind: 'resourceGroup', subscriptionId: sub, resourceGroup, resourceId: rgId, tenant };
   }
 
   // One or more "providers/<namespace>/(<type>/<name>)+" groups; nested and
@@ -88,6 +95,7 @@ export function parsePortalUrl(href: string): PortalContext | null {
     resourceGroup,
     resourceId: `${rgId}/${idParts.join('/')}`.toLowerCase(),
     name,
+    tenant,
   };
 }
 

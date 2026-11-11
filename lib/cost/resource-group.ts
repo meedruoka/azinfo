@@ -1,15 +1,21 @@
 import type { ResourceCost } from './normalise';
 
 /**
- * Resources whose ID lies inside the resource group. Matching on
- * `<rgId>/` (with the slash) keeps `rg` from also matching `rg-2`.
+ * Whether a lowercased resource ID lies inside the resource group. Matching
+ * on `<rgId>/` (with the slash) keeps `rg` from also matching `rg-2`.
  */
+export function groupMatcher(resourceGroupId: string): (resourceId: string) => boolean {
+  const prefix = `${resourceGroupId.toLowerCase().replace(/\/+$/, '')}/`;
+  return (resourceId) => resourceId.startsWith(prefix);
+}
+
+/** Resources whose ID lies inside the resource group. */
 export function resourcesInGroup(
   resources: Record<string, ResourceCost>,
   resourceGroupId: string,
 ): ResourceCost[] {
-  const prefix = `${resourceGroupId.toLowerCase().replace(/\/+$/, '')}/`;
-  return Object.values(resources).filter((r) => r.resourceId.startsWith(prefix));
+  const inGroup = groupMatcher(resourceGroupId);
+  return Object.values(resources).filter((r) => inGroup(r.resourceId));
 }
 
 /**

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { AssessedCost } from '../messages';
+import type { AssessedCost, TipsResult } from '../messages';
 import { changeFrom, groupPanelStateFromResult, panelStateFromResult } from './panel-state';
 
 const ID = '/subscriptions/s/resourcegroups/rg/providers/microsoft.web/sites/app';
@@ -20,6 +20,9 @@ describe('changeFrom', () => {
   });
 });
 
+const BREAKDOWN = [{ category: 'Virtual Machines', amount: 30, share: 1 }];
+const NO_TIPS: TipsResult = { ok: true, items: [], total: null };
+
 describe('panelStateFromResult', () => {
   it('shows data with the change, projection and spike flag', () => {
     expect(
@@ -31,6 +34,8 @@ describe('panelStateFromResult', () => {
           cost: { resourceId: ID, mtd: 30, lastMonth: 12, currency: 'EUR' },
           assessment: { projected: 103.3, spike: true },
           spikeContext: SPIKE_CONTEXT,
+          breakdown: BREAKDOWN,
+          tips: NO_TIPS,
         },
       }),
     ).toEqual({
@@ -43,6 +48,8 @@ describe('panelStateFromResult', () => {
       spike: true,
       spikeContext: SPIKE_CONTEXT,
       fetchedAt: AT,
+      breakdown: BREAKDOWN,
+      tips: NO_TIPS,
     });
   });
 
@@ -56,6 +63,8 @@ describe('panelStateFromResult', () => {
           cost: null,
           assessment: null,
           spikeContext: SPIKE_CONTEXT,
+          breakdown: [],
+          tips: NO_TIPS,
         },
       }),
     ).toEqual({ kind: 'noData', fetchedAt: AT });
@@ -94,6 +103,8 @@ describe('groupPanelStateFromResult', () => {
         resources: [row('a', true), row('b', false), row('c', true)],
         total: { mtd: 3, lastMonth: 3, currency: 'EUR' },
         spikeContext: SPIKE_CONTEXT,
+        breakdown: [],
+        tips: NO_TIPS,
       },
     });
     expect(state).toMatchObject({ kind: 'group', spikes: 2 });

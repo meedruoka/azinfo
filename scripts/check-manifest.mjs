@@ -1,6 +1,6 @@
 // Checks the built production manifests against the permissions the spec allows.
 // Run after `pnpm build && pnpm build:edge`: `pnpm check:manifest`.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const EXPECTED = {
   permissions: ['identity', 'storage'],
@@ -10,6 +10,7 @@ const EXPECTED = {
     'https://portal.azure.com/*',
   ],
   contentScriptMatches: ['https://portal.azure.com/*'],
+  locales: ['de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt_BR', 'zh_CN'],
 };
 
 /** Manifest keys that would widen access beyond the spec. */
@@ -50,6 +51,13 @@ for (const target of ['chrome-mv3', 'edge-mv3']) {
   if (!same([...new Set(matches)], EXPECTED.contentScriptMatches)) {
     problems.push(`content script matches ${JSON.stringify(matches)}`);
   }
+  if (manifest.default_locale !== 'en') problems.push('default_locale is not en');
+  if (manifest.description !== '__MSG_extDescription__')
+    problems.push('description is not translated');
+  const missing = EXPECTED.locales.filter(
+    (l) => !existsSync(`.output/${target}/_locales/${l}/messages.json`),
+  );
+  if (missing.length) problems.push(`missing locales ${missing.join(', ')}`);
   for (const key of FORBIDDEN_KEYS) {
     if (key in manifest) problems.push(`unexpected "${key}"`);
   }
@@ -59,7 +67,7 @@ for (const target of ['chrome-mv3', 'edge-mv3']) {
     console.error(`✗ ${target}: ${problems.join('; ')}`);
   } else {
     console.log(
-      `✓ ${target} ${manifest.version}: permissions ${manifest.permissions.join(', ')}; hosts ${manifest.host_permissions.length}; content script on portal.azure.com only`,
+      `✓ ${target} ${manifest.version}: permissions ${manifest.permissions.join(', ')}; hosts ${manifest.host_permissions.length}; content script on portal.azure.com only; ${EXPECTED.locales.length} languages`,
     );
   }
 }

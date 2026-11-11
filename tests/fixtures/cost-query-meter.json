@@ -1,0 +1,50 @@
+{
+  "_comment": "Hand-made: the real personal-subscription layout plus a MeterCategory grouping column (ResourceId + MeterCategory). Values and IDs are synthetic; to be checked against a real response.",
+  "properties": {
+    "nextLink": null,
+    "columns": [
+      { "name": "Cost", "type": "Number" },
+      { "name": "BillingMonth", "type": "Datetime" },
+      { "name": "ResourceId", "type": "String" },
+      { "name": "MeterCategory", "type": "String" },
+      { "name": "Currency", "type": "String" }
+    ],
+    "rows": [
+      [
+        7,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.compute/virtualmachines/vm1",
+        "Virtual Machines",
+        "EUR"
+      ],
+      [
+        2,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.compute/virtualmachines/vm1",
+        "Storage",
+        "EUR"
+      ],
+      [
+        1,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.compute/virtualmachines/vm1",
+        "",
+        "EUR"
+      ],
+      [
+        9,
+        "2026-09-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.compute/virtualmachines/vm1",
+        "Virtual Machines",
+        "EUR"
+      ],
+      [
+        0.5,
+        "2026-10-01T00:00:00",
+        "/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.storage/storageaccounts/st1",
+        "Storage",
+        "EUR"
+      ]
+    ]
+  }
+}

@@ -225,3 +225,99 @@ button.link {
   background: none;
   text-decoration: underline;
 }
+
+/* Breakdown and tips make the card taller: keep it inside the window. */
+.azinfo-card {
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.section-label {
+  margin: 12px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.meters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px auto;
+  gap: 4px 8px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meters li {
+  display: contents;
+}
+
+.meter-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meter-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.meter-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.meter-value {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.tips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tips li {
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+}
+
+.tips li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.tip-impact {
+  margin-right: 6px;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tip-impact.high {
+  border-color: var(--warn-fg);
+  color: var(--warn-fg);
+}
+
+.tip-savings {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tip-badge {
+  margin-left: 4px;
+  padding: 0 3px;
+  border-radius: 3px;
+  font-size: 11px;
+  background: var(--accent);
+  color: #ffffff;
+}

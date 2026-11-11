@@ -11,6 +11,8 @@ limits or wording that should be checked against the store's form when submittin
 
 > Azure cost info next to the resource you are viewing in the Azure portal. Not affiliated with Microsoft.
 
+**Languages:** the summary above is translated in the package (`extDescription` in `public/_locales/<lang>/messages.json`) for 10 languages. Each store also asks for the description per language: translate it from the text below (see decision 005).
+
 **Category:** Developer Tools (Chrome) / Developer tools (Edge). **Verify** that the category
 exists.
 
@@ -22,6 +24,8 @@ exists.
 > • cost this month so far, and last month
 > • projected month-end cost
 > • a spike flag when the projection is well above last month (threshold is configurable)
+> • what this month's cost is made of, by meter (compute, storage, bandwidth…)
+> • Azure Advisor's savings tips for the resource, with estimated savings
 >
 > Open a resource group and you get every resource in it, sorted by this month's cost, with the
 > group total.
@@ -125,6 +129,9 @@ in the address bar, and real customer or company names.
    **Verify** the Edge one after the first install from the store: open the extension's service
    worker console and run `chrome.identity.getRedirectURL()`.
 6. [ ] **Privacy policy** published at a public URL, placeholders filled in.
+7. [ ] **Administrator page** [admin-consent.md](admin-consent.md) published next to it, with
+   `<CLIENT_ID>` and `<CHROME_STORE_ID>` replaced by the production values. Link it from the
+   store description's "Requirements" line.
 
 ### Each release
 
@@ -142,7 +149,8 @@ in the address bar, and real customer or company names.
 On the consent screen, Entra marks multi-tenant apps from **unverified publishers** as
 "unverified". Many organisations only let users consent to apps from verified publishers, or to
 no apps at all. Work-account users there will see an *"admin approval required"* message, and a
-tenant administrator must grant consent once for the whole organisation.
+tenant administrator must grant consent once for the whole organisation (instructions for them:
+[admin-consent.md](admin-consent.md)).
 
 Becoming a **verified publisher** removes most of this friction. It needs a Microsoft AI Cloud
 Partner Program (formerly MPN) account linked to the app registration. Personal Microsoft accounts

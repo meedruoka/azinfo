@@ -1,5 +1,7 @@
 import { type FormEvent, useEffect, useId, useState } from 'react';
 import { defaultAuthority } from '@/lib/auth/config';
+import { t } from '@/lib/i18n';
+import { T } from '@/lib/i18n-react';
 import { sendRequest } from '@/lib/messages';
 import {
   authorityItem,
@@ -21,22 +23,22 @@ export interface OptionsProps {
 export function Options({ request = sendRequest }: OptionsProps) {
   return (
     <main>
-      <h1>azinfo options</h1>
+      <h1>{t('optTitle')}</h1>
       <SignInSection request={request} />
       <NumberSetting
-        title="Cost data"
-        label="Reuse cost data for"
-        unit="hours"
-        help="Azure updates cost data every few hours. Shorter means more queries, which Azure rate-limits."
+        title={t('optCostTitle')}
+        label={t('optReuseFor')}
+        unit={t('optHours')}
+        help={t('optCacheHelp')}
         bounds={CACHE_TTL_HOURS}
         item={cacheTtlHoursItem}
       />
       <ClearCacheSection request={request} />
       <NumberSetting
-        title="Spike flag"
-        label="Flag when projected month-end is more than"
-        unit="% above last month"
-        help="Checked from the 6th of the month, once 5 full days of data exist. Never flagged when last month had no cost."
+        title={t('optSpikeTitle')}
+        label={t('optSpikeLabel')}
+        unit={t('optSpikeUnit')}
+        help={t('optSpikeHelp')}
         bounds={SPIKE_THRESHOLD}
         item={spikeThresholdPctItem}
       />
@@ -67,7 +69,7 @@ function SignInSection({ request }: { request: typeof sendRequest }) {
     setValue(res.data.authority);
     setNotice({
       kind: 'ok',
-      text: `Saved: ${res.data.authority}. You have been signed out; sign in again from the toolbar button.`,
+      text: t('optSavedSignedOut', res.data.authority),
     });
   }
 
@@ -77,7 +79,7 @@ function SignInSection({ request }: { request: typeof sendRequest }) {
     if (!authority) {
       setNotice({
         kind: 'error',
-        text: 'Enter organizations, common, a tenant domain (contoso.onmicrosoft.com) or a tenant ID.',
+        text: t('optInvalidTenant'),
       });
       return;
     }
@@ -86,9 +88,9 @@ function SignInSection({ request }: { request: typeof sendRequest }) {
 
   return (
     <section>
-      <h2>Sign-in</h2>
+      <h2>{t('optSignInTitle')}</h2>
       <form onSubmit={submit} noValidate>
-        <label htmlFor={inputId}>Microsoft Entra tenant</label>
+        <label htmlFor={inputId}>{t('optSignInThrough')}</label>
         <div className="row">
           <input
             id={inputId}
@@ -98,18 +100,22 @@ function SignInSection({ request }: { request: typeof sendRequest }) {
             autoComplete="off"
             onChange={(e) => setValue(e.target.value)}
           />
-          <button type="submit">Save</button>
+          <button type="submit">{t('save')}</button>
           {saved !== null && (
             <button type="button" onClick={() => apply(null)}>
-              Reset to default
+              {t('optReset')}
             </button>
           )}
         </div>
       </form>
       <p className="help">
-        Work or school accounts: <code>organizations</code>. Personal Microsoft accounts (Outlook,
-        Gmail and so on): your tenant, for example <code>yourname.onmicrosoft.com</code>, shown
-        under your name in the Azure portal's account menu. Changing this signs you out.
+        <T
+          k="optSignInHelp"
+          slots={[
+            <code key="org">organizations</code>,
+            <code key="example">yourname.onmicrosoft.com</code>,
+          ]}
+        />
       </p>
       <NoticeLine notice={notice} />
     </section>
@@ -143,11 +149,11 @@ function NumberSetting({
     e.preventDefault();
     const n = Number(value);
     if (value.trim() === '' || !Number.isFinite(n) || n < bounds.min || n > bounds.max) {
-      setNotice({ kind: 'error', text: `Enter a number from ${bounds.min} to ${bounds.max}.` });
+      setNotice({ kind: 'error', text: t('optNumberRange', bounds.min, bounds.max) });
       return;
     }
     await item.setValue(n);
-    setNotice({ kind: 'ok', text: 'Saved.' });
+    setNotice({ kind: 'ok', text: t('optSaved') });
   }
 
   return (
@@ -167,11 +173,11 @@ function NumberSetting({
             onChange={(e) => setValue(e.target.value)}
           />
           <span>{unit}</span>
-          <button type="submit">Save</button>
+          <button type="submit">{t('save')}</button>
         </div>
       </form>
       <p className="help">
-        {help} Default: {bounds.default}.
+        {help} {t('optDefault', bounds.default)}
       </p>
       <NoticeLine notice={notice} />
     </section>
@@ -184,20 +190,16 @@ function ClearCacheSection({ request }: { request: typeof sendRequest }) {
   async function clear() {
     const res = await request({ type: 'clearCache' });
     setNotice(
-      res.ok
-        ? { kind: 'ok', text: 'Cached cost data cleared. The next view queries Azure again.' }
-        : { kind: 'error', text: res.message },
+      res.ok ? { kind: 'ok', text: t('optCacheCleared') } : { kind: 'error', text: res.message },
     );
   }
 
   return (
     <section>
-      <h2>Cached data</h2>
-      <p className="help">
-        Removes cost data stored on this device. Your sign-in and these settings stay.
-      </p>
+      <h2>{t('optCachedTitle')}</h2>
+      <p className="help">{t('optCachedHelp')}</p>
       <button type="button" onClick={clear}>
-        Clear cached data
+        {t('optClearCache')}
       </button>
       <NoticeLine notice={notice} />
     </section>

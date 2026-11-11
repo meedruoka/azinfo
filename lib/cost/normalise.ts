@@ -7,7 +7,15 @@ export interface ResourceCost {
   mtd: number;
   lastMonth: number;
   currency: string;
+  /**
+   * This month's cost per meter category ("Virtual Machines", "Storage"…),
+   * when the query was grouped by meter. Absent otherwise.
+   */
+  byMeter?: Record<string, number>;
 }
+
+/** Label for rows whose meter category is empty. */
+export const UNNAMED_METER = 'Other';
 
 /** The response doesn't match any column layout we know. */
 export class CostShapeError extends Error {
@@ -27,10 +35,15 @@ const COLUMN_NAMES = {
 
 type Role = keyof typeof COLUMN_NAMES;
 
+/** Optional: present only when the query grouped by meter. */
+const METER_COLUMN_NAMES = ['metercategory', 'servicename'];
+
 /** Finds each column by name; never assumes positions. */
-export function detectColumns(columns: QueryColumn[]): Record<Role, number> {
+export function detectColumns(
+  columns: QueryColumn[],
+): Record<Role, number> & { meter: number | null } {
   const lower = columns.map((c) => c.name.toLowerCase());
-  const found = {} as Record<Role, number>;
+  const found = {} as Record<Role, number> & { meter: number | null };
   for (const role of Object.keys(COLUMN_NAMES) as Role[]) {
     const index = COLUMN_NAMES[role].map((name) => lower.indexOf(name)).find((i) => i >= 0);
     if (index === undefined) {
@@ -40,11 +53,12 @@ export function detectColumns(columns: QueryColumn[]): Record<Role, number> {
     }
     found[role] = index;
   }
+  found.meter = METER_COLUMN_NAMES.map((name) => lower.indexOf(name)).find((i) => i >= 0) ?? null;
   return found;
 }
 
 /**
- * Rows → resource ID → { mtd, lastMonth, currency }. Rows for other months
+ * Rows → resource ID → { mtd, lastMonth, currency, byMeter }. Rows for other months
  * are ignored, and so are rows without a resource ID (e.g. support plans).
  */
 export function normaliseCostRows(
@@ -69,8 +83,16 @@ export function normaliseCostRows(
       entry = { resourceId, mtd: 0, lastMonth: 0, currency };
       out[resourceId] = entry;
     }
-    if (month === months.current) entry.mtd += cost;
-    else entry.lastMonth += cost;
+    if (month === months.current) {
+      entry.mtd += cost;
+      if (col.meter !== null) {
+        const meter = String(row[col.meter] ?? '').trim() || UNNAMED_METER;
+        entry.byMeter ??= {};
+        entry.byMeter[meter] = (entry.byMeter[meter] ?? 0) + cost;
+      }
+    } else {
+      entry.lastMonth += cost;
+    }
   }
   return out;
 }

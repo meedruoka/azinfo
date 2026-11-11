@@ -14,8 +14,10 @@ Nothing is sent to the developer or to any third party.
 | Data | From | Why |
 |---|---|---|
 | Your Microsoft sign-in (access and refresh tokens) | Microsoft Entra ID (`login.microsoftonline.com`), after you click **Sign in** | To call Azure's cost API as you |
+| The Microsoft Entra tenants (directories) you belong to: name, ID and domains | Azure Resource Manager (`management.azure.com`) | So one sign-in works across all your tenants |
 | The list of Azure subscriptions you can see | Azure Resource Manager (`management.azure.com`) | So you can choose a subscription |
-| Cost figures per resource: this month and last month, with currency | Azure Cost Management (`management.azure.com`) | To show costs next to resources |
+| Cost figures per resource: this month and last month, with currency, and this month split by meter category | Azure Cost Management (`management.azure.com`) | To show costs next to resources, and what they are made of |
+| Azure Advisor's cost recommendations for your resources, with estimated savings | Azure Advisor (`management.azure.com`) | To show savings tips next to resources |
 | The address of the Azure portal page you are on | Your browser tab on `portal.azure.com` | To know which resource or resource group you are viewing |
 
 azinfo sees only what your Azure permissions already allow you to see. It doesn't read the
@@ -27,7 +29,7 @@ read operations.
 | Data | Stored in | Kept until |
 |---|---|---|
 | Sign-in tokens | Browser **session** storage (memory only, never written to disk) | You sign out or close the browser |
-| Cached cost figures and subscription IDs | Browser **local** storage on your device | Replaced after the cache period (default 4 hours), or deleted when you sign out or click **Clear cached data** |
+| Cached cost figures, Advisor savings tips, and your tenants and subscriptions (names and IDs) | Browser **local** storage on your device | Replaced after the cache period (default 4 hours), or deleted when you sign out or click **Clear cached data** |
 | Settings (tenant, cache period, spike threshold, panel collapsed or expanded) | Browser local storage | You change them or remove the extension |
 
 Removing the extension deletes all of the above.

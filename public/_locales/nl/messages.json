@@ -1,0 +1,148 @@
+{
+  "extDescription": {
+    "message": "Azure-kosten naast de resource die u in de Azure-portal bekijkt. Niet gelieerd aan Microsoft."
+  },
+
+  "signIn": { "message": "Aanmelden" },
+  "signOut": { "message": "Afmelden" },
+  "retry": { "message": "Opnieuw proberen" },
+  "refresh": { "message": "Vernieuwen" },
+  "save": { "message": "Opslaan" },
+  "loading": { "message": "Laden…" },
+  "resource": { "message": "Resource" },
+  "thisMonth": { "message": "Deze maand" },
+  "lastMonth": { "message": "Vorige maand" },
+  "updatedAt": { "message": "Bijgewerkt om $1. Azure-kostengegevens lopen enkele uren achter." },
+  "rateLimitedRetrying": { "message": "Beperkt door Azure, nieuwe poging om $1…" },
+
+  "popupOptions": { "message": "Opties" },
+  "popupSigningIn": { "message": "Aanmelden…" },
+  "popupSignInPrompt": {
+    "message": "Meld u aan met het Microsoft-account dat u voor Azure gebruikt."
+  },
+  "popupLoadingTenants": { "message": "Tenants laden…" },
+  "popupNoSubscriptions": { "message": "Geen abonnementen zichtbaar voor dit account." },
+  "popupSubscription": { "message": "Abonnement" },
+  "popupTenantNeedsSignIn": { "message": "$1 vereist dat u zich aanmeldt." },
+  "popupTenantFailed": { "message": "$1 kon niet worden gelezen: $2" },
+  "popupTop5": { "message": "Top 5 deze maand" },
+  "popupLoadingCosts": { "message": "Kosten laden…" },
+  "popupNoCosts": { "message": "Geen resourcekosten deze maand of vorige maand." },
+  "popupNoCostAccess": {
+    "message": "Geen toegang tot kostengegevens van dit abonnement (rol Cost Management Reader vereist)."
+  },
+  "popupRateLimited": {
+    "message": "Azure beperkt kostenquery's. Probeer het over een minuut opnieuw."
+  },
+
+  "panelLabel": { "message": "azinfo-kostenpaneel" },
+  "panelPillLabel": { "message": "azinfo-kostenpaneel: $1. Uitvouwen." },
+  "panelCollapse": { "message": "Samenvouwen" },
+  "panelResourceGroup": { "message": "Resourcegroep" },
+  "panelLoadingCost": { "message": "Kosten laden…" },
+  "panelSignInToSee": { "message": "Meld u aan om de kosten te zien." },
+  "panelOtherTenant": {
+    "message": "Dit abonnement staat in een andere tenant, waarvoor u zich eenmalig moet aanmelden."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Dit abonnement staat in een andere tenant ($1), waarvoor u zich eenmalig moet aanmelden."
+  },
+  "panelSignInToTenant": { "message": "Aanmelden bij deze tenant" },
+  "panelNoCostAccess": {
+    "message": "Geen toegang tot kostengegevens van dit abonnement. De rol Cost Management Reader is vereist."
+  },
+  "panelNoData": {
+    "message": "Geen kosten geregistreerd voor deze resource deze maand of vorige maand."
+  },
+  "panelNoDataHint": {
+    "message": "Sommige resources worden via een andere gefactureerd, bijvoorbeeld een web-app via zijn App Service plan."
+  },
+  "panelRateLimitedUntil": { "message": "Azure beperkt kostenquery's. Probeer het na $1 opnieuw." },
+  "panelRateLimited": { "message": "Azure beperkt kostenquery's." },
+  "panelThisMonthSoFar": { "message": "Deze maand tot nu toe" },
+  "panelProjected": { "message": "Prognose einde maand" },
+  "panelVsLastMonth": { "message": "Tot nu toe vs. de hele vorige maand" },
+  "panelGroupThisMonth": { "message": "Groep deze maand tot nu toe" },
+  "panelGroupLastMonth": { "message": "Groep vorige maand" },
+  "panelGroupNoCost": {
+    "message": "Geen enkele resource in deze groep heeft kosten deze maand of vorige maand."
+  },
+  "panelGroupListLabel": { "message": "Resources met kosten deze maand of vorige maand" },
+  "panelSpikeTitle": { "message": "Verwachte piek" },
+  "panelSpikeLabel": { "message": "Piek" },
+  "panelSpikeNote": {
+    "message": "▲ De prognose voor het einde van de maand ligt meer dan $1% boven vorige maand."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 resource naar verwachting meer dan $2% boven vorige maand."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 resources naar verwachting meer dan $2% boven vorige maand."
+  },
+  "panelFromTomorrow": { "message": "Vanaf morgen" },
+  "panelEarlyEstimate": { "message": "$1 (vroege schatting)" },
+  "panelNewThisMonth": { "message": "Nieuw deze maand" },
+  "panelByMeter": { "message": "Deze maand per meter" },
+  "panelMeterOther": { "message": "Overig" },
+  "panelTipsHeading": { "message": "Besparingstips (Azure Advisor)" },
+  "panelTipsNone": { "message": "Geen besparingstips van Azure Advisor." },
+  "panelTipsUnavailable": { "message": "Besparingstips niet beschikbaar." },
+  "panelTipsNoAccess": {
+    "message": "Besparingstips niet beschikbaar: geen toegang tot Azure Advisor."
+  },
+  "panelTipBadge": { "message": "tip" },
+  "panelTipBadgeTitle": { "message": "Besparingstip van Azure Advisor" },
+  "panelSaveYear": { "message": "Bespaar ~$1/jaar" },
+  "panelSavingsEstimated": { "message": "Geschatte besparing: $1" },
+  "impactHigh": { "message": "Hoog" },
+  "impactMedium": { "message": "Gemiddeld" },
+  "impactLow": { "message": "Laag" },
+
+  "pillSpike": { "message": "piek" },
+  "pillSpikes_one": { "message": "$1 piek" },
+  "pillSpikes_other": { "message": "$1 pieken" },
+  "pillTips_one": { "message": "$1 tip" },
+  "pillTips_other": { "message": "$1 tips" },
+  "pillMixed": { "message": "gemengd" },
+  "pillNoCost": { "message": "geen kosten" },
+  "pillSignIn": { "message": "aanmelden" },
+  "pillNoAccess": { "message": "geen toegang" },
+  "pillRateLimited": { "message": "beperkt" },
+  "pillRateLimitedWaiting": { "message": "beperkt…" },
+  "pillError": { "message": "fout" },
+
+  "optTitle": { "message": "azinfo-opties" },
+  "optSignInTitle": { "message": "Aanmelden" },
+  "optSignInThrough": { "message": "Aanmelden via tenant" },
+  "optReset": { "message": "Standaard herstellen" },
+  "optSignInHelp": {
+    "message": "De tenant waarmee u zich aanmeldt. Uw andere tenants worden na het aanmelden automatisch gevonden, en het kostenpaneel volgt de tenant die u in de portal bekijkt. Werk- of schoolaccounts: $1. Persoonlijke Microsoft-accounts (Outlook, Gmail enzovoort): uw eigen tenant, bijvoorbeeld $2, te zien onder uw naam in het accountmenu van de Azure-portal. Als u dit wijzigt, wordt u afgemeld."
+  },
+  "optSavedSignedOut": {
+    "message": "Opgeslagen: $1. U bent afgemeld; meld u opnieuw aan via de knop in de werkbalk."
+  },
+  "optInvalidTenant": {
+    "message": "Voer organizations, common, een tenantdomein (contoso.onmicrosoft.com) of een tenant-ID in."
+  },
+  "optCostTitle": { "message": "Kostengegevens" },
+  "optReuseFor": { "message": "Kostengegevens hergebruiken gedurende" },
+  "optHours": { "message": "uur" },
+  "optCacheHelp": {
+    "message": "Azure werkt kostengegevens om de paar uur bij. Korter betekent meer query's, die Azure beperkt."
+  },
+  "optSpikeTitle": { "message": "Piekmelding" },
+  "optSpikeLabel": { "message": "Markeren als de prognose voor het einde van de maand meer dan" },
+  "optSpikeUnit": { "message": "% boven vorige maand ligt" },
+  "optSpikeHelp": {
+    "message": "Gecontroleerd vanaf de 6e van de maand, zodra er 5 volledige dagen aan gegevens zijn. Nooit gemarkeerd als vorige maand geen kosten had."
+  },
+  "optDefault": { "message": "Standaard: $1." },
+  "optNumberRange": { "message": "Voer een getal van $1 tot $2 in." },
+  "optSaved": { "message": "Opgeslagen." },
+  "optCachedTitle": { "message": "Gegevens in cache" },
+  "optCachedHelp": {
+    "message": "Verwijdert kostengegevens, besparingstips en de tenantlijst die op dit apparaat zijn opgeslagen. Uw aanmelding en deze instellingen blijven behouden."
+  },
+  "optClearCache": { "message": "Cache wissen" },
+  "optCacheCleared": { "message": "Cache gewist. De volgende weergave vraagt Azure opnieuw op." }
+}

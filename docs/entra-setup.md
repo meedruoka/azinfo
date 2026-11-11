@@ -80,10 +80,10 @@ Changing the tenant signs you out, because tokens belong to one tenant.
 Users approve azinfo's permission the first time they sign in. Many
 organisations block that for apps from unverified publishers. Users then see
 *"Need admin approval"*, and a tenant administrator grants consent once for
-everyone: **Entra admin center → Enterprise applications → azinfo →
-Permissions → Grant admin consent**. Alternatively, the administrator can open
-`https://login.microsoftonline.com/<tenant>/adminconsent?client_id=<client ID>`.
-See the publisher verification note in [store-listing.md](store-listing.md).
+everyone. [admin-consent.md](admin-consent.md) is the page to give
+administrators: what azinfo asks for, three ways to approve it, how to limit
+or remove it. See also the publisher verification note in
+[store-listing.md](store-listing.md).
 
 ## Production and store builds
 

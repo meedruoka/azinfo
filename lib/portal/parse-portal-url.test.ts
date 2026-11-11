@@ -15,6 +15,7 @@ describe('parsePortalUrl', () => {
       resourceGroup: 'Web-RG',
       resourceId: `/subscriptions/${SUB}/resourcegroups/web-rg/providers/microsoft.web/sites/myapp`,
       name: 'MyApp',
+      tenant: 'contoso.onmicrosoft.com',
     });
   });
 
@@ -54,6 +55,7 @@ describe('parsePortalUrl', () => {
       subscriptionId: SUB,
       resourceGroup: 'Web-RG',
       resourceId: `/subscriptions/${SUB}/resourcegroups/web-rg`,
+      tenant: 'contoso.onmicrosoft.com',
     });
   });
 
@@ -74,6 +76,17 @@ describe('parsePortalUrl', () => {
     expect(ctx?.resourceId).toBe(
       `/subscriptions/${SUB}/resourcegroups/rg/providers/microsoft.web/sites/a`,
     );
+  });
+
+  it('reads the tenant from #@<tenant>, lowercased, and leaves it out when absent', () => {
+    const withTenant = parsePortalUrl(
+      `https://portal.azure.com/#@Contoso.OnMicrosoft.com/resource/subscriptions/${SUB}/resourceGroups/rg/overview`,
+    );
+    expect(withTenant?.tenant).toBe('contoso.onmicrosoft.com');
+    const withoutTenant = parsePortalUrl(
+      `https://portal.azure.com/#resource/subscriptions/${SUB}/resourceGroups/rg/overview`,
+    );
+    expect(withoutTenant?.tenant).toBeUndefined();
   });
 
   it('decodes percent-encoded segments', () => {

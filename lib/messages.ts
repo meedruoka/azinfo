@@ -1,4 +1,6 @@
-import type { Subscription } from './azure/subscriptions';
+import type { Savings, Tip } from './azure/advisor';
+import type { DirectorySubscription } from './azure/directory';
+import type { MeterShare } from './cost/breakdown';
 import type { ResourceCost } from './cost/normalise';
 import type { SpikeAssessment } from './cost/spike';
 
@@ -6,10 +8,20 @@ import type { SpikeAssessment } from './cost/spike';
 export type Request =
   | { type: 'getAuthState' }
   | { type: 'signIn' }
+  /** Interactive sign-in to one more tenant (consent, MFA, device checks there). */
+  | { type: 'signInTenant'; tenantId: string }
   | { type: 'signOut' }
-  | { type: 'listSubscriptions' }
+  /** All tenants the user belongs to and the subscriptions reachable through them. */
+  | { type: 'getDirectory'; force?: boolean }
   | { type: 'getTopCosts'; subscriptionId: string; force?: boolean }
-  | { type: 'getResourceCost'; subscriptionId: string; resourceId: string; force?: boolean }
+  | {
+      type: 'getResourceCost';
+      subscriptionId: string;
+      resourceId: string;
+      /** The portal URL's `#@<tenant>`, used if the subscription isn't in the directory. */
+      tenantHint?: string;
+      force?: boolean;
+    }
   /** null resets to the build default. Signs out: tokens belong to the old authority. */
   | { type: 'setAuthority'; authority: string | null }
   | { type: 'clearCache' }
@@ -17,12 +29,15 @@ export type Request =
       type: 'getResourceGroupCosts';
       subscriptionId: string;
       resourceGroupId: string;
+      tenantHint?: string;
       force?: boolean;
     };
 
 /** Error kinds the UI can show a specific message for. */
 export type ErrorKind =
   | 'notSignedIn'
+  /** Signed in, but this subscription's tenant needs its own sign-in. */
+  | 'tenantSignIn'
   | 'noCostAccess'
   | 'rateLimited'
   | 'auth'
@@ -31,7 +46,14 @@ export type ErrorKind =
 
 export type Result<T> =
   | { ok: true; data: T }
-  | { ok: false; kind: ErrorKind; message: string; retryAt?: number };
+  | {
+      ok: false;
+      kind: ErrorKind;
+      message: string;
+      retryAt?: number;
+      /** For `tenantSignIn`: the tenant to sign in to. */
+      tenantId?: string;
+    };
 
 export interface TopCost extends ResourceCost {
   name: string;
@@ -40,7 +62,17 @@ export interface TopCost extends ResourceCost {
 
 export interface AssessedCost extends TopCost {
   assessment: SpikeAssessment;
+  /** Advisor cost tips for this resource (resource-group view). */
+  tipCount?: number;
 }
+
+/**
+ * Advisor cost tips, fetched alongside the costs. A failure here never fails
+ * the cost answer: it only hides the tips.
+ */
+export type TipsResult =
+  | { ok: true; items: Tip[]; total: Savings | null }
+  | { ok: false; reason: 'noAccess' | 'error' };
 
 /** Spike settings and timing the worker used; shown so flags are explainable. */
 export interface SpikeContext {
@@ -48,11 +80,25 @@ export interface SpikeContext {
   daysElapsed: number;
 }
 
+export interface DirectoryTenant {
+  tenantId: string;
+  displayName: string;
+  /** Needs an interactive sign-in before its subscriptions can be listed. */
+  needsSignIn: boolean;
+  /** Listing failed for another reason. */
+  error?: string;
+}
+
 export interface ResponseMap {
   getAuthState: { signedIn: boolean };
   signIn: { signedIn: boolean };
+  signInTenant: { signedIn: boolean };
   signOut: { signedIn: boolean };
-  listSubscriptions: Subscription[];
+  getDirectory: {
+    tenants: DirectoryTenant[];
+    subscriptions: DirectorySubscription[];
+    fetchedAt: number;
+  };
   setAuthority: { authority: string };
   clearCache: { cleared: true };
   getTopCosts: { subscriptionId: string; fetchedAt: number; top: TopCost[] };
@@ -63,6 +109,9 @@ export interface ResponseMap {
     cost: ResourceCost | null;
     assessment: SpikeAssessment | null;
     spikeContext: SpikeContext;
+    /** This month by meter category; empty when Azure gave no breakdown. */
+    breakdown: MeterShare[];
+    tips: TipsResult;
   };
   getResourceGroupCosts: {
     resourceGroupId: string;
@@ -72,6 +121,10 @@ export interface ResponseMap {
     /** Null when there are no resources or they use different currencies. */
     total: { mtd: number; lastMonth: number; currency: string } | null;
     spikeContext: SpikeContext;
+    /** The group's month-to-date by meter category. */
+    breakdown: MeterShare[];
+    /** Tips for any resource in the group, including ones without cost. */
+    tips: TipsResult;
   };
 }
 

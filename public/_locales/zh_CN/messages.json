@@ -1,0 +1,124 @@
+{
+  "extDescription": {
+    "message": "在 Azure 门户中查看资源时，在旁边显示其 Azure 成本信息。与 Microsoft 无关联。"
+  },
+
+  "signIn": { "message": "登录" },
+  "signOut": { "message": "注销" },
+  "retry": { "message": "重试" },
+  "refresh": { "message": "刷新" },
+  "save": { "message": "保存" },
+  "loading": { "message": "正在加载…" },
+  "resource": { "message": "资源" },
+  "thisMonth": { "message": "本月" },
+  "lastMonth": { "message": "上月" },
+  "updatedAt": { "message": "更新于 $1。Azure 成本数据会延迟数小时。" },
+  "rateLimitedRetrying": { "message": "受到 Azure 速率限制，将于 $1 重试…" },
+
+  "popupOptions": { "message": "选项" },
+  "popupSigningIn": { "message": "正在登录…" },
+  "popupSignInPrompt": { "message": "请使用你在 Azure 中使用的 Microsoft 帐户登录。" },
+  "popupLoadingTenants": { "message": "正在加载租户…" },
+  "popupNoSubscriptions": { "message": "此帐户看不到任何订阅。" },
+  "popupSubscription": { "message": "订阅" },
+  "popupTenantNeedsSignIn": { "message": "$1 需要你登录。" },
+  "popupTenantFailed": { "message": "无法读取 $1：$2" },
+  "popupTop5": { "message": "本月前 5 名" },
+  "popupLoadingCosts": { "message": "正在加载成本…" },
+  "popupNoCosts": { "message": "本月和上月均无资源成本。" },
+  "popupNoCostAccess": {
+    "message": "无权访问此订阅的成本数据(需要 Cost Management Reader 角色)。"
+  },
+  "popupRateLimited": { "message": "Azure 正在限制成本查询。请一分钟后重试。" },
+
+  "panelLabel": { "message": "azinfo 成本面板" },
+  "panelPillLabel": { "message": "azinfo 成本面板：$1。展开。" },
+  "panelCollapse": { "message": "折叠" },
+  "panelResourceGroup": { "message": "资源组" },
+  "panelLoadingCost": { "message": "正在加载成本…" },
+  "panelSignInToSee": { "message": "登录以查看成本。" },
+  "panelOtherTenant": { "message": "此订阅位于另一个租户中，需要你登录一次。" },
+  "panelOtherTenantNamed": { "message": "此订阅位于另一个租户($1)中，需要你登录一次。" },
+  "panelSignInToTenant": { "message": "登录此租户" },
+  "panelNoCostAccess": {
+    "message": "无权访问此订阅的成本数据。需要 Cost Management Reader 角色。"
+  },
+  "panelNoData": { "message": "此资源本月和上月均未记录成本。" },
+  "panelNoDataHint": {
+    "message": "某些资源通过其他资源计费，例如 Web 应用通过其 App Service plan 计费。"
+  },
+  "panelRateLimitedUntil": { "message": "Azure 正在限制成本查询。请在 $1 之后重试。" },
+  "panelRateLimited": { "message": "Azure 正在限制成本查询。" },
+  "panelThisMonthSoFar": { "message": "本月迄今" },
+  "panelProjected": { "message": "预计月末" },
+  "panelVsLastMonth": { "message": "迄今与上月全月相比" },
+  "panelGroupThisMonth": { "message": "组本月迄今" },
+  "panelGroupLastMonth": { "message": "组上月" },
+  "panelGroupNoCost": { "message": "此组中没有资源在本月或上月产生成本。" },
+  "panelGroupListLabel": { "message": "本月或上月有成本的资源" },
+  "panelSpikeTitle": { "message": "预计激增" },
+  "panelSpikeLabel": { "message": "激增" },
+  "panelSpikeNote": { "message": "▲ 预计月末成本比上月高出 $1% 以上。" },
+  "panelSpikeNoteGroup_one": { "message": "▲ $1 个资源预计比上月高出 $2% 以上。" },
+  "panelSpikeNoteGroup_other": { "message": "▲ $1 个资源预计比上月高出 $2% 以上。" },
+  "panelFromTomorrow": { "message": "从明天开始" },
+  "panelEarlyEstimate": { "message": "$1(早期估算)" },
+  "panelNewThisMonth": { "message": "本月新增" },
+  "panelByMeter": { "message": "本月按计量类别" },
+  "panelMeterOther": { "message": "其他" },
+  "panelTipsHeading": { "message": "节省建议(Azure Advisor)" },
+  "panelTipsNone": { "message": "Azure Advisor 没有节省建议。" },
+  "panelTipsUnavailable": { "message": "无法获取节省建议。" },
+  "panelTipsNoAccess": { "message": "无法获取节省建议：无权访问 Azure Advisor。" },
+  "panelTipBadge": { "message": "建议" },
+  "panelTipBadgeTitle": { "message": "Azure Advisor 节省建议" },
+  "panelSaveYear": { "message": "每年可节省约 $1" },
+  "panelSavingsEstimated": { "message": "预计节省：$1" },
+  "impactHigh": { "message": "高" },
+  "impactMedium": { "message": "中" },
+  "impactLow": { "message": "低" },
+
+  "pillSpike": { "message": "激增" },
+  "pillSpikes_one": { "message": "$1 个激增" },
+  "pillSpikes_other": { "message": "$1 个激增" },
+  "pillTips_one": { "message": "$1 条建议" },
+  "pillTips_other": { "message": "$1 条建议" },
+  "pillMixed": { "message": "多种货币" },
+  "pillNoCost": { "message": "无成本" },
+  "pillSignIn": { "message": "登录" },
+  "pillNoAccess": { "message": "无权访问" },
+  "pillRateLimited": { "message": "受限" },
+  "pillRateLimitedWaiting": { "message": "受限…" },
+  "pillError": { "message": "错误" },
+
+  "optTitle": { "message": "azinfo 选项" },
+  "optSignInTitle": { "message": "登录" },
+  "optSignInThrough": { "message": "通过租户登录" },
+  "optReset": { "message": "恢复默认值" },
+  "optSignInHelp": {
+    "message": "用于登录的租户。登录后会自动找到你的其他租户，成本面板会跟随你在门户中查看的租户。工作或学校帐户：$1。个人 Microsoft 帐户(Outlook、Gmail 等)：你自己的租户，例如 $2，显示在 Azure 门户帐户菜单中你的姓名下方。更改此项会将你注销。"
+  },
+  "optSavedSignedOut": { "message": "已保存：$1。你已被注销；请通过工具栏按钮重新登录。" },
+  "optInvalidTenant": {
+    "message": "请输入 organizations、common、租户域(contoso.onmicrosoft.com)或租户 ID。"
+  },
+  "optCostTitle": { "message": "成本数据" },
+  "optReuseFor": { "message": "成本数据重复使用时长" },
+  "optHours": { "message": "小时" },
+  "optCacheHelp": {
+    "message": "Azure 每隔几小时更新一次成本数据。时长越短，查询越多，而 Azure 会限制查询。"
+  },
+  "optSpikeTitle": { "message": "激增标记" },
+  "optSpikeLabel": { "message": "当预计月末成本比上月高出以下比例时标记" },
+  "optSpikeUnit": { "message": "%" },
+  "optSpikeHelp": { "message": "从每月 6 日起、有 5 个完整天的数据后检查。上月无成本时从不标记。" },
+  "optDefault": { "message": "默认值：$1。" },
+  "optNumberRange": { "message": "请输入 $1 到 $2 之间的数字。" },
+  "optSaved": { "message": "已保存。" },
+  "optCachedTitle": { "message": "缓存的数据" },
+  "optCachedHelp": {
+    "message": "删除此设备上存储的成本数据、节省建议和租户列表。你的登录状态和这些设置会保留。"
+  },
+  "optClearCache": { "message": "清除缓存的数据" },
+  "optCacheCleared": { "message": "缓存已清除。下次查看时将重新查询 Azure。" }
+}

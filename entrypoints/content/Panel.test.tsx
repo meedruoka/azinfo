@@ -2,8 +2,10 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
+import type { Tip } from '@/lib/azure/advisor';
+import type { MeterShare } from '@/lib/cost/breakdown';
 import { costStatusItem } from '@/lib/cost/cost-service';
-import type { Request, ResponseMap, Result } from '@/lib/messages';
+import type { Request, ResponseMap, Result, TipsResult } from '@/lib/messages';
 import { type PortalContext, parsePortalUrl } from '@/lib/portal/parse-portal-url';
 import { Panel, panelCollapsedItem } from './Panel';
 
@@ -20,11 +22,14 @@ const SPIKE_CONTEXT = { thresholdPct: 50, daysElapsed: 9 };
 type CostResult = Result<ResponseMap['getResourceCost']>;
 type GroupResult = Result<ResponseMap['getResourceGroupCosts']>;
 
+const NO_TIPS: TipsResult = { ok: true, items: [], total: null };
+
 function costOf(
   context: PortalContext,
   mtd: number,
   lastMonth: number,
   assessment = { projected: mtd * 3, spike: false },
+  extra: { breakdown?: MeterShare[]; tips?: TipsResult } = {},
 ): CostResult {
   return {
     ok: true,
@@ -34,11 +39,16 @@ function costOf(
       cost: { resourceId: context.resourceId, mtd, lastMonth, currency: 'EUR' },
       assessment,
       spikeContext: SPIKE_CONTEXT,
+      breakdown: extra.breakdown ?? [],
+      tips: extra.tips ?? NO_TIPS,
     },
   };
 }
 
-function groupOf(rows: { name: string; mtd: number; spike?: boolean }[]): GroupResult {
+function groupOf(
+  rows: { name: string; mtd: number; spike?: boolean; tips?: number }[],
+  tips: TipsResult = NO_TIPS,
+): GroupResult {
   const resources = rows.map((r) => ({
     resourceId: `${RG.resourceId}/providers/microsoft.web/sites/${r.name}`,
     name: r.name,
@@ -47,6 +57,7 @@ function groupOf(rows: { name: string; mtd: number; spike?: boolean }[]): GroupR
     lastMonth: 1,
     currency: 'EUR',
     assessment: { projected: r.mtd * 3, spike: r.spike ?? false },
+    tipCount: r.tips ?? 0,
   }));
   return {
     ok: true,
@@ -62,6 +73,8 @@ function groupOf(rows: { name: string; mtd: number; spike?: boolean }[]): GroupR
           }
         : null,
       spikeContext: SPIKE_CONTEXT,
+      breakdown: [],
+      tips,
     },
   };
 }
@@ -135,6 +148,7 @@ describe('Panel', () => {
         type: 'getResourceGroupCosts',
         subscriptionId: SUB,
         resourceGroupId: RG.resourceId,
+        tenantHint: 't.onmicrosoft.com',
         force: false,
       });
       const names = screen
@@ -194,6 +208,7 @@ describe('Panel', () => {
       type: 'getResourceCost',
       subscriptionId: SUB,
       resourceId: APP.resourceId,
+      tenantHint: 't.onmicrosoft.com',
       force: false,
     });
   });
@@ -256,12 +271,132 @@ describe('Panel', () => {
     ]);
   });
 
+  it('offers a sign-in to the subscription tenant, then loads the cost', async () => {
+    const answers: unknown[] = [
+      { ok: false, kind: 'tenantSignIn', message: '', tenantId: 'bbbb' },
+      { ok: true, data: { signedIn: true } },
+      costOf(APP, 2, 2),
+    ];
+    const request = vi.fn(async (_req: Request) => answers.shift());
+    render(<Panel context={APP} request={request as never} />);
+    expect(await screen.findByText(/another tenant \(t\.onmicrosoft\.com\)/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in to this tenant' }));
+    expect(await screen.findByText('0%')).toBeTruthy();
+    expect(request.mock.calls[1]?.[0]).toEqual({ type: 'signInTenant', tenantId: 'bbbb' });
+  });
+
   it('Refresh forces a new query', async () => {
     const request = vi.fn(async () => costOf(APP, 1, 1));
     render(<Panel context={APP} request={request as never} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Refresh' }));
     await screen.findByText('0%');
     expect(request).toHaveBeenLastCalledWith(expect.objectContaining({ force: true }));
+  });
+
+  describe('breakdown and savings tips', () => {
+    const VM_TIP: Tip = {
+      id: 't1',
+      resourceId: APP.resourceId,
+      problem: 'Right-size underused app service plan',
+      solution: 'Move to a smaller tier',
+      impact: 'High',
+      savings: { amount: 480, currency: 'EUR', period: 'year' },
+    };
+
+    it('shows this month by meter with shares', async () => {
+      const breakdown = [
+        { category: 'Virtual Machines', amount: 7, share: 0.7 },
+        { category: 'Storage', amount: 3, share: 0.3 },
+      ];
+      const request = vi.fn(async () => costOf(APP, 10, 5, undefined, { breakdown }));
+      render(<Panel context={APP} request={request as never} />);
+      expect(await screen.findByText('This month by meter')).toBeTruthy();
+      expect(screen.getByText('Virtual Machines')).toBeTruthy();
+      expect(screen.getByText(/7[.,]00.*· 70%/)).toBeTruthy();
+    });
+
+    it('hides a breakdown with a single category', async () => {
+      const breakdown = [{ category: 'Storage', amount: 3, share: 1 }];
+      render(
+        <Panel
+          context={APP}
+          request={vi.fn(async () => costOf(APP, 3, 1, undefined, { breakdown })) as never}
+        />,
+      );
+      await screen.findByText('So far vs. all of last month');
+      expect(screen.queryByText('This month by meter')).toBeNull();
+    });
+
+    it('shows Advisor tips with impact and yearly savings, and counts them in the pill', async () => {
+      const tips: TipsResult = { ok: true, items: [VM_TIP], total: VM_TIP.savings ?? null };
+      const request = vi.fn(async () => costOf(APP, 10, 5, undefined, { tips }));
+      render(<Panel context={APP} request={request as never} />);
+      expect(await screen.findByText('Savings tips (Azure Advisor)')).toBeTruthy();
+      expect(screen.getByText('Right-size underused app service plan')).toBeTruthy();
+      expect(screen.getByText('Move to a smaller tier')).toBeTruthy();
+      expect(screen.getByText('High')).toBeTruthy();
+      expect(screen.getByText(/Save ~.*480.*\/year/)).toBeTruthy();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
+      const pill = await screen.findByRole('button', { name: /expand/i });
+      expect(pill.textContent).toMatch(/· 1 tip$/);
+    });
+
+    it('labels savings without a known period neutrally', async () => {
+      const item = {
+        ...VM_TIP,
+        savings: { amount: 12, currency: 'EUR', period: 'unspecified' as const },
+      };
+      const tips: TipsResult = { ok: true, items: [item], total: item.savings };
+      render(
+        <Panel
+          context={APP}
+          request={vi.fn(async () => costOf(APP, 1, 1, undefined, { tips })) as never}
+        />,
+      );
+      expect(await screen.findByText(/Estimated savings .*12/)).toBeTruthy();
+    });
+
+    it('still shows costs when tips are unavailable', async () => {
+      const tips: TipsResult = { ok: false, reason: 'noAccess' };
+      render(
+        <Panel
+          context={APP}
+          request={vi.fn(async () => costOf(APP, 10, 5, undefined, { tips })) as never}
+        />,
+      );
+      expect(
+        await screen.findByText(/Savings tips unavailable: no access to Azure Advisor/),
+      ).toBeTruthy();
+      expect(screen.getByText(/10[.,]00/)).toBeTruthy();
+    });
+
+    it('marks resources with tips in the group and totals the savings', async () => {
+      const second = {
+        ...VM_TIP,
+        id: 't2',
+        resourceId: `${RG.resourceId}/providers/microsoft.web/sites/b`,
+      };
+      const tips: TipsResult = {
+        ok: true,
+        items: [VM_TIP, second],
+        total: { amount: 960, currency: 'EUR', period: 'year' },
+      };
+      const request = vi.fn(async () =>
+        groupOf(
+          [
+            { name: 'a', mtd: 5, tips: 1 },
+            { name: 'b', mtd: 3 },
+          ],
+          tips,
+        ),
+      );
+      render(<Panel context={RG} request={request as never} />);
+      expect(
+        await screen.findByText(/Savings tips \(Azure Advisor\) · Save ~.*960.*\/year/),
+      ).toBeTruthy();
+      expect(screen.getAllByTitle('Azure Advisor savings tip')).toHaveLength(1);
+    });
   });
 
   it('collapses to a pill showing the month-to-date cost, and remembers it', async () => {

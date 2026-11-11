@@ -1,0 +1,146 @@
+{
+  "extDescription": {
+    "message": "Azure ポータルで表示中のリソースの横に Azure のコスト情報を表示します。Microsoft とは提携していません。"
+  },
+
+  "signIn": { "message": "サインイン" },
+  "signOut": { "message": "サインアウト" },
+  "retry": { "message": "再試行" },
+  "refresh": { "message": "更新" },
+  "save": { "message": "保存" },
+  "loading": { "message": "読み込み中…" },
+  "resource": { "message": "リソース" },
+  "thisMonth": { "message": "今月" },
+  "lastMonth": { "message": "先月" },
+  "updatedAt": { "message": "$1 に更新。Azure のコスト データは数時間遅れて反映されます。" },
+  "rateLimitedRetrying": { "message": "Azure によりレート制限中です。$1 に再試行します…" },
+
+  "popupOptions": { "message": "オプション" },
+  "popupSigningIn": { "message": "サインイン中…" },
+  "popupSignInPrompt": {
+    "message": "Azure で使用している Microsoft アカウントでサインインしてください。"
+  },
+  "popupLoadingTenants": { "message": "テナントを読み込み中…" },
+  "popupNoSubscriptions": {
+    "message": "このアカウントで表示できるサブスクリプションはありません。"
+  },
+  "popupSubscription": { "message": "サブスクリプション" },
+  "popupTenantNeedsSignIn": { "message": "$1 へのサインインが必要です。" },
+  "popupTenantFailed": { "message": "$1 を読み取れませんでした: $2" },
+  "popupTop5": { "message": "今月のトップ 5" },
+  "popupLoadingCosts": { "message": "コストを読み込み中…" },
+  "popupNoCosts": { "message": "今月と先月のリソース コストはありません。" },
+  "popupNoCostAccess": {
+    "message": "このサブスクリプションのコスト データにアクセスできません (Cost Management Reader ロールが必要です)。"
+  },
+  "popupRateLimited": {
+    "message": "Azure がコスト クエリを制限しています。1 分後にもう一度お試しください。"
+  },
+
+  "panelLabel": { "message": "azinfo コスト パネル" },
+  "panelPillLabel": { "message": "azinfo コスト パネル: $1。展開します。" },
+  "panelCollapse": { "message": "折りたたむ" },
+  "panelResourceGroup": { "message": "リソース グループ" },
+  "panelLoadingCost": { "message": "コストを読み込み中…" },
+  "panelSignInToSee": { "message": "コストを表示するにはサインインしてください。" },
+  "panelOtherTenant": {
+    "message": "このサブスクリプションは別のテナントにあり、一度サインインする必要があります。"
+  },
+  "panelOtherTenantNamed": {
+    "message": "このサブスクリプションは別のテナント ($1) にあり、一度サインインする必要があります。"
+  },
+  "panelSignInToTenant": { "message": "このテナントにサインイン" },
+  "panelNoCostAccess": {
+    "message": "このサブスクリプションのコスト データにアクセスできません。Cost Management Reader ロールが必要です。"
+  },
+  "panelNoData": { "message": "このリソースには今月も先月もコストが記録されていません。" },
+  "panelNoDataHint": {
+    "message": "一部のリソースは別のリソースを通じて課金されます (例: Web アプリはその App Service plan を通じて課金)。"
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure がコスト クエリを制限しています。$1 以降にもう一度お試しください。"
+  },
+  "panelRateLimited": { "message": "Azure がコスト クエリを制限しています。" },
+  "panelThisMonthSoFar": { "message": "今月の累計" },
+  "panelProjected": { "message": "月末の予測" },
+  "panelVsLastMonth": { "message": "今月の累計と先月全体の比較" },
+  "panelGroupThisMonth": { "message": "グループの今月の累計" },
+  "panelGroupLastMonth": { "message": "グループの先月" },
+  "panelGroupNoCost": {
+    "message": "このグループには今月も先月もコストのあるリソースがありません。"
+  },
+  "panelGroupListLabel": { "message": "今月または先月にコストのあるリソース" },
+  "panelSpikeTitle": { "message": "急増の予測" },
+  "panelSpikeLabel": { "message": "急増" },
+  "panelSpikeNote": { "message": "▲ 月末の予測が先月を $1% 以上上回っています。" },
+  "panelSpikeNoteGroup_one": { "message": "▲ $1 件のリソースが先月を $2% 以上上回る予測です。" },
+  "panelSpikeNoteGroup_other": { "message": "▲ $1 件のリソースが先月を $2% 以上上回る予測です。" },
+  "panelFromTomorrow": { "message": "明日から" },
+  "panelEarlyEstimate": { "message": "$1 (初期の見積もり)" },
+  "panelNewThisMonth": { "message": "今月から発生" },
+  "panelByMeter": { "message": "今月のメーター別内訳" },
+  "panelMeterOther": { "message": "その他" },
+  "panelTipsHeading": { "message": "節約のヒント (Azure Advisor)" },
+  "panelTipsNone": { "message": "Azure Advisor からの節約のヒントはありません。" },
+  "panelTipsUnavailable": { "message": "節約のヒントを取得できません。" },
+  "panelTipsNoAccess": {
+    "message": "節約のヒントを取得できません: Azure Advisor へのアクセス権がありません。"
+  },
+  "panelTipBadge": { "message": "ヒント" },
+  "panelTipBadgeTitle": { "message": "Azure Advisor の節約のヒント" },
+  "panelSaveYear": { "message": "年間 ~$1 の節約" },
+  "panelSavingsEstimated": { "message": "推定節約額: $1" },
+  "impactHigh": { "message": "高" },
+  "impactMedium": { "message": "中" },
+  "impactLow": { "message": "低" },
+
+  "pillSpike": { "message": "急増" },
+  "pillSpikes_one": { "message": "急増 $1 件" },
+  "pillSpikes_other": { "message": "急増 $1 件" },
+  "pillTips_one": { "message": "ヒント $1 件" },
+  "pillTips_other": { "message": "ヒント $1 件" },
+  "pillMixed": { "message": "混在" },
+  "pillNoCost": { "message": "コストなし" },
+  "pillSignIn": { "message": "サインイン" },
+  "pillNoAccess": { "message": "アクセス不可" },
+  "pillRateLimited": { "message": "制限中" },
+  "pillRateLimitedWaiting": { "message": "制限中…" },
+  "pillError": { "message": "エラー" },
+
+  "optTitle": { "message": "azinfo のオプション" },
+  "optSignInTitle": { "message": "サインイン" },
+  "optSignInThrough": { "message": "サインインに使うテナント" },
+  "optReset": { "message": "既定値に戻す" },
+  "optSignInHelp": {
+    "message": "サインインに使うテナントです。他のテナントはサインイン後に自動的に検出され、コスト パネルはポータルで表示中のテナントに合わせて切り替わります。職場または学校アカウント: $1。個人用 Microsoft アカウント (Outlook、Gmail など): ご自身のテナント (例: $2)。Azure ポータルのアカウント メニューでお名前の下に表示されます。変更するとサインアウトされます。"
+  },
+  "optSavedSignedOut": {
+    "message": "保存しました: $1。サインアウトされました。ツールバーのボタンから再度サインインしてください。"
+  },
+  "optInvalidTenant": {
+    "message": "organizations、common、テナント ドメイン (contoso.onmicrosoft.com)、またはテナント ID を入力してください。"
+  },
+  "optCostTitle": { "message": "コスト データ" },
+  "optReuseFor": { "message": "コスト データを再利用する期間" },
+  "optHours": { "message": "時間" },
+  "optCacheHelp": {
+    "message": "Azure はコスト データを数時間ごとに更新します。短くするとクエリが増え、Azure によって制限されます。"
+  },
+  "optSpikeTitle": { "message": "急増フラグ" },
+  "optSpikeLabel": { "message": "月末の予測が次の割合を超えたらフラグを付ける" },
+  "optSpikeUnit": { "message": "% (先月比)" },
+  "optSpikeHelp": {
+    "message": "毎月 6 日以降、5 日分の完全なデータが揃ってからチェックします。先月のコストがゼロの場合はフラグを付けません。"
+  },
+  "optDefault": { "message": "既定値: $1。" },
+  "optNumberRange": { "message": "$1 から $2 までの数値を入力してください。" },
+  "optSaved": { "message": "保存しました。" },
+  "optCachedTitle": { "message": "キャッシュされたデータ" },
+  "optCachedHelp": {
+    "message": "このデバイスに保存されたコスト データ、節約のヒント、テナント一覧を削除します。サインイン状態とこれらの設定は保持されます。"
+  },
+  "optClearCache": { "message": "キャッシュをクリア" },
+  "optCacheCleared": {
+    "message": "キャッシュをクリアしました。次回の表示で Azure に再度問い合わせます。"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "extDescription": {
+    "message": "Azure-Kosten direkt neben der Ressource, die Sie im Azure-Portal ansehen. Nicht mit Microsoft verbunden."
+  },
+
+  "signIn": { "message": "Anmelden" },
+  "signOut": { "message": "Abmelden" },
+  "retry": { "message": "Erneut versuchen" },
+  "refresh": { "message": "Aktualisieren" },
+  "save": { "message": "Speichern" },
+  "loading": { "message": "Wird geladen…" },
+  "resource": { "message": "Ressource" },
+  "thisMonth": { "message": "Dieser Monat" },
+  "lastMonth": { "message": "Letzter Monat" },
+  "updatedAt": {
+    "message": "Aktualisiert um $1. Azure-Kostendaten sind mehrere Stunden verzögert."
+  },
+  "rateLimitedRetrying": { "message": "Von Azure gedrosselt, neuer Versuch um $1…" },
+
+  "popupOptions": { "message": "Optionen" },
+  "popupSigningIn": { "message": "Anmeldung…" },
+  "popupSignInPrompt": {
+    "message": "Melden Sie sich mit dem Microsoft-Konto an, das Sie für Azure verwenden."
+  },
+  "popupLoadingTenants": { "message": "Mandanten werden geladen…" },
+  "popupNoSubscriptions": { "message": "Für dieses Konto sind keine Abonnements sichtbar." },
+  "popupSubscription": { "message": "Abonnement" },
+  "popupTenantNeedsSignIn": { "message": "$1 erfordert eine Anmeldung." },
+  "popupTenantFailed": { "message": "$1 konnte nicht gelesen werden: $2" },
+  "popupTop5": { "message": "Top 5 in diesem Monat" },
+  "popupLoadingCosts": { "message": "Kosten werden geladen…" },
+  "popupNoCosts": { "message": "Keine Ressourcenkosten in diesem oder im letzten Monat." },
+  "popupNoCostAccess": {
+    "message": "Kein Zugriff auf Kostendaten dieses Abonnements (Rolle Cost Management Reader erforderlich)."
+  },
+  "popupRateLimited": {
+    "message": "Azure drosselt Kostenabfragen. Versuchen Sie es in einer Minute erneut."
+  },
+
+  "panelLabel": { "message": "azinfo-Kostenbereich" },
+  "panelPillLabel": { "message": "azinfo-Kostenbereich: $1. Erweitern." },
+  "panelCollapse": { "message": "Einklappen" },
+  "panelResourceGroup": { "message": "Ressourcengruppe" },
+  "panelLoadingCost": { "message": "Kosten werden geladen…" },
+  "panelSignInToSee": { "message": "Melden Sie sich an, um die Kosten zu sehen." },
+  "panelOtherTenant": {
+    "message": "Dieses Abonnement gehört zu einem anderen Mandanten, der eine einmalige Anmeldung erfordert."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Dieses Abonnement gehört zu einem anderen Mandanten ($1), der eine einmalige Anmeldung erfordert."
+  },
+  "panelSignInToTenant": { "message": "Bei diesem Mandanten anmelden" },
+  "panelNoCostAccess": {
+    "message": "Kein Zugriff auf Kostendaten dieses Abonnements. Die Rolle Cost Management Reader ist erforderlich."
+  },
+  "panelNoData": {
+    "message": "Für diese Ressource wurden weder in diesem noch im letzten Monat Kosten erfasst."
+  },
+  "panelNoDataHint": {
+    "message": "Manche Ressourcen werden über eine andere abgerechnet, z. B. eine Web-App über ihren App Service plan."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure drosselt Kostenabfragen. Versuchen Sie es nach $1 erneut."
+  },
+  "panelRateLimited": { "message": "Azure drosselt Kostenabfragen." },
+  "panelThisMonthSoFar": { "message": "Bisher in diesem Monat" },
+  "panelProjected": { "message": "Prognose Monatsende" },
+  "panelVsLastMonth": { "message": "Bisher vs. gesamter letzter Monat" },
+  "panelGroupThisMonth": { "message": "Gruppe bisher in diesem Monat" },
+  "panelGroupLastMonth": { "message": "Gruppe letzter Monat" },
+  "panelGroupNoCost": {
+    "message": "Keine Ressource dieser Gruppe hat Kosten in diesem oder im letzten Monat."
+  },
+  "panelGroupListLabel": { "message": "Ressourcen mit Kosten in diesem oder im letzten Monat" },
+  "panelSpikeTitle": { "message": "Erwarteter Anstieg" },
+  "panelSpikeLabel": { "message": "Anstieg" },
+  "panelSpikeNote": {
+    "message": "▲ Die Prognose zum Monatsende liegt mehr als $1 % über dem letzten Monat."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 Ressource liegt laut Prognose mehr als $2 % über dem letzten Monat."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 Ressourcen liegen laut Prognose mehr als $2 % über dem letzten Monat."
+  },
+  "panelFromTomorrow": { "message": "Ab morgen" },
+  "panelEarlyEstimate": { "message": "$1 (frühe Schätzung)" },
+  "panelNewThisMonth": { "message": "Neu in diesem Monat" },
+  "panelByMeter": { "message": "Dieser Monat nach Verbrauchseinheit" },
+  "panelMeterOther": { "message": "Sonstige" },
+  "panelTipsHeading": { "message": "Spartipps (Azure Advisor)" },
+  "panelTipsNone": { "message": "Keine Spartipps von Azure Advisor." },
+  "panelTipsUnavailable": { "message": "Spartipps nicht verfügbar." },
+  "panelTipsNoAccess": { "message": "Spartipps nicht verfügbar: kein Zugriff auf Azure Advisor." },
+  "panelTipBadge": { "message": "Tipp" },
+  "panelTipBadgeTitle": { "message": "Spartipp von Azure Advisor" },
+  "panelSaveYear": { "message": "Sparen Sie ~$1/Jahr" },
+  "panelSavingsEstimated": { "message": "Geschätzte Ersparnis: $1" },
+  "impactHigh": { "message": "Hoch" },
+  "impactMedium": { "message": "Mittel" },
+  "impactLow": { "message": "Niedrig" },
+
+  "pillSpike": { "message": "Anstieg" },
+  "pillSpikes_one": { "message": "$1 Anstieg" },
+  "pillSpikes_other": { "message": "$1 Anstiege" },
+  "pillTips_one": { "message": "$1 Tipp" },
+  "pillTips_other": { "message": "$1 Tipps" },
+  "pillMixed": { "message": "gemischt" },
+  "pillNoCost": { "message": "keine Kosten" },
+  "pillSignIn": { "message": "anmelden" },
+  "pillNoAccess": { "message": "kein Zugriff" },
+  "pillRateLimited": { "message": "gedrosselt" },
+  "pillRateLimitedWaiting": { "message": "gedrosselt…" },
+  "pillError": { "message": "Fehler" },
+
+  "optTitle": { "message": "azinfo-Optionen" },
+  "optSignInTitle": { "message": "Anmeldung" },
+  "optSignInThrough": { "message": "Anmelden über Mandant" },
+  "optReset": { "message": "Auf Standard zurücksetzen" },
+  "optSignInHelp": {
+    "message": "Der Mandant, über den Sie sich anmelden. Ihre weiteren Mandanten werden nach der Anmeldung automatisch gefunden, und der Kostenbereich folgt dem Mandanten, den Sie im Portal ansehen. Geschäfts- oder Schulkonten: $1. Persönliche Microsoft-Konten (Outlook, Gmail usw.): Ihr eigener Mandant, z. B. $2, angezeigt unter Ihrem Namen im Kontomenü des Azure-Portals. Eine Änderung meldet Sie ab."
+  },
+  "optSavedSignedOut": {
+    "message": "Gespeichert: $1. Sie wurden abgemeldet; melden Sie sich über die Schaltfläche in der Symbolleiste erneut an."
+  },
+  "optInvalidTenant": {
+    "message": "Geben Sie organizations, common, eine Mandantendomäne (contoso.onmicrosoft.com) oder eine Mandanten-ID ein."
+  },
+  "optCostTitle": { "message": "Kostendaten" },
+  "optReuseFor": { "message": "Kostendaten wiederverwenden für" },
+  "optHours": { "message": "Stunden" },
+  "optCacheHelp": {
+    "message": "Azure aktualisiert Kostendaten alle paar Stunden. Kürzer bedeutet mehr Abfragen, die Azure drosselt."
+  },
+  "optSpikeTitle": { "message": "Anstiegswarnung" },
+  "optSpikeLabel": { "message": "Markieren, wenn die Prognose zum Monatsende mehr als" },
+  "optSpikeUnit": { "message": "% über dem letzten Monat liegt" },
+  "optSpikeHelp": {
+    "message": "Geprüft ab dem 6. des Monats, sobald 5 volle Tage an Daten vorliegen. Nie markiert, wenn der letzte Monat keine Kosten hatte."
+  },
+  "optDefault": { "message": "Standard: $1." },
+  "optNumberRange": { "message": "Geben Sie eine Zahl von $1 bis $2 ein." },
+  "optSaved": { "message": "Gespeichert." },
+  "optCachedTitle": { "message": "Zwischengespeicherte Daten" },
+  "optCachedHelp": {
+    "message": "Entfernt Kostendaten, Spartipps und die Mandantenliste von diesem Gerät. Ihre Anmeldung und diese Einstellungen bleiben erhalten."
+  },
+  "optClearCache": { "message": "Zwischenspeicher leeren" },
+  "optCacheCleared": {
+    "message": "Zwischenspeicher geleert. Die nächste Ansicht fragt Azure erneut ab."
+  }
+}

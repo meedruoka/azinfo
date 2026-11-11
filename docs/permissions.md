@@ -34,9 +34,9 @@ These are worded for the Chrome Web Store and Edge Add-ons justification fields.
   doesn't read or change the portal's page content.
 
 **https://management.azure.com/\***
-: Calls Azure Resource Manager read operations: the subscription list (GET) and the Cost
-  Management query (the only POST, which is read-only by design). No other Azure operation is
-  ever called.
+: Calls Azure Resource Manager read operations: the tenant and subscription lists (GET), Azure
+  Advisor's cost recommendations (GET) and the Cost Management query (the only POST, which is
+  read-only by design). No other Azure operation is ever called.
 
 **https://login.microsoftonline.com/\***
 : Exchanges the sign-in code for tokens and refreshes them at Microsoft Entra ID's token endpoint.

@@ -1,0 +1,152 @@
+{
+  "extDescription": {
+    "message": "Costes de Azure junto al recurso que está viendo en el portal de Azure. No afiliado con Microsoft."
+  },
+
+  "signIn": { "message": "Iniciar sesión" },
+  "signOut": { "message": "Cerrar sesión" },
+  "retry": { "message": "Reintentar" },
+  "refresh": { "message": "Actualizar" },
+  "save": { "message": "Guardar" },
+  "loading": { "message": "Cargando…" },
+  "resource": { "message": "Recurso" },
+  "thisMonth": { "message": "Este mes" },
+  "lastMonth": { "message": "Mes pasado" },
+  "updatedAt": {
+    "message": "Actualizado a las $1. Los datos de costes de Azure llevan varias horas de retraso."
+  },
+  "rateLimitedRetrying": { "message": "Azure limita las solicitudes, se reintentará a las $1…" },
+
+  "popupOptions": { "message": "Opciones" },
+  "popupSigningIn": { "message": "Iniciando sesión…" },
+  "popupSignInPrompt": {
+    "message": "Inicie sesión con la cuenta de Microsoft que usa para Azure."
+  },
+  "popupLoadingTenants": { "message": "Cargando inquilinos…" },
+  "popupNoSubscriptions": { "message": "No hay suscripciones visibles para esta cuenta." },
+  "popupSubscription": { "message": "Suscripción" },
+  "popupTenantNeedsSignIn": { "message": "$1 requiere que inicie sesión." },
+  "popupTenantFailed": { "message": "No se pudo leer $1: $2" },
+  "popupTop5": { "message": "Top 5 de este mes" },
+  "popupLoadingCosts": { "message": "Cargando costes…" },
+  "popupNoCosts": { "message": "No hay costes de recursos este mes ni el mes pasado." },
+  "popupNoCostAccess": {
+    "message": "Sin acceso a los datos de costes de esta suscripción (requiere el rol Cost Management Reader)."
+  },
+  "popupRateLimited": {
+    "message": "Azure está limitando las consultas de costes. Inténtelo de nuevo en un minuto."
+  },
+
+  "panelLabel": { "message": "Panel de costes de azinfo" },
+  "panelPillLabel": { "message": "Panel de costes de azinfo: $1. Expandir." },
+  "panelCollapse": { "message": "Contraer" },
+  "panelResourceGroup": { "message": "Grupo de recursos" },
+  "panelLoadingCost": { "message": "Cargando coste…" },
+  "panelSignInToSee": { "message": "Inicie sesión para ver los costes." },
+  "panelOtherTenant": {
+    "message": "Esta suscripción está en otro inquilino, que requiere que inicie sesión una vez."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Esta suscripción está en otro inquilino ($1), que requiere que inicie sesión una vez."
+  },
+  "panelSignInToTenant": { "message": "Iniciar sesión en este inquilino" },
+  "panelNoCostAccess": {
+    "message": "Sin acceso a los datos de costes de esta suscripción. Requiere el rol Cost Management Reader."
+  },
+  "panelNoData": {
+    "message": "No hay costes registrados para este recurso este mes ni el mes pasado."
+  },
+  "panelNoDataHint": {
+    "message": "Algunos recursos se facturan a través de otro, por ejemplo una aplicación web a través de su App Service plan."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure está limitando las consultas de costes. Inténtelo de nuevo después de las $1."
+  },
+  "panelRateLimited": { "message": "Azure está limitando las consultas de costes." },
+  "panelThisMonthSoFar": { "message": "Este mes hasta ahora" },
+  "panelProjected": { "message": "Previsión a fin de mes" },
+  "panelVsLastMonth": { "message": "Hasta ahora vs. todo el mes pasado" },
+  "panelGroupThisMonth": { "message": "Grupo este mes hasta ahora" },
+  "panelGroupLastMonth": { "message": "Grupo el mes pasado" },
+  "panelGroupNoCost": {
+    "message": "Ningún recurso de este grupo tiene costes este mes ni el mes pasado."
+  },
+  "panelGroupListLabel": { "message": "Recursos con costes este mes o el mes pasado" },
+  "panelSpikeTitle": { "message": "Pico previsto" },
+  "panelSpikeLabel": { "message": "Pico" },
+  "panelSpikeNote": {
+    "message": "▲ La previsión a fin de mes supera en más de un $1 % al mes pasado."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 recurso con previsión de más de un $2 % sobre el mes pasado."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 recursos con previsión de más de un $2 % sobre el mes pasado."
+  },
+  "panelFromTomorrow": { "message": "A partir de mañana" },
+  "panelEarlyEstimate": { "message": "$1 (estimación preliminar)" },
+  "panelNewThisMonth": { "message": "Nuevo este mes" },
+  "panelByMeter": { "message": "Este mes por medidor" },
+  "panelMeterOther": { "message": "Otros" },
+  "panelTipsHeading": { "message": "Consejos de ahorro (Azure Advisor)" },
+  "panelTipsNone": { "message": "No hay consejos de ahorro de Azure Advisor." },
+  "panelTipsUnavailable": { "message": "Consejos de ahorro no disponibles." },
+  "panelTipsNoAccess": {
+    "message": "Consejos de ahorro no disponibles: sin acceso a Azure Advisor."
+  },
+  "panelTipBadge": { "message": "consejo" },
+  "panelTipBadgeTitle": { "message": "Consejo de ahorro de Azure Advisor" },
+  "panelSaveYear": { "message": "Ahorre ~$1/año" },
+  "panelSavingsEstimated": { "message": "Ahorro estimado: $1" },
+  "impactHigh": { "message": "Alto" },
+  "impactMedium": { "message": "Medio" },
+  "impactLow": { "message": "Bajo" },
+
+  "pillSpike": { "message": "pico" },
+  "pillSpikes_one": { "message": "$1 pico" },
+  "pillSpikes_other": { "message": "$1 picos" },
+  "pillTips_one": { "message": "$1 consejo" },
+  "pillTips_other": { "message": "$1 consejos" },
+  "pillMixed": { "message": "mixto" },
+  "pillNoCost": { "message": "sin coste" },
+  "pillSignIn": { "message": "iniciar sesión" },
+  "pillNoAccess": { "message": "sin acceso" },
+  "pillRateLimited": { "message": "limitado" },
+  "pillRateLimitedWaiting": { "message": "limitado…" },
+  "pillError": { "message": "error" },
+
+  "optTitle": { "message": "Opciones de azinfo" },
+  "optSignInTitle": { "message": "Inicio de sesión" },
+  "optSignInThrough": { "message": "Iniciar sesión a través del inquilino" },
+  "optReset": { "message": "Restablecer valor predeterminado" },
+  "optSignInHelp": {
+    "message": "El inquilino a través del cual inicia sesión. Sus otros inquilinos se detectan automáticamente tras iniciar sesión, y el panel de costes sigue al inquilino que esté viendo en el portal. Cuentas profesionales o educativas: $1. Cuentas personales de Microsoft (Outlook, Gmail, etc.): su propio inquilino, por ejemplo $2, que aparece bajo su nombre en el menú de cuenta del portal de Azure. Cambiar esto cierra la sesión."
+  },
+  "optSavedSignedOut": {
+    "message": "Guardado: $1. Se ha cerrado la sesión; vuelva a iniciarla desde el botón de la barra de herramientas."
+  },
+  "optInvalidTenant": {
+    "message": "Introduzca organizations, common, un dominio de inquilino (contoso.onmicrosoft.com) o un ID de inquilino."
+  },
+  "optCostTitle": { "message": "Datos de costes" },
+  "optReuseFor": { "message": "Reutilizar los datos de costes durante" },
+  "optHours": { "message": "horas" },
+  "optCacheHelp": {
+    "message": "Azure actualiza los datos de costes cada pocas horas. Un periodo más corto implica más consultas, que Azure limita."
+  },
+  "optSpikeTitle": { "message": "Aviso de pico" },
+  "optSpikeLabel": { "message": "Avisar cuando la previsión a fin de mes supere en más de un" },
+  "optSpikeUnit": { "message": "% al mes pasado" },
+  "optSpikeHelp": {
+    "message": "Se comprueba a partir del día 6 del mes, cuando hay 5 días completos de datos. Nunca se avisa si el mes pasado no tuvo costes."
+  },
+  "optDefault": { "message": "Predeterminado: $1." },
+  "optNumberRange": { "message": "Introduzca un número entre $1 y $2." },
+  "optSaved": { "message": "Guardado." },
+  "optCachedTitle": { "message": "Datos en caché" },
+  "optCachedHelp": {
+    "message": "Elimina los datos de costes, los consejos de ahorro y la lista de inquilinos guardados en este dispositivo. Su sesión y esta configuración se mantienen."
+  },
+  "optClearCache": { "message": "Borrar datos en caché" },
+  "optCacheCleared": { "message": "Caché borrada. La próxima vista volverá a consultar Azure." }
+}

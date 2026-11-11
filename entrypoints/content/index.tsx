@@ -20,6 +20,9 @@ export default defineContentScript({
     const ui = await createShadowRootUi(ctx, {
       name: 'azinfo-panel',
       css: panelCss,
+      // Closed: the portal's own scripts can't read the figures or click the
+      // panel's buttons through element.shadowRoot.
+      mode: 'closed',
       position: 'inline',
       anchor: 'body',
       append: 'last',

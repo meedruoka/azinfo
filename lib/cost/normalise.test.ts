@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import legacy from '@/tests/fixtures/cost-query-legacy.json';
 import legacyPage2 from '@/tests/fixtures/cost-query-legacy-page2.json';
 import mca from '@/tests/fixtures/cost-query-mca.json';
+import meter from '@/tests/fixtures/cost-query-meter.json';
 import realLayout from '@/tests/fixtures/cost-query-real-layout.json';
 import {
   CostShapeError,
@@ -71,6 +72,31 @@ describe('normaliseCostRows', () => {
     ]);
   });
 
+  it('splits this month by meter category when the query grouped by meter', () => {
+    const result = normaliseCostRows(meter.properties.columns, meter.properties.rows, OCT);
+    const vm =
+      result[
+        '/subscriptions/00000000-0000-0000-0000-000000000003/resourcegroups/rg-test/providers/microsoft.compute/virtualmachines/vm1'
+      ];
+    expect(vm).toEqual({
+      resourceId: expect.any(String),
+      mtd: 10,
+      lastMonth: 9,
+      currency: 'EUR',
+      // Last month's rows don't count; an empty category becomes "Other".
+      byMeter: { 'Virtual Machines': 7, Storage: 2, Other: 1 },
+    });
+  });
+
+  it('leaves byMeter out when there is no meter column', () => {
+    const result = normaliseCostRows(
+      realLayout.properties.columns,
+      realLayout.properties.rows,
+      OCT,
+    );
+    expect(Object.values(result).every((r) => r.byMeter === undefined)).toBe(true);
+  });
+
   it('returns nothing for an empty result (HTTP 204 or no rows)', () => {
     expect(normaliseCostRows([], [], OCT)).toEqual({});
   });
@@ -106,7 +132,18 @@ describe('detectColumns', () => {
         { name: 'CURRENCY', type: 'String' },
         { name: 'usagedate', type: 'Number' },
       ]),
-    ).toEqual({ cost: 1, resourceId: 2, currency: 3, month: 4 });
+    ).toEqual({ cost: 1, resourceId: 2, currency: 3, month: 4, meter: null });
+  });
+
+  it('finds the optional meter column under either name', () => {
+    const base = [
+      { name: 'Cost', type: 'Number' },
+      { name: 'ResourceId', type: 'String' },
+      { name: 'Currency', type: 'String' },
+      { name: 'BillingMonth', type: 'Datetime' },
+    ];
+    expect(detectColumns([...base, { name: 'MeterCategory', type: 'String' }]).meter).toBe(4);
+    expect(detectColumns([...base, { name: 'ServiceName', type: 'String' }]).meter).toBe(4);
   });
 });
 

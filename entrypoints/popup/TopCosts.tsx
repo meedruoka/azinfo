@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { costStatusItem } from '@/lib/cost/cost-service';
 import { formatMoney, formatTime } from '@/lib/format';
+import { type MessageKey, t } from '@/lib/i18n';
 import { type ResponseMap, sendRequest } from '@/lib/messages';
 
 type TopCostsData = ResponseMap['getTopCosts'];
@@ -10,22 +11,32 @@ type State =
   | { kind: 'ready'; data: TopCostsData }
   | { kind: 'error'; message: string };
 
-const ERROR_TEXT: Partial<Record<string, string>> = {
-  noCostAccess: 'No access to cost data for this subscription (needs Cost Management Reader).',
-  rateLimited: 'Azure is rate limiting cost queries. Try again in a minute.',
+const ERROR_TEXT: Partial<Record<string, MessageKey>> = {
+  noCostAccess: 'popupNoCostAccess',
+  rateLimited: 'popupRateLimited',
 };
 
-export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
+export function TopCosts({
+  subscriptionId,
+  request = sendRequest,
+}: {
+  subscriptionId: string;
+  /** Injectable for tests; defaults to messaging the background worker. */
+  request?: typeof sendRequest;
+}) {
   const [state, setState] = useState<State>({ kind: 'loading' });
 
   const load = useCallback(
     async (force = false) => {
       setState({ kind: 'loading' });
-      const res = await sendRequest({ type: 'getTopCosts', subscriptionId, force });
+      const res = await request({ type: 'getTopCosts', subscriptionId, force });
       if (res.ok) setState({ kind: 'ready', data: res.data });
-      else setState({ kind: 'error', message: ERROR_TEXT[res.kind] ?? res.message });
+      else {
+        const key = ERROR_TEXT[res.kind];
+        setState({ kind: 'error', message: key ? t(key) : res.message });
+      }
     },
-    [subscriptionId],
+    [subscriptionId, request],
   );
 
   useEffect(() => {
@@ -48,8 +59,8 @@ export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
     return (
       <p className="muted">
         {state.rateLimitedUntil
-          ? `Rate limited by Azure, retrying at ${formatTime(state.rateLimitedUntil)}…`
-          : 'Loading costs…'}
+          ? t('rateLimitedRetrying', formatTime(state.rateLimitedUntil))
+          : t('popupLoadingCosts')}
       </p>
     );
   }
@@ -59,7 +70,7 @@ export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
       <>
         <p className="error">{state.message}</p>
         <button type="button" onClick={() => load(true)}>
-          Retry
+          {t('retry')}
         </button>
       </>
     );
@@ -69,14 +80,14 @@ export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
   return (
     <>
       {top.length === 0 ? (
-        <p className="muted">No resource costs this month or last month.</p>
+        <p className="muted">{t('popupNoCosts')}</p>
       ) : (
         <table>
           <thead>
             <tr>
-              <th>Resource</th>
-              <th className="num">This month</th>
-              <th className="num">Last month</th>
+              <th>{t('resource')}</th>
+              <th className="num">{t('thisMonth')}</th>
+              <th className="num">{t('lastMonth')}</th>
             </tr>
           </thead>
           <tbody>
@@ -94,9 +105,9 @@ export function TopCosts({ subscriptionId }: { subscriptionId: string }) {
         </table>
       )}
       <p className="muted small footer">
-        Updated {formatTime(fetchedAt)}. Azure cost data lags by several hours.{' '}
+        {t('updatedAt', formatTime(fetchedAt))}{' '}
         <button type="button" className="link" onClick={() => load(true)}>
-          Refresh
+          {t('refresh')}
         </button>
       </p>
     </>

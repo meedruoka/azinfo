@@ -1,0 +1,230 @@
+{
+  "extDescription": {
+    "message": "Azure cost info next to the resource you are viewing in the Azure portal. Not affiliated with Microsoft.",
+    "description": "Store summary and manifest description. Max 132 characters. Keep 'Not affiliated with Microsoft'."
+  },
+
+  "signIn": { "message": "Sign in", "description": "Button" },
+  "signOut": { "message": "Sign out", "description": "Button" },
+  "retry": { "message": "Retry", "description": "Button" },
+  "refresh": { "message": "Refresh", "description": "Link-style button that reloads cost data" },
+  "save": { "message": "Save", "description": "Button" },
+  "loading": { "message": "Loading…" },
+  "resource": { "message": "Resource", "description": "Table column header: an Azure resource" },
+  "thisMonth": {
+    "message": "This month",
+    "description": "Table column header: cost this calendar month so far"
+  },
+  "lastMonth": {
+    "message": "Last month",
+    "description": "Table column header: cost of the whole previous month"
+  },
+  "updatedAt": {
+    "message": "Updated $1. Azure cost data lags by several hours.",
+    "description": "$1 = a time of day, e.g. 14:05"
+  },
+  "rateLimitedRetrying": {
+    "message": "Rate limited by Azure, retrying at $1…",
+    "description": "$1 = a time of day"
+  },
+
+  "popupOptions": { "message": "Options", "description": "Link to the settings page" },
+  "popupSigningIn": { "message": "Signing in…" },
+  "popupSignInPrompt": { "message": "Sign in with the Microsoft account you use for Azure." },
+  "popupLoadingTenants": {
+    "message": "Loading tenants…",
+    "description": "Tenant = a Microsoft Entra directory"
+  },
+  "popupNoSubscriptions": { "message": "No subscriptions visible to this account." },
+  "popupSubscription": {
+    "message": "Subscription",
+    "description": "Label of the Azure subscription picker"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1 needs you to sign in.",
+    "description": "$1 = tenant name (shown in bold)"
+  },
+  "popupTenantFailed": {
+    "message": "$1 couldn't be read: $2",
+    "description": "$1 = tenant name (bold), $2 = technical error from Azure (English)"
+  },
+  "popupTop5": {
+    "message": "Top 5 this month",
+    "description": "Heading: the 5 most expensive resources this month"
+  },
+  "popupLoadingCosts": { "message": "Loading costs…" },
+  "popupNoCosts": { "message": "No resource costs this month or last month." },
+  "popupNoCostAccess": {
+    "message": "No access to cost data for this subscription (needs Cost Management Reader).",
+    "description": "'Cost Management Reader' is the name of an Azure role: keep it in English"
+  },
+  "popupRateLimited": { "message": "Azure is rate limiting cost queries. Try again in a minute." },
+
+  "panelLabel": {
+    "message": "azinfo cost panel",
+    "description": "Screen-reader label; keep 'azinfo'"
+  },
+  "panelPillLabel": {
+    "message": "azinfo cost panel: $1. Expand.",
+    "description": "Screen-reader label of the collapsed panel; $1 = its short status"
+  },
+  "panelCollapse": {
+    "message": "Collapse",
+    "description": "Screen-reader label of the button that shrinks the panel"
+  },
+  "panelResourceGroup": { "message": "Resource group", "description": "Azure resource group" },
+  "panelLoadingCost": { "message": "Loading cost…" },
+  "panelSignInToSee": { "message": "Sign in to see costs." },
+  "panelOtherTenant": {
+    "message": "This subscription is in another tenant, which needs you to sign in once."
+  },
+  "panelOtherTenantNamed": {
+    "message": "This subscription is in another tenant ($1), which needs you to sign in once.",
+    "description": "$1 = tenant domain"
+  },
+  "panelSignInToTenant": { "message": "Sign in to this tenant", "description": "Button" },
+  "panelNoCostAccess": {
+    "message": "No access to cost data for this subscription. It needs the Cost Management Reader role.",
+    "description": "'Cost Management Reader' is the name of an Azure role: keep it in English"
+  },
+  "panelNoData": { "message": "No cost recorded for this resource this month or last." },
+  "panelNoDataHint": {
+    "message": "Some resources are billed through another one, for example a web app through its App Service plan.",
+    "description": "'App Service plan' is an Azure product name"
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure is rate limiting cost queries. Try again after $1.",
+    "description": "$1 = a time of day"
+  },
+  "panelRateLimited": { "message": "Azure is rate limiting cost queries." },
+  "panelThisMonthSoFar": { "message": "This month so far" },
+  "panelProjected": {
+    "message": "Projected month-end",
+    "description": "Estimated cost at the end of this month"
+  },
+  "panelVsLastMonth": {
+    "message": "So far vs. all of last month",
+    "description": "Change of this month's cost so far compared to the whole of last month"
+  },
+  "panelGroupThisMonth": { "message": "Group this month so far" },
+  "panelGroupLastMonth": { "message": "Group last month" },
+  "panelGroupNoCost": { "message": "No resources in this group have cost this month or last." },
+  "panelGroupListLabel": { "message": "Resources with cost this month or last" },
+  "panelSpikeTitle": { "message": "Projected spike", "description": "Tooltip of the ▲ marker" },
+  "panelSpikeLabel": { "message": "Spike", "description": "Screen-reader label of the ▲ marker" },
+  "panelSpikeNote": {
+    "message": "▲ Projected month-end is more than $1% above last month.",
+    "description": "$1 = a whole number of percent, e.g. 50"
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 resource projected more than $2% above last month.",
+    "description": "$1 = number of resources (1), $2 = percent threshold"
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 resources projected more than $2% above last month.",
+    "description": "$1 = number of resources (2 or more), $2 = percent threshold"
+  },
+  "panelFromTomorrow": {
+    "message": "From tomorrow",
+    "description": "Shown instead of a projection on the 1st of the month"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (early estimate)",
+    "description": "$1 = an amount of money; the projection is based on few days"
+  },
+  "panelNewThisMonth": {
+    "message": "New this month",
+    "description": "No cost last month, some this month"
+  },
+  "panelByMeter": {
+    "message": "This month by meter",
+    "description": "Heading: this month's cost split by Azure meter category (Virtual Machines, Storage…)"
+  },
+  "panelMeterOther": {
+    "message": "Other",
+    "description": "All remaining meter categories together"
+  },
+  "panelTipsHeading": {
+    "message": "Savings tips (Azure Advisor)",
+    "description": "'Azure Advisor' is a product name"
+  },
+  "panelTipsNone": { "message": "No savings tips from Azure Advisor." },
+  "panelTipsUnavailable": { "message": "Savings tips unavailable." },
+  "panelTipsNoAccess": { "message": "Savings tips unavailable: no access to Azure Advisor." },
+  "panelTipBadge": {
+    "message": "tip",
+    "description": "Very short badge next to a resource that has a savings tip"
+  },
+  "panelTipBadgeTitle": { "message": "Azure Advisor savings tip" },
+  "panelSaveYear": {
+    "message": "Save ~$1/year",
+    "description": "$1 = an amount of money; estimated yearly savings"
+  },
+  "panelSavingsEstimated": {
+    "message": "Estimated savings $1",
+    "description": "$1 = an amount of money, period unknown"
+  },
+  "impactHigh": { "message": "High", "description": "Impact of a recommendation" },
+  "impactMedium": { "message": "Medium", "description": "Impact of a recommendation" },
+  "impactLow": { "message": "Low", "description": "Impact of a recommendation" },
+
+  "pillSpike": { "message": "spike", "description": "Very short: the cost is projected to spike" },
+  "pillSpikes_one": { "message": "$1 spike" },
+  "pillSpikes_other": { "message": "$1 spikes" },
+  "pillTips_one": { "message": "$1 tip", "description": "Number of savings tips" },
+  "pillTips_other": { "message": "$1 tips" },
+  "pillMixed": { "message": "mixed", "description": "Several currencies, so no single total" },
+  "pillNoCost": { "message": "no cost" },
+  "pillSignIn": { "message": "sign in" },
+  "pillNoAccess": { "message": "no access" },
+  "pillRateLimited": { "message": "rate limited" },
+  "pillRateLimitedWaiting": { "message": "rate limited…" },
+  "pillError": { "message": "error" },
+
+  "optTitle": { "message": "azinfo options", "description": "Settings page title; keep 'azinfo'" },
+  "optSignInTitle": { "message": "Sign-in" },
+  "optSignInThrough": {
+    "message": "Sign in through tenant",
+    "description": "Label of the field holding the Microsoft Entra tenant used for sign-in"
+  },
+  "optReset": { "message": "Reset to default" },
+  "optSignInHelp": {
+    "message": "The tenant you sign in through. Your other tenants are found automatically after sign-in, and the cost panel follows the tenant you are viewing in the portal. Work or school accounts: $1. Personal Microsoft accounts (Outlook, Gmail and so on): your own tenant, for example $2, shown under your name in the Azure portal's account menu. Changing this signs you out.",
+    "description": "$1 = the value 'organizations', $2 = an example tenant domain; both shown as code"
+  },
+  "optSavedSignedOut": {
+    "message": "Saved: $1. You have been signed out; sign in again from the toolbar button.",
+    "description": "$1 = tenant value"
+  },
+  "optInvalidTenant": {
+    "message": "Enter organizations, common, a tenant domain (contoso.onmicrosoft.com) or a tenant ID.",
+    "description": "'organizations' and 'common' are values to type: keep them in English"
+  },
+  "optCostTitle": { "message": "Cost data" },
+  "optReuseFor": {
+    "message": "Reuse cost data for",
+    "description": "Followed by a number and 'hours'"
+  },
+  "optHours": { "message": "hours" },
+  "optCacheHelp": {
+    "message": "Azure updates cost data every few hours. Shorter means more queries, which Azure rate-limits."
+  },
+  "optSpikeTitle": { "message": "Spike flag" },
+  "optSpikeLabel": {
+    "message": "Flag when projected month-end is more than",
+    "description": "Followed by a number and '% above last month'"
+  },
+  "optSpikeUnit": { "message": "% above last month" },
+  "optSpikeHelp": {
+    "message": "Checked from the 6th of the month, once 5 full days of data exist. Never flagged when last month had no cost."
+  },
+  "optDefault": { "message": "Default: $1.", "description": "$1 = a number" },
+  "optNumberRange": { "message": "Enter a number from $1 to $2." },
+  "optSaved": { "message": "Saved." },
+  "optCachedTitle": { "message": "Cached data" },
+  "optCachedHelp": {
+    "message": "Removes cost data, savings tips and the tenant list stored on this device. Your sign-in and these settings stay."
+  },
+  "optClearCache": { "message": "Clear cached data", "description": "Button" },
+  "optCacheCleared": { "message": "Cached data cleared. The next view queries Azure again." }
+}

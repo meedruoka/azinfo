@@ -1,0 +1,142 @@
+{
+  "extDescription": {
+    "message": "Azure Portal에서 보고 있는 리소스 옆에 Azure 비용 정보를 표시합니다. Microsoft와 제휴하지 않았습니다."
+  },
+
+  "signIn": { "message": "로그인" },
+  "signOut": { "message": "로그아웃" },
+  "retry": { "message": "다시 시도" },
+  "refresh": { "message": "새로 고침" },
+  "save": { "message": "저장" },
+  "loading": { "message": "로드 중…" },
+  "resource": { "message": "리소스" },
+  "thisMonth": { "message": "이번 달" },
+  "lastMonth": { "message": "지난달" },
+  "updatedAt": { "message": "$1에 업데이트됨. Azure 비용 데이터는 몇 시간 늦게 반영됩니다." },
+  "rateLimitedRetrying": { "message": "Azure에서 요청을 제한하고 있습니다. $1에 다시 시도합니다…" },
+
+  "popupOptions": { "message": "옵션" },
+  "popupSigningIn": { "message": "로그인 중…" },
+  "popupSignInPrompt": { "message": "Azure에서 사용하는 Microsoft 계정으로 로그인하세요." },
+  "popupLoadingTenants": { "message": "테넌트를 로드하는 중…" },
+  "popupNoSubscriptions": { "message": "이 계정에 표시되는 구독이 없습니다." },
+  "popupSubscription": { "message": "구독" },
+  "popupTenantNeedsSignIn": { "message": "$1에 로그인해야 합니다." },
+  "popupTenantFailed": { "message": "$1을(를) 읽을 수 없습니다: $2" },
+  "popupTop5": { "message": "이번 달 상위 5개" },
+  "popupLoadingCosts": { "message": "비용을 로드하는 중…" },
+  "popupNoCosts": { "message": "이번 달과 지난달 모두 리소스 비용이 없습니다." },
+  "popupNoCostAccess": {
+    "message": "이 구독의 비용 데이터에 액세스할 수 없습니다(Cost Management Reader 역할 필요)."
+  },
+  "popupRateLimited": {
+    "message": "Azure에서 비용 쿼리를 제한하고 있습니다. 1분 후에 다시 시도하세요."
+  },
+
+  "panelLabel": { "message": "azinfo 비용 패널" },
+  "panelPillLabel": { "message": "azinfo 비용 패널: $1. 펼치기." },
+  "panelCollapse": { "message": "접기" },
+  "panelResourceGroup": { "message": "리소스 그룹" },
+  "panelLoadingCost": { "message": "비용을 로드하는 중…" },
+  "panelSignInToSee": { "message": "비용을 보려면 로그인하세요." },
+  "panelOtherTenant": { "message": "이 구독은 다른 테넌트에 있으며, 한 번 로그인해야 합니다." },
+  "panelOtherTenantNamed": {
+    "message": "이 구독은 다른 테넌트($1)에 있으며, 한 번 로그인해야 합니다."
+  },
+  "panelSignInToTenant": { "message": "이 테넌트에 로그인" },
+  "panelNoCostAccess": {
+    "message": "이 구독의 비용 데이터에 액세스할 수 없습니다. Cost Management Reader 역할이 필요합니다."
+  },
+  "panelNoData": { "message": "이 리소스에는 이번 달과 지난달 모두 기록된 비용이 없습니다." },
+  "panelNoDataHint": {
+    "message": "일부 리소스는 다른 리소스를 통해 청구됩니다. 예를 들어 웹앱은 해당 App Service plan을 통해 청구됩니다."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure에서 비용 쿼리를 제한하고 있습니다. $1 이후에 다시 시도하세요."
+  },
+  "panelRateLimited": { "message": "Azure에서 비용 쿼리를 제한하고 있습니다." },
+  "panelThisMonthSoFar": { "message": "이번 달 누적" },
+  "panelProjected": { "message": "월말 예상" },
+  "panelVsLastMonth": { "message": "현재까지 vs. 지난달 전체" },
+  "panelGroupThisMonth": { "message": "그룹 이번 달 누적" },
+  "panelGroupLastMonth": { "message": "그룹 지난달" },
+  "panelGroupNoCost": {
+    "message": "이 그룹에는 이번 달이나 지난달에 비용이 발생한 리소스가 없습니다."
+  },
+  "panelGroupListLabel": { "message": "이번 달 또는 지난달에 비용이 발생한 리소스" },
+  "panelSpikeTitle": { "message": "급증 예상" },
+  "panelSpikeLabel": { "message": "급증" },
+  "panelSpikeNote": { "message": "▲ 월말 예상 비용이 지난달보다 $1% 이상 높습니다." },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ 리소스 $1개가 지난달보다 $2% 이상 높을 것으로 예상됩니다."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ 리소스 $1개가 지난달보다 $2% 이상 높을 것으로 예상됩니다."
+  },
+  "panelFromTomorrow": { "message": "내일부터" },
+  "panelEarlyEstimate": { "message": "$1(초기 추정치)" },
+  "panelNewThisMonth": { "message": "이번 달 신규" },
+  "panelByMeter": { "message": "이번 달 미터별" },
+  "panelMeterOther": { "message": "기타" },
+  "panelTipsHeading": { "message": "절감 팁(Azure Advisor)" },
+  "panelTipsNone": { "message": "Azure Advisor의 절감 팁이 없습니다." },
+  "panelTipsUnavailable": { "message": "절감 팁을 사용할 수 없습니다." },
+  "panelTipsNoAccess": {
+    "message": "절감 팁을 사용할 수 없습니다: Azure Advisor에 액세스할 수 없습니다."
+  },
+  "panelTipBadge": { "message": "팁" },
+  "panelTipBadgeTitle": { "message": "Azure Advisor 절감 팁" },
+  "panelSaveYear": { "message": "연간 ~$1 절감" },
+  "panelSavingsEstimated": { "message": "예상 절감액: $1" },
+  "impactHigh": { "message": "높음" },
+  "impactMedium": { "message": "보통" },
+  "impactLow": { "message": "낮음" },
+
+  "pillSpike": { "message": "급증" },
+  "pillSpikes_one": { "message": "급증 $1건" },
+  "pillSpikes_other": { "message": "급증 $1건" },
+  "pillTips_one": { "message": "팁 $1개" },
+  "pillTips_other": { "message": "팁 $1개" },
+  "pillMixed": { "message": "혼합" },
+  "pillNoCost": { "message": "비용 없음" },
+  "pillSignIn": { "message": "로그인" },
+  "pillNoAccess": { "message": "액세스 없음" },
+  "pillRateLimited": { "message": "제한됨" },
+  "pillRateLimitedWaiting": { "message": "제한됨…" },
+  "pillError": { "message": "오류" },
+
+  "optTitle": { "message": "azinfo 옵션" },
+  "optSignInTitle": { "message": "로그인" },
+  "optSignInThrough": { "message": "로그인할 테넌트" },
+  "optReset": { "message": "기본값으로 재설정" },
+  "optSignInHelp": {
+    "message": "로그인할 때 사용하는 테넌트입니다. 다른 테넌트는 로그인 후 자동으로 찾으며, 비용 패널은 포털에서 보고 있는 테넌트를 따라갑니다. 회사 또는 학교 계정: $1. 개인 Microsoft 계정(Outlook, Gmail 등): 본인의 테넌트(예: $2)이며, Azure Portal 계정 메뉴에서 이름 아래에 표시됩니다. 이 값을 변경하면 로그아웃됩니다."
+  },
+  "optSavedSignedOut": {
+    "message": "저장됨: $1. 로그아웃되었습니다. 도구 모음 단추에서 다시 로그인하세요."
+  },
+  "optInvalidTenant": {
+    "message": "organizations, common, 테넌트 도메인(contoso.onmicrosoft.com) 또는 테넌트 ID를 입력하세요."
+  },
+  "optCostTitle": { "message": "비용 데이터" },
+  "optReuseFor": { "message": "비용 데이터 재사용 기간" },
+  "optHours": { "message": "시간" },
+  "optCacheHelp": {
+    "message": "Azure는 몇 시간마다 비용 데이터를 업데이트합니다. 짧을수록 쿼리가 많아지며 Azure에서 이를 제한합니다."
+  },
+  "optSpikeTitle": { "message": "급증 표시" },
+  "optSpikeLabel": { "message": "월말 예상 비용이 지난달보다 다음 비율 이상 높으면 표시" },
+  "optSpikeUnit": { "message": "%" },
+  "optSpikeHelp": {
+    "message": "매월 6일부터, 5일치 전체 데이터가 있으면 확인합니다. 지난달 비용이 없었으면 표시하지 않습니다."
+  },
+  "optDefault": { "message": "기본값: $1." },
+  "optNumberRange": { "message": "$1에서 $2 사이의 숫자를 입력하세요." },
+  "optSaved": { "message": "저장되었습니다." },
+  "optCachedTitle": { "message": "캐시된 데이터" },
+  "optCachedHelp": {
+    "message": "이 장치에 저장된 비용 데이터, 절감 팁, 테넌트 목록을 제거합니다. 로그인 상태와 이 설정은 유지됩니다."
+  },
+  "optClearCache": { "message": "캐시된 데이터 지우기" },
+  "optCacheCleared": { "message": "캐시를 지웠습니다. 다음 보기에서 Azure를 다시 쿼리합니다." }
+}

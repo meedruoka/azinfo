@@ -1,15 +1,24 @@
-import { type AuthService, createAuthService, NotSignedInError } from '@/lib/auth/auth-service';
+import { createTipsService, type TipsService } from '@/lib/advisor/tips-service';
+import {
+  type AuthService,
+  createAuthService,
+  NotSignedInError,
+  TenantSignInRequiredError,
+} from '@/lib/auth/auth-service';
 import { defaultAuthority, readAuthConfig } from '@/lib/auth/config';
 import { TokenError } from '@/lib/auth/token-endpoint';
+import { type Tip, totalSavings } from '@/lib/azure/advisor';
 import { ArmError } from '@/lib/azure/arm-client';
 import { CostRateLimitError } from '@/lib/azure/cost-client';
+import { createDirectoryService, type DirectoryService } from '@/lib/azure/directory';
 import { describeResourceId } from '@/lib/azure/resource-id';
-import { listSubscriptions } from '@/lib/azure/subscriptions';
+import { meterBreakdown, sumByMeter } from '@/lib/cost/breakdown';
 import { type CostService, createCostService } from '@/lib/cost/cost-service';
 import { type ResourceCost, topByMtd } from '@/lib/cost/normalise';
-import { resourcesInGroup, totalOf } from '@/lib/cost/resource-group';
+import { groupMatcher, resourcesInGroup, totalOf } from '@/lib/cost/resource-group';
 import { assessSpike, monthProgress } from '@/lib/cost/spike';
-import type { ErrorKind, Request, ResponseMap, Result } from '@/lib/messages';
+import type { ErrorKind, Request, ResponseMap, Result, TipsResult } from '@/lib/messages';
+import { isAllowedRequest, originOf } from '@/lib/sender-policy';
 import {
   authorityItem,
   normaliseAuthority,
@@ -22,6 +31,10 @@ import {
 export default defineBackground(() => {
   let auth: { authority: string; service: AuthService } | undefined;
   let costService: CostService | undefined;
+  let directoryService: DirectoryService | undefined;
+  let tipsService: TipsService | undefined;
+  /** Subscription → tenant named in the portal URL ('#@<tenant>'), from panel requests. */
+  const tenantHints = new Map<string, string>();
 
   // Created on first use so a missing client ID surfaces as a popup error
   // instead of a crashed worker; recreated when the authority setting changes.
@@ -45,9 +58,40 @@ export default defineBackground(() => {
   let simulate429 =
     import.meta.env.MODE === 'development' && import.meta.env.WXT_DEV_SIMULATE_429 === '1';
 
+  const getDirectory = () =>
+    (directoryService ??= createDirectoryService({
+      getAccessToken: async (tenantId) => (await getAuth()).getAccessToken(tenantId),
+      ttlMs: readCacheTtlMs,
+    }));
+
+  /**
+   * Tenant whose token can query a subscription: from the directory, else the
+   * portal URL's tenant, else undefined (the configured authority). A broken
+   * directory must not break the single-tenant case, so it only warns.
+   */
+  async function tenantFor(subscriptionId: string): Promise<string | undefined> {
+    const hint = tenantHints.get(subscriptionId.toLowerCase());
+    try {
+      return (await getDirectory().tenantForSubscription(subscriptionId, hint)) ?? hint;
+    } catch (e) {
+      if (e instanceof NotSignedInError) throw e;
+      console.warn('[azinfo] directory unavailable:', e instanceof Error ? e.message : e);
+      return hint;
+    }
+  }
+
+  /** Clears everything derived from the signed-in account. */
+  async function clearAccountData() {
+    await getCosts().clear();
+    await getTips().clear();
+    await getDirectory().clear();
+    tenantHints.clear();
+  }
+
   const getCosts = () =>
     (costService ??= createCostService({
-      getAccessToken: async () => (await getAuth()).getAccessToken(),
+      getAccessToken: async (subscriptionId) =>
+        (await getAuth()).getAccessToken(await tenantFor(subscriptionId)),
       ttlMs: readCacheTtlMs,
       client: {
         takeSimulated429: () => {
@@ -57,6 +101,35 @@ export default defineBackground(() => {
         },
       },
     }));
+
+  const getTips = () =>
+    (tipsService ??= createTipsService({
+      getAccessToken: async (subscriptionId) =>
+        (await getAuth()).getAccessToken(await tenantFor(subscriptionId)),
+      ttlMs: readCacheTtlMs,
+    }));
+
+  /**
+   * Advisor tips matching `belongs`. Never throws: tips are extra, so a
+   * failure (no Advisor access, Advisor not set up) only hides them.
+   */
+  async function tipsFor(
+    subscriptionId: string,
+    force: boolean | undefined,
+    belongs: (resourceId: string) => boolean,
+  ): Promise<TipsResult> {
+    try {
+      const { byResource } = await getTips().getSubscriptionTips(subscriptionId, { force });
+      const items: Tip[] = Object.entries(byResource)
+        .filter(([resourceId]) => belongs(resourceId))
+        .flatMap(([, tips]) => tips);
+      return { ok: true, items, total: totalSavings(items) };
+    } catch (e) {
+      const status = e instanceof ArmError ? e.status : undefined;
+      console.warn('[azinfo] advisor unavailable:', e instanceof Error ? e.message : e);
+      return { ok: false, reason: status === 403 ? 'noAccess' : 'error' };
+    }
+  }
 
   async function handle(request: Request): Promise<ResponseMap[Request['type']]> {
     const auth = await getAuth();
@@ -68,12 +141,13 @@ export default defineBackground(() => {
         }
         // Tokens belong to the old authority: sign out and drop its cost data.
         await auth.signOut();
-        await getCosts().clear();
+        await clearAccountData();
         await authorityItem.setValue(authority);
         return { authority: authority ?? defaultAuthority() };
       }
       case 'clearCache':
-        await getCosts().clear();
+        // Tenant and subscription names are cached on disk too.
+        await clearAccountData();
         return { cleared: true };
       case 'getAuthState':
         if (await auth.isSignedIn()) return { signedIn: true };
@@ -89,12 +163,28 @@ export default defineBackground(() => {
       case 'signIn':
         await auth.signIn();
         return { signedIn: true };
+      case 'signInTenant':
+        await auth.signInTenant(request.tenantId);
+        // The tenant's subscriptions are reachable now: rebuild the directory.
+        await getDirectory().get(true);
+        return { signedIn: true };
       case 'signOut':
         await auth.signOut();
-        await getCosts().clear();
+        await clearAccountData();
         return { signedIn: false };
-      case 'listSubscriptions':
-        return listSubscriptions(await auth.getAccessToken());
+      case 'getDirectory': {
+        const dir = await getDirectory().get(request.force);
+        return {
+          tenants: dir.tenants.map((t) => ({
+            tenantId: t.tenantId,
+            displayName: t.displayName,
+            needsSignIn: dir.needsSignIn.includes(t.tenantId),
+            error: dir.failed.find((f) => f.tenantId === t.tenantId)?.message,
+          })),
+          subscriptions: dir.subscriptions,
+          fetchedAt: dir.fetchedAt,
+        };
+      }
       case 'getTopCosts': {
         const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
           force: request.force,
@@ -106,12 +196,15 @@ export default defineBackground(() => {
         return { subscriptionId: costs.subscriptionId, fetchedAt: costs.fetchedAt, top };
       }
       case 'getResourceCost': {
+        rememberHint(request.subscriptionId, request.tenantHint);
+        const resourceId = request.resourceId.toLowerCase();
+        // Started first so it runs alongside the cost query.
+        const tips = tipsFor(request.subscriptionId, request.force, (id) => id === resourceId);
         // Served from the subscription's cached query: navigating between
         // resources makes no extra Azure calls while the cache is fresh.
         const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
           force: request.force,
         });
-        const resourceId = request.resourceId.toLowerCase();
         const cost = costs.resources[resourceId] ?? null;
         const spike = await spikeSettings(costs.fetchedAt);
         return {
@@ -120,9 +213,14 @@ export default defineBackground(() => {
           cost,
           assessment: cost ? spike.assess(cost) : null,
           spikeContext: spike.context,
+          breakdown: meterBreakdown(cost?.byMeter),
+          tips: await tips,
         };
       }
       case 'getResourceGroupCosts': {
+        rememberHint(request.subscriptionId, request.tenantHint);
+        const inThisGroup = groupMatcher(request.resourceGroupId);
+        const tips = tipsFor(request.subscriptionId, request.force, inThisGroup);
         const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
           force: request.force,
         });
@@ -130,6 +228,9 @@ export default defineBackground(() => {
           (a, b) => b.mtd - a.mtd,
         );
         const spike = await spikeSettings(costs.fetchedAt);
+        const groupTips = await tips;
+        const tipCount = (resourceId: string) =>
+          groupTips.ok ? groupTips.items.filter((t) => t.resourceId === resourceId).length : 0;
         return {
           resourceGroupId: request.resourceGroupId.toLowerCase(),
           fetchedAt: costs.fetchedAt,
@@ -137,15 +238,29 @@ export default defineBackground(() => {
             ...r,
             ...describeResourceId(r.resourceId),
             assessment: spike.assess(r),
+            tipCount: tipCount(r.resourceId),
           })),
           total: totalOf(inGroup),
           spikeContext: spike.context,
+          breakdown: meterBreakdown(sumByMeter(inGroup)),
+          tips: groupTips,
         };
       }
     }
   }
 
-  browser.runtime.onMessage.addListener((request: Request, _sender, sendResponse) => {
+  function rememberHint(subscriptionId: string, hint?: string) {
+    if (hint) tenantHints.set(subscriptionId.toLowerCase(), hint.toLowerCase());
+  }
+
+  const self = { id: browser.runtime.id, origin: originOf(browser.runtime.getURL('/')) ?? '' };
+
+  browser.runtime.onMessage.addListener((request: unknown, sender, sendResponse) => {
+    if (!isAllowedRequest(request, sender, self)) {
+      console.warn('[azinfo] request refused from', sender.url && originOf(sender.url));
+      sendResponse({ ok: false, kind: 'unknown', message: 'Request not allowed' });
+      return false;
+    }
     handle(request)
       .then((data) => sendResponse({ ok: true, data } satisfies Result<unknown>))
       .catch((e: unknown) => sendResponse(toErrorResult(e)));
@@ -171,12 +286,16 @@ function toErrorResult(e: unknown): Result<never> {
   const message = e instanceof Error ? e.message : String(e);
   let kind: ErrorKind = 'unknown';
   let retryAt: number | undefined;
+  let tenantId: string | undefined;
   if (e instanceof NotSignedInError) kind = 'notSignedIn';
-  else if (e instanceof TokenError) kind = 'auth';
+  else if (e instanceof TenantSignInRequiredError) {
+    kind = 'tenantSignIn';
+    tenantId = e.tenantId;
+  } else if (e instanceof TokenError) kind = 'auth';
   else if (e instanceof CostRateLimitError) {
     kind = 'rateLimited';
     retryAt = e.retryAt;
   } else if (e instanceof ArmError) kind = e.status === 403 ? 'noCostAccess' : 'azure';
   console.warn('[azinfo]', kind, message);
-  return { ok: false, kind, message, retryAt };
+  return { ok: false, kind, message, retryAt, tenantId };
 }

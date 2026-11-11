@@ -77,6 +77,21 @@ td {
   word-break: break-all;
 }
 
+.tenant-notes {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.tenant-notes li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
 .small {
   font-size: 12px;
 }

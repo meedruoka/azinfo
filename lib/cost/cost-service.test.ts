@@ -12,7 +12,7 @@ const START = Date.UTC(2026, 9, 4, 12);
 
 describe('cost service', () => {
   let now = START;
-  let requests: { costColumn: string }[] = [];
+  let requests: { costColumn: string; meter: string | null }[] = [];
 
   function service() {
     return createCostService({
@@ -22,18 +22,25 @@ describe('cost service', () => {
     });
   }
 
-  function respondWith(handler: (costColumn: string) => Response) {
+  function respondWith(handler: (costColumn: string, meter: string | null) => Response) {
     server.use(
       http.post(QUERY_URL, async ({ request }) => {
         const body = (await request.json()) as {
-          dataset: { aggregation: { totalCost: { name: string } } };
+          dataset: {
+            aggregation: { totalCost: { name: string } };
+            grouping: { name: string }[];
+          };
         };
         const costColumn = body.dataset.aggregation.totalCost.name;
-        requests.push({ costColumn });
-        return handler(costColumn);
+        const meter = body.dataset.grouping[1]?.name ?? null;
+        requests.push({ costColumn, meter });
+        return handler(costColumn, meter);
       }),
     );
   }
+
+  const badRequest = () =>
+    HttpResponse.json({ error: { code: 'BadRequest', message: 'Invalid query' } }, { status: 400 });
 
   beforeEach(() => {
     fakeBrowser.reset();
@@ -51,7 +58,11 @@ describe('cost service', () => {
 
     expect(requests).toHaveLength(1);
     expect(second).toEqual(first);
-    expect(first).toMatchObject({ subscriptionId: SUB, fetchedAt: START, costColumn: 'Cost' });
+    expect(first).toMatchObject({
+      subscriptionId: SUB,
+      fetchedAt: START,
+      shape: { costColumn: 'Cost', meter: 'MeterCategory' },
+    });
     expect(Object.keys(first.resources)).toHaveLength(2);
   });
 
@@ -90,20 +101,41 @@ describe('cost service', () => {
   });
 
   it('falls back to PreTaxCost on a 400 and remembers it for the next fetch', async () => {
-    respondWith((col) =>
-      col === 'Cost'
-        ? HttpResponse.json(
-            { error: { code: 'BadRequest', message: 'Invalid aggregation column Cost' } },
-            { status: 400 },
-          )
-        : HttpResponse.json(mca),
-    );
+    respondWith((col) => (col === 'Cost' ? badRequest() : HttpResponse.json(mca)));
     const costs = service();
-    expect((await costs.getSubscriptionCosts(SUB)).costColumn).toBe('PreTaxCost');
+    expect((await costs.getSubscriptionCosts(SUB)).shape).toEqual({
+      costColumn: 'PreTaxCost',
+      meter: 'MeterCategory',
+    });
 
     now += 5 * HOUR;
     await costs.getSubscriptionCosts(SUB);
     expect(requests.map((r) => r.costColumn)).toEqual(['Cost', 'PreTaxCost', 'PreTaxCost']);
+  });
+
+  it('falls back to ServiceName, then to no breakdown, but never loses the costs', async () => {
+    respondWith((_col, meter) => (meter === null ? HttpResponse.json(mca) : badRequest()));
+    const costs = await service().getSubscriptionCosts(SUB);
+    expect(costs.shape).toEqual({ costColumn: 'Cost', meter: null });
+    expect(requests.map((r) => r.meter)).toEqual([
+      'MeterCategory',
+      'MeterCategory',
+      'ServiceName',
+      'ServiceName',
+      null,
+    ]);
+    expect(Object.keys(costs.resources)).toHaveLength(2);
+  });
+
+  it('gives up after the last shape and does not retry other errors', async () => {
+    respondWith(() => badRequest());
+    await expect(service().getSubscriptionCosts(SUB)).rejects.toMatchObject({ status: 400 });
+    expect(requests).toHaveLength(6);
+
+    requests = [];
+    respondWith(() => HttpResponse.json({ error: { code: 'Forbidden' } }, { status: 403 }));
+    await expect(service().getSubscriptionCosts(SUB)).rejects.toMatchObject({ status: 403 });
+    expect(requests).toHaveLength(1);
   });
 
   it('records the rate-limited status while waiting and clears it afterwards', async () => {
@@ -128,6 +160,30 @@ describe('cost service', () => {
     const costs = service();
     await costs.getSubscriptionCosts(SUB);
     await costs.clear();
+    await costs.getSubscriptionCosts(SUB);
+    expect(requests).toHaveLength(2);
+  });
+
+  it('does not cache a query that finishes after clear()', async () => {
+    let release: () => void = () => {};
+    const gate = new Promise<void>((r) => {
+      release = r;
+    });
+    server.use(
+      http.post(QUERY_URL, async () => {
+        requests.push({ costColumn: 'Cost', meter: 'MeterCategory' });
+        await gate;
+        return HttpResponse.json(mca);
+      }),
+    );
+    const costs = service();
+    const pending = costs.getSubscriptionCosts(SUB);
+    await new Promise((r) => setTimeout(r, 20));
+    await costs.clear();
+    release();
+    await pending;
+
+    expect(Object.keys(await fakeBrowser.storage.local.get())).not.toContain(`cost.v1.${SUB}`);
     await costs.getSubscriptionCosts(SUB);
     expect(requests).toHaveLength(2);
   });

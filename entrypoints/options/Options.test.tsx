@@ -25,7 +25,7 @@ describe('Options', () => {
 
   it('shows the defaults on a fresh install', async () => {
     render(<Options request={fakeWorker() as never} />);
-    const tenant = (await screen.findByLabelText('Microsoft Entra tenant')) as HTMLInputElement;
+    const tenant = (await screen.findByLabelText('Sign in through tenant')) as HTMLInputElement;
     // The build default comes from WXT_ENTRA_AUTHORITY (else organizations).
     await vi.waitFor(() => expect(tenant.value).toBe(defaultAuthority()));
     expect((screen.getByLabelText('Reuse cost data for') as HTMLInputElement).value).toBe('4');
@@ -37,7 +37,7 @@ describe('Options', () => {
   it('saves a tenant through the worker, normalised, and offers a reset', async () => {
     const request = fakeWorker();
     render(<Options request={request as never} />);
-    const input = await screen.findByLabelText('Microsoft Entra tenant');
+    const input = await screen.findByLabelText('Sign in through tenant');
     fireEvent.change(input, { target: { value: ' MeedAkourGmail.onmicrosoft.com ' } });
     fireEvent.click(screen.getAllByRole('button', { name: 'Save' })[0] as HTMLElement);
 
@@ -55,7 +55,7 @@ describe('Options', () => {
   it('rejects an invalid tenant without calling the worker', async () => {
     const request = fakeWorker();
     render(<Options request={request as never} />);
-    const input = await screen.findByLabelText('Microsoft Entra tenant');
+    const input = await screen.findByLabelText('Sign in through tenant');
     fireEvent.change(input, { target: { value: 'consumers' } });
     fireEvent.click(screen.getAllByRole('button', { name: 'Save' })[0] as HTMLElement);
     expect(await screen.findByText(/Enter organizations, common/)).toBeTruthy();
@@ -87,7 +87,7 @@ describe('Options', () => {
     const request = fakeWorker();
     render(<Options request={request as never} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Clear cached data' }));
-    expect(await screen.findByText(/Cached cost data cleared/)).toBeTruthy();
+    expect(await screen.findByText(/Cached data cleared/)).toBeTruthy();
     expect(request).toHaveBeenCalledWith({ type: 'clearCache' });
   });
 });

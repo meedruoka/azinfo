@@ -1,0 +1,63 @@
+{
+  "_comment": "Based on the Recommendations - List sample (api-version 2025-01-01), switched to the Cost category. extendedProperties savings fields as reported for cost recommendations; values and IDs are synthetic.",
+  "value": [
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000003/resourceGroups/rg-test/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.Advisor/recommendations/11111111-aaaa-0000-0000-000000000000",
+      "name": "11111111-aaaa-0000-0000-000000000000",
+      "type": "Microsoft.Advisor/recommendations",
+      "properties": {
+        "category": "Cost",
+        "impact": "High",
+        "impactedField": "Microsoft.Compute/virtualMachines",
+        "impactedValue": "vm1",
+        "lastUpdated": "2026-10-01T06:00:00Z",
+        "shortDescription": {
+          "problem": "Right-size or shutdown underutilized virtual machines",
+          "solution": "Right-size or shutdown underutilized virtual machines"
+        },
+        "resourceMetadata": {
+          "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000003/resourceGroups/rg-test/providers/Microsoft.Compute/virtualMachines/vm1"
+        },
+        "extendedProperties": {
+          "currentSku": "Standard_D4s_v5",
+          "targetSku": "Standard_D2s_v5",
+          "savingsAmount": "40.5",
+          "annualSavingsAmount": "486",
+          "savingsCurrency": "EUR"
+        }
+      }
+    },
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000003/resourceGroups/rg-test/providers/Microsoft.Storage/storageAccounts/st1/providers/Microsoft.Advisor/recommendations/22222222-aaaa-0000-0000-000000000000",
+      "name": "22222222-aaaa-0000-0000-000000000000",
+      "type": "Microsoft.Advisor/recommendations",
+      "properties": {
+        "category": "Cost",
+        "impact": "Medium",
+        "shortDescription": {
+          "problem": "Use lifecycle management",
+          "solution": "Move infrequently used blobs to the cool tier"
+        },
+        "resourceMetadata": {
+          "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000003/resourceGroups/rg-test/providers/Microsoft.Storage/storageAccounts/st1"
+        },
+        "extendedProperties": {
+          "savingsAmount": "12",
+          "savingsCurrency": "EUR"
+        }
+      }
+    },
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000003/providers/Microsoft.Advisor/recommendations/33333333-aaaa-0000-0000-000000000000",
+      "name": "33333333-aaaa-0000-0000-000000000000",
+      "type": "Microsoft.Advisor/recommendations",
+      "properties": {
+        "category": "Cost",
+        "impact": "Low",
+        "shortDescription": { "problem": "Consider virtual machine reserved instances" },
+        "resourceMetadata": { "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000003" },
+        "extendedProperties": { "annualSavingsAmount": "900", "savingsCurrency": "EUR" }
+      }
+    }
+  ]
+}

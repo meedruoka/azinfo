@@ -1,4 +1,5 @@
-import type { AssessedCost, ResponseMap, Result, SpikeContext } from '../messages';
+import type { MeterShare } from '../cost/breakdown';
+import type { AssessedCost, ResponseMap, Result, SpikeContext, TipsResult } from '../messages';
 
 /** Month-to-date versus all of last month. */
 export type Change =
@@ -10,6 +11,8 @@ export type Change =
 
 type ErrorState =
   | { kind: 'notSignedIn' }
+  /** Signed in, but this subscription's tenant needs its own sign-in. */
+  | { kind: 'tenantSignIn'; tenantId: string }
   | { kind: 'noCostAccess' }
   | { kind: 'rateLimited'; retryAt?: number }
   | { kind: 'error'; message: string };
@@ -28,6 +31,8 @@ export type PanelState =
       spike: boolean;
       spikeContext: SpikeContext;
       fetchedAt: number;
+      breakdown: MeterShare[];
+      tips: TipsResult;
     }
   | {
       kind: 'group';
@@ -36,6 +41,8 @@ export type PanelState =
       spikes: number;
       spikeContext: SpikeContext;
       fetchedAt: number;
+      breakdown: MeterShare[];
+      tips: TipsResult;
     };
 
 export function changeFrom(mtd: number, lastMonth: number): Change {
@@ -48,6 +55,10 @@ export function errorState(result: Extract<Result<unknown>, { ok: false }>): Err
   switch (result.kind) {
     case 'notSignedIn':
       return { kind: 'notSignedIn' };
+    case 'tenantSignIn':
+      return result.tenantId
+        ? { kind: 'tenantSignIn', tenantId: result.tenantId }
+        : { kind: 'error', message: result.message };
     case 'noCostAccess':
       return { kind: 'noCostAccess' };
     case 'rateLimited':
@@ -60,7 +71,7 @@ export function errorState(result: Extract<Result<unknown>, { ok: false }>): Err
 /** Maps the worker's answer for a single resource to what the panel shows. */
 export function panelStateFromResult(result: Result<ResponseMap['getResourceCost']>): PanelState {
   if (!result.ok) return errorState(result);
-  const { cost, assessment, spikeContext, fetchedAt } = result.data;
+  const { cost, assessment, spikeContext, fetchedAt, breakdown, tips } = result.data;
   if (!cost) return { kind: 'noData', fetchedAt };
   return {
     kind: 'data',
@@ -72,6 +83,8 @@ export function panelStateFromResult(result: Result<ResponseMap['getResourceCost
     spike: assessment?.spike ?? false,
     spikeContext,
     fetchedAt,
+    breakdown,
+    tips,
   };
 }
 
@@ -80,7 +93,7 @@ export function groupPanelStateFromResult(
   result: Result<ResponseMap['getResourceGroupCosts']>,
 ): PanelState {
   if (!result.ok) return errorState(result);
-  const { resources, total, spikeContext, fetchedAt } = result.data;
+  const { resources, total, spikeContext, fetchedAt, breakdown, tips } = result.data;
   return {
     kind: 'group',
     resources,
@@ -88,5 +101,15 @@ export function groupPanelStateFromResult(
     spikes: resources.filter((r) => r.assessment.spike).length,
     spikeContext,
     fetchedAt,
+    breakdown,
+    tips,
   };
+}
+
+/** Number of Advisor tips to mention in the collapsed pill. */
+export function tipCount(state: PanelState): number {
+  if ((state.kind === 'data' || state.kind === 'group') && state.tips.ok) {
+    return state.tips.items.length;
+  }
+  return 0;
 }
