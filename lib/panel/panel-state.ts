@@ -1,4 +1,5 @@
 import type { MeterShare } from '../cost/breakdown';
+import { roundToDisplayed } from '../format';
 import type { AssessedCost, ResponseMap, Result, SpikeContext, TipsResult } from '../messages';
 
 /** Month-to-date versus all of last month. */
@@ -45,7 +46,13 @@ export type PanelState =
       tips: TipsResult;
     };
 
-export function changeFrom(mtd: number, lastMonth: number): Change {
+/**
+ * Compares the amounts as the panel shows them, so a fraction of a cent last month
+ * (shown as 0.00) never turns into "-100%" next to two zero amounts.
+ */
+export function changeFrom(rawMtd: number, rawLastMonth: number, currency: string): Change {
+  const mtd = roundToDisplayed(rawMtd, currency);
+  const lastMonth = roundToDisplayed(rawLastMonth, currency);
   if (lastMonth === 0) return mtd === 0 ? { kind: 'none' } : { kind: 'new' };
   // abs() keeps the sign meaningful when last month was a net credit.
   return { kind: 'percent', value: ((mtd - lastMonth) / Math.abs(lastMonth)) * 100 };
@@ -78,7 +85,7 @@ export function panelStateFromResult(result: Result<ResponseMap['getResourceCost
     mtd: cost.mtd,
     lastMonth: cost.lastMonth,
     currency: cost.currency,
-    change: changeFrom(cost.mtd, cost.lastMonth),
+    change: changeFrom(cost.mtd, cost.lastMonth, cost.currency),
     projected: assessment?.projected ?? null,
     spike: assessment?.spike ?? false,
     spikeContext,

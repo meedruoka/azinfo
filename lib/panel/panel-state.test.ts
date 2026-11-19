@@ -15,8 +15,22 @@ describe('changeFrom', () => {
     [0, 0, { kind: 'none' }],
     // Last month a net credit of -20; this month +10: change is +150%.
     [10, -20, { kind: 'percent', value: 150 }],
+    // Both shown as 0.00: a fraction of a cent last month is not "-100%".
+    [0, 0.003, { kind: 'none' }],
+    [0.004, 0.001, { kind: 'none' }],
+    [0.02, 0.004, { kind: 'new' }],
+    [0, 0.01, { kind: 'percent', value: -100 }],
   ])('mtd %s vs last month %s', (mtd, last, expected) => {
-    expect(changeFrom(mtd, last)).toEqual(expected);
+    expect(changeFrom(mtd, last, 'USD')).toEqual(expected);
+  });
+
+  it('rounds to the currency minor unit (JPY has none)', () => {
+    expect(changeFrom(0, 0.4, 'JPY')).toEqual({ kind: 'none' });
+    expect(changeFrom(0, 1, 'JPY')).toEqual({ kind: 'percent', value: -100 });
+  });
+
+  it('treats an unknown currency code like 2 decimals', () => {
+    expect(changeFrom(0, 0.003, 'XXQ')).toEqual({ kind: 'none' });
   });
 });
 

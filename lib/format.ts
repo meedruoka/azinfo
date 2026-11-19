@@ -10,6 +10,23 @@ export function formatMoney(amount: number, currency: string): string {
   }
 }
 
+/**
+ * The amount as `formatMoney` shows it: rounded to the currency's minor unit
+ * (2 for EUR/USD, 0 for JPY). Unknown codes round to 2, like the fallback above.
+ */
+export function roundToDisplayed(amount: number, currency: string): number {
+  let digits = 2;
+  try {
+    digits =
+      new Intl.NumberFormat('en', { style: 'currency', currency }).resolvedOptions()
+        .maximumFractionDigits ?? 2;
+  } catch {
+    // Unknown currency code: keep 2.
+  }
+  const factor = 10 ** digits;
+  return Math.round(amount * factor) / factor;
+}
+
 export function formatTime(epochMs: number): string {
   return new Date(epochMs).toLocaleTimeString(uiLocale(), { hour: '2-digit', minute: '2-digit' });
 }

@@ -41,13 +41,13 @@ Checked 2026-10-05:
    Cost → PreTaxCost. Costs without a breakdown come last, so the breakdown can't lose the costs.
 5. The cost cache key moved to `cost.v2` (the stored shape changed).
 
-## Still to confirm on a real subscription
+## Checks on a real subscription
 
 | # | Check | Result |
 |---|---|---|
-| 1 | The service worker logs `[azinfo] cost query` with `meter: 'MeterCategory'` and a `MeterCategory` column | Pending |
-| 2 | `[azinfo] advisor` logs the recommendation count and which savings fields exist | Pending |
-| 3 | If tips exist: `savingsAmount` vs `annualSavingsAmount` match what the Advisor blade shows | Pending |
+| 1 | The service worker logs `[azinfo] cost query` with `meter: 'MeterCategory'` and a `MeterCategory` column | Passed 2026-11-19: `costColumn: 'Cost'`, `meter: 'MeterCategory'`, columns `Cost`, `BillingMonth`, `ResourceId`, `MeterCategory`, `Currency`; 9 rows, 1 page. The first query shape was accepted, no fallback |
+| 2 | `[azinfo] advisor` logs the recommendation count and which savings fields exist | Passed 2026-11-19: `recommendations: 0`, `withResource: 0`, `savingsFields: []` |
+| 3 | If tips exist: `savingsAmount` vs `annualSavingsAmount` match what the Advisor blade shows | Not testable yet: the test subscription has no Cost recommendations. Repeat when Advisor lists one |
 
 ## Consequences
 
