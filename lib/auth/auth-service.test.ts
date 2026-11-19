@@ -274,6 +274,41 @@ describe('auth service', () => {
       expect(session?.refreshToken).toBe('RT-B');
     });
 
+    it.each([
+      ['admin approval refused', 'error=access_denied&error_description=AADSTS90094'],
+      ['consent still required', 'error=consent_required'],
+    ])('signInTenant: %s stays a tenant error and keeps the home session', async (_, query) => {
+      await signedInSession();
+      const flow = vi.fn(async (details: WebAuthFlowDetails) => {
+        const state = new URL(details.url).searchParams.get('state');
+        return `${REDIRECT}?${query}&state=${state}`;
+      });
+
+      const err = await service(flow)
+        .signInTenant(TENANT_B)
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(TenantSignInRequiredError);
+      expect(err.tenantId).toBe(TENANT_B);
+      expect(await service().isSignedIn()).toBe(true);
+      expect((await sessionItem.getValue())?.access[DEFAULT_TENANT]?.accessToken).toBe('AT');
+    });
+
+    it('signInTenant: closing the window stays a tenant error', async () => {
+      await signedInSession();
+      const flow = vi.fn(async (details: WebAuthFlowDetails) => {
+        if (!details.interactive) throw new Error('silent failed');
+        throw new Error('The user did not approve access.');
+      });
+
+      const err = await service(flow)
+        .signInTenant(TENANT_B)
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(TenantSignInRequiredError);
+      expect(err.detail).toBe('The user did not approve access.');
+    });
+
     it('keeps every token when several tenants refresh at once', async () => {
       await signedInSession();
       const tenants = ['c1', 'c2', 'c3', 'c4'].map((t) => `${t}cccccc-0000-0000-0000-000000000000`);

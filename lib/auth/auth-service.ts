@@ -228,9 +228,21 @@ export function createAuthService(deps: AuthDeps) {
       return signInTo(DEFAULT_TENANT);
     },
 
-    /** Sign in to one more tenant (consent, MFA or device checks there). */
-    signInTenant(tenantId: string): Promise<void> {
-      return signInTo(tenantKey(tenantId));
+    /**
+     * Sign in to one more tenant (consent, MFA or device checks there). A refusal
+     * there (admin approval required, window closed) only concerns that tenant:
+     * it stays a TenantSignInRequiredError, never "not signed in" for everything.
+     */
+    async signInTenant(tenantId: string): Promise<void> {
+      const key = tenantKey(tenantId);
+      try {
+        await signInTo(key);
+      } catch (e) {
+        if (e instanceof NotSignedInError && e.reason !== 'signed_out') {
+          throw new TenantSignInRequiredError(key, e.detail ?? e.reason);
+        }
+        throw e;
+      }
     },
 
     async signOut(): Promise<void> {
