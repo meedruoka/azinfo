@@ -14,6 +14,7 @@ Not affiliated with Microsoft.
 | `pnpm zip` / `pnpm zip:edge` | Store-ready zip |
 | `pnpm check:manifest` | Checks the built production manifests against the spec's permissions (run after both builds) |
 | `pnpm render:icons` | Renders `assets-src/icon.svg` to `public/icon/*.png` and `store/logo-300.png` with headless Edge. Slow on this machine; about a minute per size |
+| `pnpm store:shots` | Store screenshots (1280×800, light and dark) of the real UI with invented sample data, in `store/screenshots/`. Uses headless Edge |
 | `pnpm test` | Vitest (MSW blocks any unmocked network request) |
 | `pnpm lint` / `pnpm format` | Biome check / fix |
 | `pnpm compile` | TypeScript type check |

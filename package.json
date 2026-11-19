@@ -15,6 +15,7 @@
     "zip:edge": "wxt zip -b edge",
     "check:manifest": "node scripts/check-manifest.mjs",
     "render:icons": "node scripts/render-icons.mjs",
+    "store:shots": "node scripts/store-shots/capture.mjs",
     "compile": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -37,6 +38,7 @@
     "happy-dom": "^20.14.5",
     "msw": "^2.15.0",
     "typescript": "^5.9.3",
+    "vite": "^8.3.2",
     "vitest": "^5.0.3",
     "web-ext": "^10.5.0",
     "wxt": "^0.21.3"

@@ -90,19 +90,23 @@ date, and push. Support channel: <https://github.com/AkourMohamed/azinfo-site/is
 
 ### Screenshot checklist
 
-Use a **personal test subscription** only: no employer tenant names, resource names or costs.
-Make the browser window 1280×800, light theme first, and capture one in dark theme too.
+The screenshots in `store/screenshots/` (1280×800, light and dark) come from `pnpm store:shots`.
+It renders azinfo's real panel, popup and options components with **invented sample data**
+(`scripts/store-shots/data.ts`: shop-web, rg-shop-prod, USD amounts, all-zero IDs) on a neutral
+backdrop, not the Azure portal, and captures them with headless Edge. No real tenant, account,
+subscription or cost can appear, and the page never reads the `.env` files. A personal
+subscription was too empty for useful shots (all $0.00), and employer tenants are off-limits.
+Re-run after any UI change.
 
-1. [ ] Resource page with the panel **expanded**: this month, projection, last month, change.
-2. [ ] Resource page with a **spike flag** (needs at least 5 completed days in the month and a
-   resource whose spend has jumped).
-3. [ ] Resource group page: the **resource list** with the group total.
-4. [ ] Toolbar **popup** with the top 5 for a subscription.
-5. [ ] **Collapsed pill** in the corner of a normal portal blade, to show how unobtrusive it is.
-6. [ ] (Optional) **Options page**.
+1. [x] Resource page with the panel **expanded**: `1-resource-*.png`
+2. [x] Resource page with a **spike flag**: `2-spike-*.png`
+3. [x] Resource group: the **resource list** with the group total: `3-group-*.png`
+4. [x] Toolbar **popup** with the top 5 for a subscription: `4-popup-*.png`
+5. [x] **Collapsed pill** in the corner of a page: `5-pill-*.png`
+6. [x] (Optional) **Options page**: `6-options-*.png`
 
-Check every screenshot for: tenant domain in the portal header, account e-mail, subscription IDs
-in the address bar, and real customer or company names.
+Chrome takes up to 5: use 1–5 in light. Edge takes up to 10: use all six light ones, and add dark
+ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real company names: none.
 
 ## Release checklist
 
