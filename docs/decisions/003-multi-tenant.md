@@ -46,10 +46,13 @@ Checked 2026-10-04/05:
 
 | # | Check | Result |
 |---|---|---|
-| 1 | After sign-in, the popup lists the second tenant's subscriptions grouped under it, without another sign-in, or with one "Sign in" click for that tenant the first time (consent) | Pending |
-| 2 | In the token endpoint traffic, tenant B's token comes from a `refresh_token` grant at `/<tenant B>/` | Pending |
-| 3 | The panel on a tenant-B resource page shows cost, switching between tenants without sign-out | Pending |
-| 4 | Sign out clears all tenants; signing in again restores them | Pending |
+| 1 | After sign-in, the popup lists the second tenant's subscriptions grouped under it, without another sign-in, or with one "Sign in" click for that tenant the first time (consent) | Pending (not tested: needs the popup) |
+| 2 | In the token endpoint traffic, tenant B's token comes from a `refresh_token` grant at `/<tenant B>/` | Probably failed, unconfirmed (2026-11-19): the tenant-B panel asked for a sign-in instead of getting a token silently. This may only be the first-time consent; confirm in the service worker's Network tab when clicking "Sign in to this tenant" |
+| 3 | The panel on a tenant-B resource page shows cost, switching between tenants without sign-out | Partly passed (2026-11-19): a resource in a guest tenant was routed to that tenant (from `#@<domain>`) and showed "needs you to sign in once" with "Sign in to this tenant", not an error. No cost shown because that sign-in was not done. Back on a home-tenant resource, the panel showed cost and meter breakdown without sign-out |
+| 4 | Sign out clears all tenants; signing in again restores them | Pending (not tested: needs the popup) |
+
+Tested read-only in Chrome with a work account that reaches three tenants (home plus two guest
+tenants); nothing was signed in or consented to during the test.
 
 **If check 2 fails** (no silent cross-tenant token with SPA refresh tokens), the fallback already in
 place is the per-tenant `prompt=none` or one click per tenant per day. Record the result here.
