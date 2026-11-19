@@ -112,13 +112,18 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 
 ### One-time setup
 
-1. [ ] **Production app registration**, separate from the dev one, in your own tenant:
+1. [x] **Production app registration**, separate from the dev one, in your own tenant:
    - Name `azinfo`, multi-tenant (*Any Microsoft Entra ID tenant*)
    - Platform **Single-page application**
    - API permission *Azure Service Management → user_impersonation*; remove *Microsoft Graph → User.Read*
    - No client secret
    - See [entra-setup.md](entra-setup.md)
-2. [ ] **`.env.production.local`** (git-ignored). It overrides `.env.local`, which Vite also
+
+   Done 2026-11-19 in the personal Default Directory: client ID
+   `e76d6bcf-bcea-4d90-a659-2d47135dfa96`. The portal now calls this account type *Multiple Entra
+   ID tenants* → **Allow all tenants** (not the "certain tenants" preview). The SPA platform is
+   added together with the redirect URIs in step 5, since the portal needs a URI for it.
+2. [x] **`.env.production.local`** (git-ignored). It overrides `.env.local`, which Vite also
    loads for production builds:
    ```
    WXT_ENTRA_CLIENT_ID=<production client ID>
@@ -155,11 +160,17 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 ## Known adoption risk: publisher verification
 
 On the consent screen, Entra marks multi-tenant apps from **unverified publishers** as
-"unverified". Many organisations only let users consent to apps from verified publishers, or to
-no apps at all. Work-account users there will see an *"admin approval required"* message, and a
-tenant administrator must grant consent once for the whole organisation (instructions for them:
+"unverified". Work-account users will see an *"admin approval required"* message, and a tenant
+administrator must grant consent once for the whole organisation (instructions for them:
 [admin-consent.md](admin-consent.md)).
+
+This is likely to hit **most** organisations, not only strict ones: when the production
+registration was created (2026-11-19), its overview page said *"End users cannot grant consent to
+newly registered multitenant apps without verified publishers."* The dev registration (October
+2026) was refused the same way by one guest tenant during testing. Not yet confirmed with the
+production registration in a real work tenant.
 
 Becoming a **verified publisher** removes most of this friction. It needs a Microsoft AI Cloud
 Partner Program (formerly MPN) account linked to the app registration. Personal Microsoft accounts
-aren't affected. This isn't required to publish; decide before promoting azinfo to companies.
+aren't affected. It isn't required to publish, but without it, work accounts will mostly depend on
+their administrators; decide before promoting azinfo to companies.
