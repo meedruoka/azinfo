@@ -58,7 +58,7 @@ options page: popup → **Options**.
 | [docs/entra-setup.md](docs/entra-setup.md) | App registration, tenant setting, admin consent, production registration |
 | [docs/admin-consent.md](docs/admin-consent.md) | For tenant administrators: what azinfo asks for and how to approve, limit or remove it |
 | [docs/permissions.md](docs/permissions.md) | Every permission and host, with store justifications |
-| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy (fill in placeholders before publishing) |
+| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy, published at <https://akourmohamed.github.io/azinfo-site/privacy-policy.html> (copy changes to the `azinfo-site` repo) |
 | [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
 | [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages |
 

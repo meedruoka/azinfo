@@ -71,8 +71,11 @@ answers, conservatively:
 Certify all three: not sold to third parties; not used for unrelated purposes; not used for
 creditworthiness or lending.
 
-**Privacy policy URL:** host `docs/privacy-policy.md` publicly first (for example GitHub Pages)
-and fill in its placeholders.
+**Privacy policy URL:** <https://akourmohamed.github.io/azinfo-site/privacy-policy.html>
+
+It's published from the public repo `AkourMohamed/azinfo-site` (GitHub Pages, branch `main`).
+`docs/privacy-policy.md` here is the source: after changing it, copy it to that repo, update the
+date, and push. Support channel: <https://github.com/AkourMohamed/azinfo-site/issues>.
 
 ## Images
 
@@ -128,7 +131,8 @@ in the address bar, and real customer or company names.
    `https://<chrome-store-id>.chromiumapp.org/` and `https://<edge-store-id>.chromiumapp.org/`.
    **Verify** the Edge one after the first install from the store: open the extension's service
    worker console and run `chrome.identity.getRedirectURL()`.
-6. [ ] **Privacy policy** published at a public URL, placeholders filled in.
+6. [x] **Privacy policy** published at a public URL, placeholders filled in (2026-11-19, see
+   "Privacy policy URL" above).
 7. [ ] **Administrator page** [admin-consent.md](admin-consent.md) published next to it, with
    `<CLIENT_ID>` and `<CHROME_STORE_ID>` replaced by the production values. Link it from the
    store description's "Requirements" line.
