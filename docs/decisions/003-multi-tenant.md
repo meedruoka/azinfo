@@ -46,14 +46,15 @@ Checked 2026-10-04/05:
 
 | # | Check | Result |
 |---|---|---|
-| 1 | After sign-in, the popup lists the second tenant's subscriptions grouped under it, without another sign-in, or with one "Sign in" click for that tenant the first time (consent) | Pending (not tested: needs the popup) |
-| 2 | In the token endpoint traffic, tenant B's token comes from a `refresh_token` grant at `/<tenant B>/` | Inconclusive (2026-11-19): tenant B blocks user consent for unverified apps. "Sign in to this tenant" showed "Approval required" for azinfo (dev, SPA), so no token can exist there yet and the silent failure is explained by missing consent. An admin approval request is pending; retest once it is granted |
+| 1 | After sign-in, the popup lists the second tenant's subscriptions grouped under it, without another sign-in, or with one "Sign in" click for that tenant the first time (consent) | Passed (2026-11-19): the subscription dropdown groups by tenant (home tenant: 2 subscriptions; a guest tenant: 1 subscription, with its top 5 costs), and that guest tenant needed no extra sign-in. Three other tenants show "<tenant> needs you to sign in" with their own Sign in button |
+| 2 | In the token endpoint traffic, tenant B's token comes from a `refresh_token` grant at `/<tenant B>/` | Partly confirmed (2026-11-19): one guest tenant issued a token with no sign-in prompt, so a silent cross-tenant token works there. Whether it came from the `refresh_token` grant or the `prompt=none` fallback was not captured in the Network tab. Another guest tenant blocks user consent for unverified apps ("Approval required"), so it needs an admin; an approval request is pending |
 | 3 | The panel on a tenant-B resource page shows cost, switching between tenants without sign-out | Blocked by admin approval (2026-11-19). Routing works: a guest-tenant resource was matched to its tenant (from `#@<domain>`) and showed "Sign in to this tenant". Back on a home-tenant resource, the panel showed cost and meter breakdown without sign-out. Found a bug, fixed: after a refused tenant sign-in the panel showed the generic "Sign in to see costs", whose button starts the home sign-in. `signInTenant` now keeps it a `TenantSignInRequiredError` |
-| 4 | Sign out clears all tenants; signing in again restores them | Pending (not tested: needs the popup) |
+| 4 | Sign out clears all tenants; signing in again restores them | Passed (2026-11-19, reported by the user): after Sign out the popup showed only Sign in; after signing in again the same tenant groups and per-tenant sign-in rows came back |
 
-Tested in Chrome with a work account that reaches three tenants (home plus two guest tenants).
+Tested in Chrome with a work account that reaches five tenants (home plus four guest tenants).
 The user clicked "Sign in to this tenant" in one guest tenant and requested admin approval there;
-nothing else was signed in or consented to.
+nothing else was signed in or consented to. Both panel fixes below were confirmed in the browser
+the same day.
 
 Also seen: while the interactive sign-in window waits (here on the approval screen), the panel
 showed only "Loading cost…". Fixed: a sign-in started from the panel now shows "Signing in… If a
