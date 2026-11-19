@@ -285,6 +285,28 @@ describe('Panel', () => {
     expect(request.mock.calls[1]?.[0]).toEqual({ type: 'signInTenant', tenantId: 'bbbb' });
   });
 
+  it('says where to finish while the sign-in window is open', async () => {
+    let finishSignIn: (answer: unknown) => void = () => {};
+    const answers: unknown[] = [
+      { ok: false, kind: 'tenantSignIn', message: '', tenantId: 'bbbb' },
+      new Promise((resolve) => {
+        finishSignIn = resolve;
+      }),
+      { ok: false, kind: 'tenantSignIn', message: 'access_denied', tenantId: 'bbbb' },
+    ];
+    const request = vi.fn(async (_req: Request) => answers.shift());
+    render(<Panel context={APP} request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Sign in to this tenant' }));
+
+    expect(await screen.findByText(/finish signing in there/)).toBeTruthy();
+    expect(screen.queryByText('Loading cost…')).toBeNull();
+
+    // Refused there (e.g. admin approval): back to the tenant prompt, no hint left.
+    finishSignIn({ ok: false, kind: 'tenantSignIn', message: 'access_denied', tenantId: 'bbbb' });
+    expect(await screen.findByRole('button', { name: 'Sign in to this tenant' })).toBeTruthy();
+    expect(screen.queryByText(/finish signing in there/)).toBeNull();
+  });
+
   it('Refresh forces a new query', async () => {
     const request = vi.fn(async () => costOf(APP, 1, 1));
     render(<Panel context={APP} request={request as never} />);

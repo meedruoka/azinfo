@@ -42,6 +42,9 @@
   "panelCollapse": { "message": "Réduire" },
   "panelResourceGroup": { "message": "Groupe de ressources" },
   "panelLoadingCost": { "message": "Chargement du coût…" },
+  "panelSigningIn": {
+    "message": "Connexion en cours… Si une fenêtre Microsoft s'ouvre, terminez la connexion dans celle-ci. Elle peut se trouver derrière cette fenêtre du navigateur."
+  },
   "panelSignInToSee": { "message": "Connectez-vous pour voir les coûts." },
   "panelOtherTenant": {
     "message": "Cet abonnement se trouve dans un autre locataire, qui demande une connexion unique."

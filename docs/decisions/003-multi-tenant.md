@@ -56,7 +56,9 @@ The user clicked "Sign in to this tenant" in one guest tenant and requested admi
 nothing else was signed in or consented to.
 
 Also seen: while the interactive sign-in window waits (here on the approval screen), the panel
-shows only "Loading cost…" with no hint to finish in the Microsoft window. Not changed yet.
+showed only "Loading cost…". Fixed: a sign-in started from the panel now shows "Signing in… If a
+Microsoft window opens, finish signing in there. It may be behind this browser window."
+(`panelSigningIn`, in all 10 languages; non-English text is a draft like the rest, see 005).
 
 **If check 2 fails** (no silent cross-tenant token with SPA refresh tokens), the fallback already in
 place is the per-tenant `prompt=none` or one click per tenant per day. Record the result here.

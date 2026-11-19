@@ -19,7 +19,8 @@ type ErrorState =
   | { kind: 'error'; message: string };
 
 export type PanelState =
-  | { kind: 'loading'; rateLimitedUntil?: number }
+  /** `signingIn`: a sign-in started from the panel, so a Microsoft window may be waiting. */
+  | { kind: 'loading'; rateLimitedUntil?: number; signingIn?: boolean }
   | ErrorState
   | { kind: 'noData'; fetchedAt: number }
   | {

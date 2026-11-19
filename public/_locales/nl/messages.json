@@ -40,6 +40,9 @@
   "panelCollapse": { "message": "Samenvouwen" },
   "panelResourceGroup": { "message": "Resourcegroep" },
   "panelLoadingCost": { "message": "Kosten laden…" },
+  "panelSigningIn": {
+    "message": "Bezig met aanmelden… Als er een Microsoft-venster opent, voltooi de aanmelding daar. Het kan achter dit browservenster staan."
+  },
   "panelSignInToSee": { "message": "Meld u aan om de kosten te zien." },
   "panelOtherTenant": {
     "message": "Dit abonnement staat in een andere tenant, waarvoor u zich eenmalig moet aanmelden."

@@ -42,6 +42,9 @@
   "panelCollapse": { "message": "Contraer" },
   "panelResourceGroup": { "message": "Grupo de recursos" },
   "panelLoadingCost": { "message": "Cargando coste…" },
+  "panelSigningIn": {
+    "message": "Iniciando sesión… Si se abre una ventana de Microsoft, termine de iniciar sesión allí. Puede estar detrás de esta ventana del navegador."
+  },
   "panelSignInToSee": { "message": "Inicie sesión para ver los costes." },
   "panelOtherTenant": {
     "message": "Esta suscripción está en otro inquilino, que requiere que inicie sesión una vez."

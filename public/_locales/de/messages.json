@@ -42,6 +42,9 @@
   "panelCollapse": { "message": "Einklappen" },
   "panelResourceGroup": { "message": "Ressourcengruppe" },
   "panelLoadingCost": { "message": "Kosten werden geladen…" },
+  "panelSigningIn": {
+    "message": "Anmeldung läuft… Wenn sich ein Microsoft-Fenster öffnet, schließen Sie die Anmeldung dort ab. Es kann hinter diesem Browserfenster liegen."
+  },
   "panelSignInToSee": { "message": "Melden Sie sich an, um die Kosten zu sehen." },
   "panelOtherTenant": {
     "message": "Dieses Abonnement gehört zu einem anderen Mandanten, der eine einmalige Anmeldung erfordert."

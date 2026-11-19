@@ -40,6 +40,9 @@
   "panelCollapse": { "message": "Comprimi" },
   "panelResourceGroup": { "message": "Gruppo di risorse" },
   "panelLoadingCost": { "message": "Caricamento del costo…" },
+  "panelSigningIn": {
+    "message": "Accesso in corso… Se si apre una finestra Microsoft, completa l'accesso lì. Potrebbe trovarsi dietro questa finestra del browser."
+  },
   "panelSignInToSee": { "message": "Accedi per vedere i costi." },
   "panelOtherTenant": {
     "message": "Questa sottoscrizione si trova in un altro tenant, che richiede un accesso una tantum."

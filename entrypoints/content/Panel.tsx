@@ -155,9 +155,7 @@ function CostPanel({
     () =>
       costStatusItem.watch((all) => {
         const status = all[subscriptionId];
-        setState((s) =>
-          s.kind === 'loading' ? { kind: 'loading', rateLimitedUntil: status?.retryAt } : s,
-        );
+        setState((s) => (s.kind === 'loading' ? { ...s, rateLimitedUntil: status?.retryAt } : s));
       }),
     [subscriptionId],
   );
@@ -168,7 +166,8 @@ function CostPanel({
   };
 
   const signIn = async (tenantId?: string) => {
-    setState({ kind: 'loading' });
+    // The Microsoft window may open behind the browser: say where to look.
+    setState({ kind: 'loading', signingIn: true });
     const res: Result<unknown> = await request(
       tenantId ? { type: 'signInTenant', tenantId } : { type: 'signIn' },
     );
@@ -229,9 +228,11 @@ function Body({
     case 'loading':
       return (
         <p className="muted">
-          {state.rateLimitedUntil
-            ? t('rateLimitedRetrying', formatTime(state.rateLimitedUntil))
-            : t('panelLoadingCost')}
+          {state.signingIn
+            ? t('panelSigningIn')
+            : state.rateLimitedUntil
+              ? t('rateLimitedRetrying', formatTime(state.rateLimitedUntil))
+              : t('panelLoadingCost')}
         </p>
       );
     case 'notSignedIn':

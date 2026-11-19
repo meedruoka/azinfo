@@ -36,6 +36,9 @@
   "panelCollapse": { "message": "折叠" },
   "panelResourceGroup": { "message": "资源组" },
   "panelLoadingCost": { "message": "正在加载成本…" },
+  "panelSigningIn": {
+    "message": "正在登录… 如果打开了 Microsoft 窗口，请在其中完成登录。该窗口可能在此浏览器窗口后面。"
+  },
   "panelSignInToSee": { "message": "登录以查看成本。" },
   "panelOtherTenant": { "message": "此订阅位于另一个租户中，需要你登录一次。" },
   "panelOtherTenantNamed": { "message": "此订阅位于另一个租户($1)中，需要你登录一次。" },

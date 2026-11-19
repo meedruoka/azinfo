@@ -74,6 +74,9 @@
   },
   "panelResourceGroup": { "message": "Resource group", "description": "Azure resource group" },
   "panelLoadingCost": { "message": "Loading cost…" },
+  "panelSigningIn": {
+    "message": "Signing in… If a Microsoft window opens, finish signing in there. It may be behind this browser window."
+  },
   "panelSignInToSee": { "message": "Sign in to see costs." },
   "panelOtherTenant": {
     "message": "This subscription is in another tenant, which needs you to sign in once."

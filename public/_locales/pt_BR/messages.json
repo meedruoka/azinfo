@@ -40,6 +40,9 @@
   "panelCollapse": { "message": "Recolher" },
   "panelResourceGroup": { "message": "Grupo de recursos" },
   "panelLoadingCost": { "message": "Carregando custo…" },
+  "panelSigningIn": {
+    "message": "Entrando… Se uma janela da Microsoft abrir, conclua a entrada nela. Ela pode estar atrás desta janela do navegador."
+  },
   "panelSignInToSee": { "message": "Entre para ver os custos." },
   "panelOtherTenant": {
     "message": "Esta assinatura está em outro locatário, que exige que você entre uma vez."
