@@ -1,9 +1,12 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import ar from '@/public/_locales/ar/messages.json';
 import fr from '@/public/_locales/fr/messages.json';
+import hi from '@/public/_locales/hi/messages.json';
+import ru from '@/public/_locales/ru/messages.json';
 import { formatMoney, formatPercent, formatShare } from './format';
-import { substitute, t, tParts, tp, uiLocale } from './i18n';
+import { substitute, t, tParts, tp, uiDirection, uiLocale } from './i18n';
 
 /** Makes the browser API answer from a locale file, like Chrome does. */
 function browserLanguage(locale: string, messages: Record<string, { message: string }>) {
@@ -46,6 +49,30 @@ describe('tp', () => {
     browserLanguage('fr', fr);
     expect(tp('pillTips', 1)).toBe('1 conseil');
     expect(tp('pillTips', 2)).toBe('2 conseils');
+  });
+});
+
+describe('decision 007 languages', () => {
+  it('reads the text direction from Chrome: rtl for Arabic, ltr otherwise', () => {
+    expect(uiDirection()).toBe('ltr');
+    vi.spyOn(browser.i18n, 'getMessage').mockImplementation(((key: string) =>
+      key === '@@bidi_dir' ? 'rtl' : '') as never);
+    expect(uiDirection()).toBe('rtl');
+  });
+
+  it('phrases Russian counts so they read correctly for any number', () => {
+    browserLanguage('ru', ru);
+    expect(tp('pillTips', 1)).toBe('1 совет');
+    expect(tp('pillTips', 21)).toBe('21 совет');
+    expect(tp('pillTips', 3)).toBe('советов: 3');
+    expect(tp('pillTips', 11)).toBe('советов: 11');
+  });
+
+  it('formats money for Arabic and Hindi without failing', () => {
+    browserLanguage('ar', ar);
+    expect(formatMoney(12.5, 'USD')).toMatch(/12|١٢/);
+    browserLanguage('hi', hi);
+    expect(formatMoney(12.5, 'USD')).toContain('12.50');
   });
 });
 

@@ -31,6 +31,7 @@
 
 .azinfo-root {
   position: fixed;
+  /* Physical on purpose: bottom-right in every language (decision 007). */
   right: 16px;
   bottom: 16px;
   z-index: 1000000;
@@ -92,12 +93,15 @@ header {
 .resource {
   font-weight: 600;
   overflow-wrap: anywhere;
+  /* Resource names and types are Latin text: keep their own direction in Arabic. */
+  unicode-bidi: plaintext;
 }
 
 .type {
   font-size: 12px;
   color: var(--muted);
   overflow-wrap: anywhere;
+  unicode-bidi: plaintext;
 }
 
 button.icon {
@@ -121,7 +125,7 @@ dt {
 
 dd {
   margin: 0;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
@@ -185,7 +189,7 @@ dd.spike,
 }
 
 .spike-badge {
-  margin-right: 4px;
+  margin-inline-end: 4px;
 }
 
 .list-label {
@@ -203,7 +207,7 @@ table {
 }
 
 th {
-  text-align: left;
+  text-align: start;
   font-size: 12px;
   font-weight: 600;
   padding: 2px 0;
@@ -216,9 +220,9 @@ td {
 }
 
 .num {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
-  padding-left: 8px;
+  padding-inline-start: 8px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -280,7 +284,7 @@ button.link {
 }
 
 .meter-value {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -302,7 +306,7 @@ button.link {
 }
 
 .tip-impact {
-  margin-right: 6px;
+  margin-inline-end: 6px;
   padding: 0 4px;
   border: 1px solid var(--border);
   border-radius: 3px;
@@ -321,7 +325,7 @@ button.link {
 }
 
 .tip-badge {
-  margin-left: 4px;
+  margin-inline-start: 4px;
   padding: 0 3px;
   border-radius: 3px;
   font-size: 11px;

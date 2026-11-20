@@ -3,8 +3,24 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const LOCALES_DIR = join(__dirname, '..', 'public', '_locales');
-/** The languages azinfo ships (decided 2026-10-05). */
-const EXPECTED = ['de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt_BR', 'zh_CN'];
+/** The languages azinfo ships (decisions 005 and 007). */
+const EXPECTED = [
+  'ar',
+  'bn',
+  'de',
+  'en',
+  'es',
+  'fr',
+  'hi',
+  'id',
+  'it',
+  'ja',
+  'ko',
+  'nl',
+  'pt_BR',
+  'ru',
+  'zh_CN',
+];
 
 type Messages = Record<string, { message: string; description?: string }>;
 const load = (locale: string): Messages =>

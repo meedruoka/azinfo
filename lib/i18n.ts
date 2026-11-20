@@ -29,6 +29,18 @@ export function tp(key: PluralKey, count: number, ...subs: (string | number)[]):
   return t(`${key}_${form}` as MessageKey, count, ...subs);
 }
 
+/**
+ * Text direction of the UI language, from Chrome's predefined `@@bidi_dir`
+ * message: `rtl` for Arabic, `ltr` otherwise or where the API is missing.
+ */
+export function uiDirection(): 'ltr' | 'rtl' {
+  try {
+    return browser.i18n.getMessage('@@bidi_dir') === 'rtl' ? 'rtl' : 'ltr';
+  } catch {
+    return 'ltr';
+  }
+}
+
 /** The browser's UI language (e.g. `fr`, `pt-BR`), used for numbers, money and times. */
 export function uiLocale(): string | undefined {
   try {

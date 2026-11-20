@@ -1,0 +1,341 @@
+{
+  "extDescription": {
+    "message": "Стоимость Azure рядом с ресурсом, который вы открыли на портале Azure. Не связано с Microsoft."
+  },
+  "signIn": {
+    "message": "Войти"
+  },
+  "signOut": {
+    "message": "Выйти"
+  },
+  "retry": {
+    "message": "Повторить"
+  },
+  "refresh": {
+    "message": "Обновить"
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "loading": {
+    "message": "Загрузка…"
+  },
+  "resource": {
+    "message": "Ресурс"
+  },
+  "thisMonth": {
+    "message": "Этот месяц"
+  },
+  "lastMonth": {
+    "message": "Прошлый месяц"
+  },
+  "updatedAt": {
+    "message": "Обновлено в $1. Данные о стоимости Azure запаздывают на несколько часов."
+  },
+  "rateLimitedRetrying": {
+    "message": "Azure ограничивает частоту запросов, повтор в $1…"
+  },
+  "popupOptions": {
+    "message": "Параметры"
+  },
+  "popupSigningIn": {
+    "message": "Выполняется вход…"
+  },
+  "popupSignInPrompt": {
+    "message": "Войдите с учетной записью Microsoft, которую вы используете для Azure."
+  },
+  "popupLoadingTenants": {
+    "message": "Загрузка клиентов…"
+  },
+  "popupNoSubscriptions": {
+    "message": "Для этой учетной записи нет доступных подписок."
+  },
+  "popupSubscription": {
+    "message": "Подписка"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1: требуется вход."
+  },
+  "popupTenantFailed": {
+    "message": "Не удалось прочитать $1: $2"
+  },
+  "popupTop5": {
+    "message": "Топ-5 за этот месяц"
+  },
+  "popupLoadingCosts": {
+    "message": "Загрузка стоимости…"
+  },
+  "popupNoCosts": {
+    "message": "Нет расходов по ресурсам ни в этом, ни в прошлом месяце."
+  },
+  "popupNoCostAccess": {
+    "message": "Нет доступа к данным о стоимости этой подписки (нужна роль Cost Management Reader)."
+  },
+  "popupRateLimited": {
+    "message": "Azure ограничивает частоту запросов стоимости. Повторите через минуту."
+  },
+  "panelLabel": {
+    "message": "Панель стоимости azinfo"
+  },
+  "panelPillLabel": {
+    "message": "Панель стоимости azinfo: $1. Развернуть."
+  },
+  "panelCollapse": {
+    "message": "Свернуть"
+  },
+  "panelResourceGroup": {
+    "message": "Группа ресурсов"
+  },
+  "panelLoadingCost": {
+    "message": "Загрузка стоимости…"
+  },
+  "panelSigningIn": {
+    "message": "Выполняется вход… Если откроется окно Microsoft, завершите вход в нем. Оно может оказаться за этим окном браузера."
+  },
+  "signInChooseAccount": {
+    "message": "Какую учетную запись вы используете для Azure?"
+  },
+  "signInWork": {
+    "message": "Рабочая или учебная учетная запись"
+  },
+  "signInPersonal": {
+    "message": "Личная учетная запись Microsoft"
+  },
+  "signInTenantLabel": {
+    "message": "Ваш клиент"
+  },
+  "signInTenantHelp": {
+    "message": "Указан под вашим именем в меню учетной записи портала Azure, например $1. Если сначала открыть любой ресурс Azure, поле заполнится автоматически."
+  },
+  "signInTenantInvalid": {
+    "message": "Введите домен клиента (например, yourname.onmicrosoft.com) или идентификатор клиента."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Личная учетная запись Microsoft? Войдите через кнопку azinfo на панели инструментов браузера."
+  },
+  "signInAgainPrompt": {
+    "message": "Ваш сеанс завершился, например при закрытии браузера. Войдите снова с той же учетной записью."
+  },
+  "signInAgainTenant": {
+    "message": "Войти снова ($1)"
+  },
+  "signInAgainWork": {
+    "message": "Войти снова (рабочая или учебная учетная запись)"
+  },
+  "signInOtherAccount": {
+    "message": "Использовать другую учетную запись"
+  },
+  "panelSignInToSee": {
+    "message": "Войдите, чтобы увидеть стоимость."
+  },
+  "panelOtherTenant": {
+    "message": "Эта подписка находится в другом клиенте, где нужно один раз войти."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Эта подписка находится в другом клиенте ($1), где нужно один раз войти."
+  },
+  "panelSignInToTenant": {
+    "message": "Войти в этот клиент"
+  },
+  "panelNoCostAccess": {
+    "message": "Нет доступа к данным о стоимости этой подписки. Нужна роль Cost Management Reader."
+  },
+  "panelNoData": {
+    "message": "Для этого ресурса нет расходов ни в этом, ни в прошлом месяце."
+  },
+  "panelNoDataHint": {
+    "message": "Некоторые ресурсы оплачиваются через другой ресурс, например веб-приложение через свой App Service plan."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure ограничивает частоту запросов стоимости. Повторите после $1."
+  },
+  "panelRateLimited": {
+    "message": "Azure ограничивает частоту запросов стоимости."
+  },
+  "panelThisMonthSoFar": {
+    "message": "В этом месяце на сегодня"
+  },
+  "panelProjected": {
+    "message": "Прогноз на конец месяца"
+  },
+  "panelVsLastMonth": {
+    "message": "На сегодня по сравнению со всем прошлым месяцем"
+  },
+  "panelGroupThisMonth": {
+    "message": "Группа: этот месяц на сегодня"
+  },
+  "panelGroupLastMonth": {
+    "message": "Группа: прошлый месяц"
+  },
+  "panelGroupNoCost": {
+    "message": "Ни у одного ресурса этой группы нет расходов в этом или прошлом месяце."
+  },
+  "panelGroupListLabel": {
+    "message": "Ресурсы с расходами в этом или прошлом месяце"
+  },
+  "panelSpikeTitle": {
+    "message": "Прогнозируемый скачок"
+  },
+  "panelSpikeLabel": {
+    "message": "Скачок"
+  },
+  "panelSpikeNote": {
+    "message": "▲ Прогноз на конец месяца более чем на $1% выше прошлого месяца."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 ресурс: прогноз более чем на $2% выше прошлого месяца."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ Ресурсов с прогнозом более чем на $2% выше прошлого месяца: $1."
+  },
+  "panelFromTomorrow": {
+    "message": "С завтрашнего дня"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (предварительная оценка)"
+  },
+  "panelNewThisMonth": {
+    "message": "Новое в этом месяце"
+  },
+  "panelByMeter": {
+    "message": "Этот месяц по счетчикам"
+  },
+  "panelMeterOther": {
+    "message": "Прочее"
+  },
+  "panelTipsHeading": {
+    "message": "Советы по экономии (Azure Advisor)"
+  },
+  "panelTipsNone": {
+    "message": "Нет советов по экономии от Azure Advisor."
+  },
+  "panelTipsUnavailable": {
+    "message": "Советы по экономии недоступны."
+  },
+  "panelTipsNoAccess": {
+    "message": "Советы по экономии недоступны: нет доступа к Azure Advisor."
+  },
+  "panelTipBadge": {
+    "message": "совет"
+  },
+  "panelTipBadgeTitle": {
+    "message": "Совет по экономии от Azure Advisor"
+  },
+  "panelSaveYear": {
+    "message": "Экономия ~$1/год"
+  },
+  "panelSavingsEstimated": {
+    "message": "Оценка экономии: $1"
+  },
+  "impactHigh": {
+    "message": "Высокое"
+  },
+  "impactMedium": {
+    "message": "Среднее"
+  },
+  "impactLow": {
+    "message": "Низкое"
+  },
+  "pillSpike": {
+    "message": "скачок"
+  },
+  "pillSpikes_one": {
+    "message": "$1 скачок"
+  },
+  "pillSpikes_other": {
+    "message": "скачков: $1"
+  },
+  "pillTips_one": {
+    "message": "$1 совет"
+  },
+  "pillTips_other": {
+    "message": "советов: $1"
+  },
+  "pillMixed": {
+    "message": "разные"
+  },
+  "pillNoCost": {
+    "message": "нет расходов"
+  },
+  "pillSignIn": {
+    "message": "войти"
+  },
+  "pillNoAccess": {
+    "message": "нет доступа"
+  },
+  "pillRateLimited": {
+    "message": "лимит запросов"
+  },
+  "pillRateLimitedWaiting": {
+    "message": "лимит запросов…"
+  },
+  "pillError": {
+    "message": "ошибка"
+  },
+  "optTitle": {
+    "message": "Параметры azinfo"
+  },
+  "optSignInTitle": {
+    "message": "Вход"
+  },
+  "optSignInThrough": {
+    "message": "Входить через клиент"
+  },
+  "optReset": {
+    "message": "Сбросить по умолчанию"
+  },
+  "optSignInHelp": {
+    "message": "Клиент, через который вы входите. Другие ваши клиенты находятся автоматически после входа, а панель стоимости следует за клиентом, открытым на портале. Рабочие или учебные учетные записи: $1. Личные учетные записи Microsoft (Outlook, Gmail и т. д.): ваш собственный клиент, например $2, указанный под вашим именем в меню учетной записи портала Azure. Изменение этого параметра выполняет выход."
+  },
+  "optSavedSignedOut": {
+    "message": "Сохранено: $1. Выполнен выход; войдите снова с помощью кнопки на панели инструментов."
+  },
+  "optInvalidTenant": {
+    "message": "Введите organizations, common, домен клиента (contoso.onmicrosoft.com) или идентификатор клиента."
+  },
+  "optCostTitle": {
+    "message": "Данные о стоимости"
+  },
+  "optReuseFor": {
+    "message": "Использовать данные о стоимости повторно в течение"
+  },
+  "optHours": {
+    "message": "ч"
+  },
+  "optCacheHelp": {
+    "message": "Azure обновляет данные о стоимости каждые несколько часов. Меньший срок означает больше запросов, а Azure ограничивает их частоту."
+  },
+  "optSpikeTitle": {
+    "message": "Отметка скачка"
+  },
+  "optSpikeLabel": {
+    "message": "Отмечать, когда прогноз на конец месяца выше более чем на"
+  },
+  "optSpikeUnit": {
+    "message": "% по сравнению с прошлым месяцем"
+  },
+  "optSpikeHelp": {
+    "message": "Проверяется с 6-го числа месяца, когда есть данные за 5 полных дней. Не отмечается, если в прошлом месяце не было расходов."
+  },
+  "optDefault": {
+    "message": "По умолчанию: $1."
+  },
+  "optNumberRange": {
+    "message": "Введите число от $1 до $2."
+  },
+  "optSaved": {
+    "message": "Сохранено."
+  },
+  "optCachedTitle": {
+    "message": "Кэшированные данные"
+  },
+  "optCachedHelp": {
+    "message": "Удаляет данные о стоимости, советы по экономии и список клиентов, сохраненные на этом устройстве. Вход и эти параметры сохраняются."
+  },
+  "optClearCache": {
+    "message": "Очистить кэшированные данные"
+  },
+  "optCacheCleared": {
+    "message": "Кэшированные данные очищены. При следующем просмотре Azure будет запрошен снова."
+  }
+}

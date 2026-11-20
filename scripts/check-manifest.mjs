@@ -10,7 +10,23 @@ const EXPECTED = {
     'https://portal.azure.com/*',
   ],
   contentScriptMatches: ['https://portal.azure.com/*'],
-  locales: ['de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt_BR', 'zh_CN'],
+  locales: [
+    'ar',
+    'bn',
+    'de',
+    'en',
+    'es',
+    'fr',
+    'hi',
+    'id',
+    'it',
+    'ja',
+    'ko',
+    'nl',
+    'pt_BR',
+    'ru',
+    'zh_CN',
+  ],
 };
 
 /** Manifest keys that would widen access beyond the spec. */

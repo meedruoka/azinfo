@@ -8,11 +8,39 @@ import { Options } from '@/entrypoints/options/Options';
 import optionsCss from '@/entrypoints/options/style.css?inline';
 import { App } from '@/entrypoints/popup/App';
 import popupCss from '@/entrypoints/popup/style.css?inline';
+import { uiDirection } from '@/lib/i18n';
 import { contexts, sampleRequest } from './data';
 import { presetStorage } from './storage-shim';
 
-const scene = new URLSearchParams(location.search).get('scene') ?? 'resource';
+const params = new URLSearchParams(location.search);
+const scene = params.get('scene') ?? 'resource';
 const request = sampleRequest as never;
+
+// ?lang=ar (or any shipped locale): answer the i18n API from that locale file,
+// like Chrome does, so a language and its direction can be checked by eye.
+const locales = import.meta.glob<Record<string, { message: string }>>(
+  '../../public/_locales/*/messages.json',
+  { eager: true, import: 'default' },
+);
+const lang = params.get('lang');
+const messages = lang ? locales[`../../public/_locales/${lang}/messages.json`] : undefined;
+if (messages) {
+  const rtl = ['ar', 'he', 'fa'].includes(lang ?? '');
+  (globalThis as { browser?: unknown }).browser = {
+    i18n: {
+      getUILanguage: () => lang?.replace('_', '-'),
+      getMessage: (key: string, subs: string[] = []) =>
+        key === '@@bidi_dir'
+          ? rtl
+            ? 'rtl'
+            : 'ltr'
+          : (messages[key]?.message ?? '').replace(
+              /\$([1-9])/g,
+              (_, n) => subs[Number(n) - 1] ?? '',
+            ),
+    },
+  };
+}
 
 /** Page-level styles become host styles inside a shadow root. */
 const forShadow = (css: string) => css.replace(/:root/g, ':host').replace(/\bbody\b/g, ':host');
@@ -26,6 +54,7 @@ function mount(className: string, css: string, node: ReactNode) {
   const style = document.createElement('style');
   style.textContent = css;
   const root = document.createElement('div');
+  root.dir = uiDirection();
   shadow.append(style, root);
   ReactDOM.createRoot(root).render(node);
 }

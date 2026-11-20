@@ -75,7 +75,7 @@ table {
 }
 
 th {
-  text-align: left;
+  text-align: start;
   font-weight: 600;
   font-size: 12px;
   padding: 4px 0;
@@ -88,14 +88,16 @@ td {
 }
 
 .num {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
-  padding-left: 8px;
+  padding-inline-start: 8px;
   font-variant-numeric: tabular-nums;
 }
 
 .name {
   word-break: break-all;
+  /* Resource names are Latin text: keep their own direction in Arabic. */
+  unicode-bidi: plaintext;
 }
 
 .tenant-notes {

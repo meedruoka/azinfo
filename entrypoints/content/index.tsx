@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client';
+import { uiDirection } from '@/lib/i18n';
 import { type PortalContext, parsePortalUrl } from '@/lib/portal/parse-portal-url';
 import { Panel } from './Panel';
 // Inlined into the script: avoids exposing a CSS file to the portal through
@@ -31,6 +32,8 @@ export default defineContentScript({
       onMount: (container) => {
         const wrapper = document.createElement('div');
         wrapper.className = 'azinfo-root';
+        // The panel's own direction (Arabic: rtl), not the portal's (decision 007).
+        wrapper.dir = uiDirection();
         container.append(wrapper);
         const root = ReactDOM.createRoot(wrapper);
         root.render(<Panel context={context} />);

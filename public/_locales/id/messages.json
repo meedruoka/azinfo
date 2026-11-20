@@ -1,0 +1,341 @@
+{
+  "extDescription": {
+    "message": "Info biaya Azure di samping sumber daya yang Anda lihat di portal Azure. Tidak berafiliasi dengan Microsoft."
+  },
+  "signIn": {
+    "message": "Masuk"
+  },
+  "signOut": {
+    "message": "Keluar"
+  },
+  "retry": {
+    "message": "Coba lagi"
+  },
+  "refresh": {
+    "message": "Muat ulang"
+  },
+  "save": {
+    "message": "Simpan"
+  },
+  "loading": {
+    "message": "Memuat…"
+  },
+  "resource": {
+    "message": "Sumber daya"
+  },
+  "thisMonth": {
+    "message": "Bulan ini"
+  },
+  "lastMonth": {
+    "message": "Bulan lalu"
+  },
+  "updatedAt": {
+    "message": "Diperbarui $1. Data biaya Azure tertunda beberapa jam."
+  },
+  "rateLimitedRetrying": {
+    "message": "Dibatasi oleh Azure, mencoba lagi pukul $1…"
+  },
+  "popupOptions": {
+    "message": "Opsi"
+  },
+  "popupSigningIn": {
+    "message": "Sedang masuk…"
+  },
+  "popupSignInPrompt": {
+    "message": "Masuk dengan akun Microsoft yang Anda gunakan untuk Azure."
+  },
+  "popupLoadingTenants": {
+    "message": "Memuat penyewa…"
+  },
+  "popupNoSubscriptions": {
+    "message": "Tidak ada langganan yang terlihat oleh akun ini."
+  },
+  "popupSubscription": {
+    "message": "Langganan"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1 meminta Anda masuk."
+  },
+  "popupTenantFailed": {
+    "message": "$1 tidak dapat dibaca: $2"
+  },
+  "popupTop5": {
+    "message": "5 teratas bulan ini"
+  },
+  "popupLoadingCosts": {
+    "message": "Memuat biaya…"
+  },
+  "popupNoCosts": {
+    "message": "Tidak ada biaya sumber daya bulan ini maupun bulan lalu."
+  },
+  "popupNoCostAccess": {
+    "message": "Tidak ada akses ke data biaya untuk langganan ini (memerlukan Cost Management Reader)."
+  },
+  "popupRateLimited": {
+    "message": "Azure membatasi kueri biaya. Coba lagi dalam satu menit."
+  },
+  "panelLabel": {
+    "message": "Panel biaya azinfo"
+  },
+  "panelPillLabel": {
+    "message": "Panel biaya azinfo: $1. Bentangkan."
+  },
+  "panelCollapse": {
+    "message": "Ciutkan"
+  },
+  "panelResourceGroup": {
+    "message": "Grup sumber daya"
+  },
+  "panelLoadingCost": {
+    "message": "Memuat biaya…"
+  },
+  "panelSigningIn": {
+    "message": "Sedang masuk… Jika jendela Microsoft terbuka, selesaikan proses masuk di sana. Jendela itu mungkin ada di belakang jendela browser ini."
+  },
+  "signInChooseAccount": {
+    "message": "Akun mana yang Anda gunakan untuk Azure?"
+  },
+  "signInWork": {
+    "message": "Akun kerja atau sekolah"
+  },
+  "signInPersonal": {
+    "message": "Akun Microsoft pribadi"
+  },
+  "signInTenantLabel": {
+    "message": "Penyewa Anda"
+  },
+  "signInTenantHelp": {
+    "message": "Ditampilkan di bawah nama Anda di menu akun portal Azure, misalnya $1. Membuka sumber daya Azure apa pun terlebih dahulu akan mengisinya."
+  },
+  "signInTenantInvalid": {
+    "message": "Masukkan domain penyewa Anda (misalnya yourname.onmicrosoft.com) atau ID penyewa."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Akun Microsoft pribadi? Masuk dari tombol azinfo di bilah alat browser."
+  },
+  "signInAgainPrompt": {
+    "message": "Sesi Anda berakhir, misalnya saat browser ditutup. Masuk lagi dengan akun yang sama."
+  },
+  "signInAgainTenant": {
+    "message": "Masuk lagi ($1)"
+  },
+  "signInAgainWork": {
+    "message": "Masuk lagi (akun kerja atau sekolah)"
+  },
+  "signInOtherAccount": {
+    "message": "Gunakan akun lain"
+  },
+  "panelSignInToSee": {
+    "message": "Masuk untuk melihat biaya."
+  },
+  "panelOtherTenant": {
+    "message": "Langganan ini ada di penyewa lain, yang mengharuskan Anda masuk satu kali."
+  },
+  "panelOtherTenantNamed": {
+    "message": "Langganan ini ada di penyewa lain ($1), yang mengharuskan Anda masuk satu kali."
+  },
+  "panelSignInToTenant": {
+    "message": "Masuk ke penyewa ini"
+  },
+  "panelNoCostAccess": {
+    "message": "Tidak ada akses ke data biaya untuk langganan ini. Diperlukan peran Cost Management Reader."
+  },
+  "panelNoData": {
+    "message": "Tidak ada biaya tercatat untuk sumber daya ini bulan ini maupun bulan lalu."
+  },
+  "panelNoDataHint": {
+    "message": "Beberapa sumber daya ditagih melalui sumber daya lain, misalnya aplikasi web melalui App Service plan-nya."
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure membatasi kueri biaya. Coba lagi setelah $1."
+  },
+  "panelRateLimited": {
+    "message": "Azure membatasi kueri biaya."
+  },
+  "panelThisMonthSoFar": {
+    "message": "Bulan ini sejauh ini"
+  },
+  "panelProjected": {
+    "message": "Proyeksi akhir bulan"
+  },
+  "panelVsLastMonth": {
+    "message": "Sejauh ini vs. seluruh bulan lalu"
+  },
+  "panelGroupThisMonth": {
+    "message": "Grup bulan ini sejauh ini"
+  },
+  "panelGroupLastMonth": {
+    "message": "Grup bulan lalu"
+  },
+  "panelGroupNoCost": {
+    "message": "Tidak ada sumber daya di grup ini yang memiliki biaya bulan ini maupun bulan lalu."
+  },
+  "panelGroupListLabel": {
+    "message": "Sumber daya dengan biaya bulan ini atau bulan lalu"
+  },
+  "panelSpikeTitle": {
+    "message": "Proyeksi lonjakan"
+  },
+  "panelSpikeLabel": {
+    "message": "Lonjakan"
+  },
+  "panelSpikeNote": {
+    "message": "▲ Proyeksi akhir bulan lebih dari $1% di atas bulan lalu."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 sumber daya diproyeksikan lebih dari $2% di atas bulan lalu."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 sumber daya diproyeksikan lebih dari $2% di atas bulan lalu."
+  },
+  "panelFromTomorrow": {
+    "message": "Mulai besok"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (perkiraan awal)"
+  },
+  "panelNewThisMonth": {
+    "message": "Baru bulan ini"
+  },
+  "panelByMeter": {
+    "message": "Bulan ini per meter"
+  },
+  "panelMeterOther": {
+    "message": "Lainnya"
+  },
+  "panelTipsHeading": {
+    "message": "Tips penghematan (Azure Advisor)"
+  },
+  "panelTipsNone": {
+    "message": "Tidak ada tips penghematan dari Azure Advisor."
+  },
+  "panelTipsUnavailable": {
+    "message": "Tips penghematan tidak tersedia."
+  },
+  "panelTipsNoAccess": {
+    "message": "Tips penghematan tidak tersedia: tidak ada akses ke Azure Advisor."
+  },
+  "panelTipBadge": {
+    "message": "tips"
+  },
+  "panelTipBadgeTitle": {
+    "message": "Tips penghematan Azure Advisor"
+  },
+  "panelSaveYear": {
+    "message": "Hemat ~$1/tahun"
+  },
+  "panelSavingsEstimated": {
+    "message": "Perkiraan penghematan $1"
+  },
+  "impactHigh": {
+    "message": "Tinggi"
+  },
+  "impactMedium": {
+    "message": "Sedang"
+  },
+  "impactLow": {
+    "message": "Rendah"
+  },
+  "pillSpike": {
+    "message": "lonjakan"
+  },
+  "pillSpikes_one": {
+    "message": "$1 lonjakan"
+  },
+  "pillSpikes_other": {
+    "message": "$1 lonjakan"
+  },
+  "pillTips_one": {
+    "message": "$1 tips"
+  },
+  "pillTips_other": {
+    "message": "$1 tips"
+  },
+  "pillMixed": {
+    "message": "campuran"
+  },
+  "pillNoCost": {
+    "message": "tanpa biaya"
+  },
+  "pillSignIn": {
+    "message": "masuk"
+  },
+  "pillNoAccess": {
+    "message": "tanpa akses"
+  },
+  "pillRateLimited": {
+    "message": "dibatasi"
+  },
+  "pillRateLimitedWaiting": {
+    "message": "dibatasi…"
+  },
+  "pillError": {
+    "message": "galat"
+  },
+  "optTitle": {
+    "message": "Opsi azinfo"
+  },
+  "optSignInTitle": {
+    "message": "Masuk"
+  },
+  "optSignInThrough": {
+    "message": "Masuk melalui penyewa"
+  },
+  "optReset": {
+    "message": "Atur ulang ke default"
+  },
+  "optSignInHelp": {
+    "message": "Penyewa yang Anda gunakan untuk masuk. Penyewa Anda yang lain ditemukan otomatis setelah masuk, dan panel biaya mengikuti penyewa yang Anda lihat di portal. Akun kerja atau sekolah: $1. Akun Microsoft pribadi (Outlook, Gmail, dan lainnya): penyewa Anda sendiri, misalnya $2, yang ditampilkan di bawah nama Anda di menu akun portal Azure. Mengubah ini akan mengeluarkan Anda."
+  },
+  "optSavedSignedOut": {
+    "message": "Disimpan: $1. Anda telah dikeluarkan; masuk lagi dari tombol di bilah alat."
+  },
+  "optInvalidTenant": {
+    "message": "Masukkan organizations, common, domain penyewa (contoso.onmicrosoft.com), atau ID penyewa."
+  },
+  "optCostTitle": {
+    "message": "Data biaya"
+  },
+  "optReuseFor": {
+    "message": "Gunakan ulang data biaya selama"
+  },
+  "optHours": {
+    "message": "jam"
+  },
+  "optCacheHelp": {
+    "message": "Azure memperbarui data biaya setiap beberapa jam. Lebih singkat berarti lebih banyak kueri, yang dibatasi oleh Azure."
+  },
+  "optSpikeTitle": {
+    "message": "Tanda lonjakan"
+  },
+  "optSpikeLabel": {
+    "message": "Tandai jika proyeksi akhir bulan lebih dari"
+  },
+  "optSpikeUnit": {
+    "message": "% di atas bulan lalu"
+  },
+  "optSpikeHelp": {
+    "message": "Diperiksa mulai tanggal 6 setiap bulan, setelah ada data 5 hari penuh. Tidak pernah ditandai jika bulan lalu tidak ada biaya."
+  },
+  "optDefault": {
+    "message": "Default: $1."
+  },
+  "optNumberRange": {
+    "message": "Masukkan angka dari $1 sampai $2."
+  },
+  "optSaved": {
+    "message": "Disimpan."
+  },
+  "optCachedTitle": {
+    "message": "Data tersimpan"
+  },
+  "optCachedHelp": {
+    "message": "Menghapus data biaya, tips penghematan, dan daftar penyewa yang tersimpan di perangkat ini. Status masuk dan pengaturan ini tetap ada."
+  },
+  "optClearCache": {
+    "message": "Hapus data tersimpan"
+  },
+  "optCacheCleared": {
+    "message": "Data tersimpan dihapus. Tampilan berikutnya akan mengambil data dari Azure lagi."
+  }
+}

@@ -363,7 +363,14 @@ describe('Panel', () => {
       render(<Panel context={APP} request={request as never} />);
       expect(await screen.findByText('This month by meter')).toBeTruthy();
       expect(screen.getByText('Virtual Machines')).toBeTruthy();
-      expect(screen.getByText(/7[.,]00.*· 70%/)).toBeTruthy();
+      // Amount and share are separate <bdi> elements (right-to-left safe, decision 007).
+      expect(
+        screen.getByText(
+          (_, el) =>
+            el?.classList.contains('meter-value') === true &&
+            /7[.,]00.*· 70%/.test(el.textContent ?? ''),
+        ),
+      ).toBeTruthy();
     });
 
     it('hides a breakdown with a single category', async () => {

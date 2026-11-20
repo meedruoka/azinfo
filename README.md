@@ -14,7 +14,7 @@ Not affiliated with Microsoft.
 | `pnpm zip` / `pnpm zip:edge` | Store-ready zip |
 | `pnpm check:manifest` | Checks the built production manifests against the spec's permissions (run after both builds) |
 | `pnpm render:icons` | Renders `assets-src/icon.svg` to `public/icon/*.png` and `store/logo-300.png` with headless Edge. Slow on this machine; about a minute per size |
-| `pnpm store:shots` | Store screenshots (1280×800, light and dark) of the real UI with invented sample data, in `store/screenshots/`. Uses headless Edge |
+| `pnpm store:shots` | Store screenshots (1280×800, light and dark) of the real UI with invented sample data, in `store/screenshots/`. Uses headless Edge. The page also takes `?lang=<locale>` (e.g. `ar`) to check a language and its direction |
 | `pnpm test` | Vitest (MSW blocks any unmocked network request) |
 | `pnpm lint` / `pnpm format` | Biome check / fix |
 | `pnpm compile` | TypeScript type check |
@@ -61,7 +61,7 @@ options page: popup → **Options**.
 | [docs/permissions.md](docs/permissions.md) | Every permission and host, with store justifications |
 | [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy, published at <https://akourmohamed.github.io/azinfo-site/privacy-policy.html> (copy changes to the `azinfo-site` repo) |
 | [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
-| [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages |
+| [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages, 006 personal accounts, 007 five more languages and right-to-left |
 
 ## CI
 

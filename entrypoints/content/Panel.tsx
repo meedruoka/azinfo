@@ -433,7 +433,8 @@ function Breakdown({ rows, currency }: { rows: MeterShare[]; currency?: string }
                 <span style={{ width: `${Math.round(r.share * 100)}%` }} />
               </span>
               <span className="meter-value">
-                {formatMoney(r.amount, currency)} · {formatShare(r.share)}
+                {/* Isolated: in Arabic the amount and the share must not reorder (decision 007). */}
+                <bdi>{formatMoney(r.amount, currency)}</bdi> · <bdi>{formatShare(r.share)}</bdi>
               </span>
             </li>
           );

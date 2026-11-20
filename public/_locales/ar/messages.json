@@ -1,0 +1,341 @@
+{
+  "extDescription": {
+    "message": "معلومات تكلفة Azure بجوار المورد الذي تعرضه في مدخل Azure. غير تابع لـ Microsoft."
+  },
+  "signIn": {
+    "message": "تسجيل الدخول"
+  },
+  "signOut": {
+    "message": "تسجيل الخروج"
+  },
+  "retry": {
+    "message": "إعادة المحاولة"
+  },
+  "refresh": {
+    "message": "تحديث"
+  },
+  "save": {
+    "message": "حفظ"
+  },
+  "loading": {
+    "message": "جارٍ التحميل…"
+  },
+  "resource": {
+    "message": "المورد"
+  },
+  "thisMonth": {
+    "message": "هذا الشهر"
+  },
+  "lastMonth": {
+    "message": "الشهر الماضي"
+  },
+  "updatedAt": {
+    "message": "آخر تحديث $1. تتأخر بيانات تكلفة Azure بضع ساعات."
+  },
+  "rateLimitedRetrying": {
+    "message": "حدّ Azure من عدد الطلبات، ستتم إعادة المحاولة في $1…"
+  },
+  "popupOptions": {
+    "message": "الخيارات"
+  },
+  "popupSigningIn": {
+    "message": "جارٍ تسجيل الدخول…"
+  },
+  "popupSignInPrompt": {
+    "message": "سجّل الدخول بحساب Microsoft الذي تستخدمه مع Azure."
+  },
+  "popupLoadingTenants": {
+    "message": "جارٍ تحميل المستأجرين…"
+  },
+  "popupNoSubscriptions": {
+    "message": "لا توجد اشتراكات مرئية لهذا الحساب."
+  },
+  "popupSubscription": {
+    "message": "الاشتراك"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1 يتطلب تسجيل الدخول."
+  },
+  "popupTenantFailed": {
+    "message": "تعذرت قراءة $1: $2"
+  },
+  "popupTop5": {
+    "message": "أعلى 5 هذا الشهر"
+  },
+  "popupLoadingCosts": {
+    "message": "جارٍ تحميل التكاليف…"
+  },
+  "popupNoCosts": {
+    "message": "لا توجد تكاليف موارد هذا الشهر أو الشهر الماضي."
+  },
+  "popupNoCostAccess": {
+    "message": "لا يوجد وصول إلى بيانات التكلفة لهذا الاشتراك (يتطلب دور Cost Management Reader)."
+  },
+  "popupRateLimited": {
+    "message": "يحدّ Azure من استعلامات التكلفة. حاول مرة أخرى بعد دقيقة."
+  },
+  "panelLabel": {
+    "message": "لوحة تكلفة azinfo"
+  },
+  "panelPillLabel": {
+    "message": "لوحة تكلفة azinfo: $1. توسيع."
+  },
+  "panelCollapse": {
+    "message": "طي"
+  },
+  "panelResourceGroup": {
+    "message": "مجموعة الموارد"
+  },
+  "panelLoadingCost": {
+    "message": "جارٍ تحميل التكلفة…"
+  },
+  "panelSigningIn": {
+    "message": "جارٍ تسجيل الدخول… إذا فُتحت نافذة Microsoft، فأكمل تسجيل الدخول فيها. قد تكون خلف نافذة المتصفح هذه."
+  },
+  "signInChooseAccount": {
+    "message": "ما الحساب الذي تستخدمه مع Azure؟"
+  },
+  "signInWork": {
+    "message": "حساب العمل أو المؤسسة التعليمية"
+  },
+  "signInPersonal": {
+    "message": "حساب Microsoft شخصي"
+  },
+  "signInTenantLabel": {
+    "message": "المستأجر الخاص بك"
+  },
+  "signInTenantHelp": {
+    "message": "يظهر تحت اسمك في قائمة الحساب في مدخل Azure، مثل $1. يُملأ تلقائيًا إذا فتحت أي مورد في Azure أولًا."
+  },
+  "signInTenantInvalid": {
+    "message": "أدخل نطاق المستأجر (مثل yourname.onmicrosoft.com) أو معرّف المستأجر."
+  },
+  "panelPersonalUsePopup": {
+    "message": "حساب Microsoft شخصي؟ سجّل الدخول من زر azinfo في شريط أدوات المتصفح."
+  },
+  "signInAgainPrompt": {
+    "message": "انتهت جلستك، مثلًا عند إغلاق المتصفح. سجّل الدخول مرة أخرى بالحساب نفسه."
+  },
+  "signInAgainTenant": {
+    "message": "تسجيل الدخول مرة أخرى ($1)"
+  },
+  "signInAgainWork": {
+    "message": "تسجيل الدخول مرة أخرى (حساب العمل أو المؤسسة التعليمية)"
+  },
+  "signInOtherAccount": {
+    "message": "استخدام حساب آخر"
+  },
+  "panelSignInToSee": {
+    "message": "سجّل الدخول لعرض التكاليف."
+  },
+  "panelOtherTenant": {
+    "message": "هذا الاشتراك في مستأجر آخر يتطلب تسجيل الدخول مرة واحدة."
+  },
+  "panelOtherTenantNamed": {
+    "message": "هذا الاشتراك في مستأجر آخر ($1) يتطلب تسجيل الدخول مرة واحدة."
+  },
+  "panelSignInToTenant": {
+    "message": "تسجيل الدخول إلى هذا المستأجر"
+  },
+  "panelNoCostAccess": {
+    "message": "لا يوجد وصول إلى بيانات التكلفة لهذا الاشتراك. يتطلب ذلك دور Cost Management Reader."
+  },
+  "panelNoData": {
+    "message": "لا توجد تكلفة مسجلة لهذا المورد هذا الشهر أو الشهر الماضي."
+  },
+  "panelNoDataHint": {
+    "message": "تُحتسب فواتير بعض الموارد من خلال مورد آخر، مثل تطبيق ويب من خلال App Service plan الخاص به."
+  },
+  "panelRateLimitedUntil": {
+    "message": "يحدّ Azure من استعلامات التكلفة. حاول مرة أخرى بعد $1."
+  },
+  "panelRateLimited": {
+    "message": "يحدّ Azure من استعلامات التكلفة."
+  },
+  "panelThisMonthSoFar": {
+    "message": "هذا الشهر حتى الآن"
+  },
+  "panelProjected": {
+    "message": "المتوقع في نهاية الشهر"
+  },
+  "panelVsLastMonth": {
+    "message": "حتى الآن مقابل الشهر الماضي كاملًا"
+  },
+  "panelGroupThisMonth": {
+    "message": "المجموعة هذا الشهر حتى الآن"
+  },
+  "panelGroupLastMonth": {
+    "message": "المجموعة الشهر الماضي"
+  },
+  "panelGroupNoCost": {
+    "message": "لا توجد تكاليف لأي مورد في هذه المجموعة هذا الشهر أو الشهر الماضي."
+  },
+  "panelGroupListLabel": {
+    "message": "الموارد التي لها تكلفة هذا الشهر أو الشهر الماضي"
+  },
+  "panelSpikeTitle": {
+    "message": "ارتفاع متوقع"
+  },
+  "panelSpikeLabel": {
+    "message": "ارتفاع"
+  },
+  "panelSpikeNote": {
+    "message": "▲ المتوقع في نهاية الشهر أعلى من الشهر الماضي بأكثر من $1%."
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ مورد واحد ($1) متوقع أعلى من الشهر الماضي بأكثر من $2%."
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ عدد الموارد المتوقعة أعلى من الشهر الماضي بأكثر من $2%: $1."
+  },
+  "panelFromTomorrow": {
+    "message": "اعتبارًا من الغد"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (تقدير مبكر)"
+  },
+  "panelNewThisMonth": {
+    "message": "جديد هذا الشهر"
+  },
+  "panelByMeter": {
+    "message": "هذا الشهر حسب العدّاد"
+  },
+  "panelMeterOther": {
+    "message": "أخرى"
+  },
+  "panelTipsHeading": {
+    "message": "نصائح التوفير (Azure Advisor)"
+  },
+  "panelTipsNone": {
+    "message": "لا توجد نصائح توفير من Azure Advisor."
+  },
+  "panelTipsUnavailable": {
+    "message": "نصائح التوفير غير متاحة."
+  },
+  "panelTipsNoAccess": {
+    "message": "نصائح التوفير غير متاحة: لا يوجد وصول إلى Azure Advisor."
+  },
+  "panelTipBadge": {
+    "message": "نصيحة"
+  },
+  "panelTipBadgeTitle": {
+    "message": "نصيحة توفير من Azure Advisor"
+  },
+  "panelSaveYear": {
+    "message": "وفّر ~$1/سنة"
+  },
+  "panelSavingsEstimated": {
+    "message": "التوفير المقدّر $1"
+  },
+  "impactHigh": {
+    "message": "مرتفع"
+  },
+  "impactMedium": {
+    "message": "متوسط"
+  },
+  "impactLow": {
+    "message": "منخفض"
+  },
+  "pillSpike": {
+    "message": "ارتفاع"
+  },
+  "pillSpikes_one": {
+    "message": "ارتفاع واحد ($1)"
+  },
+  "pillSpikes_other": {
+    "message": "الارتفاعات: $1"
+  },
+  "pillTips_one": {
+    "message": "نصيحة واحدة ($1)"
+  },
+  "pillTips_other": {
+    "message": "النصائح: $1"
+  },
+  "pillMixed": {
+    "message": "مختلط"
+  },
+  "pillNoCost": {
+    "message": "لا تكلفة"
+  },
+  "pillSignIn": {
+    "message": "تسجيل الدخول"
+  },
+  "pillNoAccess": {
+    "message": "لا وصول"
+  },
+  "pillRateLimited": {
+    "message": "محدود"
+  },
+  "pillRateLimitedWaiting": {
+    "message": "محدود…"
+  },
+  "pillError": {
+    "message": "خطأ"
+  },
+  "optTitle": {
+    "message": "خيارات azinfo"
+  },
+  "optSignInTitle": {
+    "message": "تسجيل الدخول"
+  },
+  "optSignInThrough": {
+    "message": "تسجيل الدخول عبر المستأجر"
+  },
+  "optReset": {
+    "message": "إعادة التعيين إلى الافتراضي"
+  },
+  "optSignInHelp": {
+    "message": "المستأجر الذي تسجّل الدخول من خلاله. يُعثر على المستأجرين الآخرين تلقائيًا بعد تسجيل الدخول، وتتبع لوحة التكلفة المستأجر الذي تعرضه في المدخل. حسابات العمل أو المؤسسات التعليمية: $1. حسابات Microsoft الشخصية (Outlook وGmail وغيرها): المستأجر الخاص بك، مثل $2، الذي يظهر تحت اسمك في قائمة الحساب في مدخل Azure. تغيير هذا الإعداد يسجّل خروجك."
+  },
+  "optSavedSignedOut": {
+    "message": "تم الحفظ: $1. تم تسجيل خروجك؛ سجّل الدخول مرة أخرى من زر شريط الأدوات."
+  },
+  "optInvalidTenant": {
+    "message": "أدخل organizations أو common أو نطاق مستأجر (contoso.onmicrosoft.com) أو معرّف مستأجر."
+  },
+  "optCostTitle": {
+    "message": "بيانات التكلفة"
+  },
+  "optReuseFor": {
+    "message": "إعادة استخدام بيانات التكلفة لمدة"
+  },
+  "optHours": {
+    "message": "ساعات"
+  },
+  "optCacheHelp": {
+    "message": "يحدّث Azure بيانات التكلفة كل بضع ساعات. المدة الأقصر تعني استعلامات أكثر، ويحدّ Azure من عددها."
+  },
+  "optSpikeTitle": {
+    "message": "علامة الارتفاع"
+  },
+  "optSpikeLabel": {
+    "message": "ضع علامة عندما يكون المتوقع في نهاية الشهر أكثر من"
+  },
+  "optSpikeUnit": {
+    "message": "% فوق الشهر الماضي"
+  },
+  "optSpikeHelp": {
+    "message": "يُفحص اعتبارًا من اليوم السادس من الشهر، بعد توفر بيانات 5 أيام كاملة. لا توضع علامة أبدًا إذا لم تكن هناك تكلفة في الشهر الماضي."
+  },
+  "optDefault": {
+    "message": "الافتراضي: $1."
+  },
+  "optNumberRange": {
+    "message": "أدخل رقمًا من $1 إلى $2."
+  },
+  "optSaved": {
+    "message": "تم الحفظ."
+  },
+  "optCachedTitle": {
+    "message": "البيانات المخزنة مؤقتًا"
+  },
+  "optCachedHelp": {
+    "message": "يزيل بيانات التكلفة ونصائح التوفير وقائمة المستأجرين المخزنة على هذا الجهاز. يبقى تسجيل دخولك وهذه الإعدادات."
+  },
+  "optClearCache": {
+    "message": "مسح البيانات المخزنة مؤقتًا"
+  },
+  "optCacheCleared": {
+    "message": "تم مسح البيانات المخزنة مؤقتًا. سيُستعلم من Azure مرة أخرى عند العرض التالي."
+  }
+}

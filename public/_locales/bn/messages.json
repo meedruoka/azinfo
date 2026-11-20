@@ -1,0 +1,341 @@
+{
+  "extDescription": {
+    "message": "Azure পোর্টালে আপনি যে রিসোর্স দেখছেন তার পাশে Azure খরচের তথ্য। Microsoft-এর সাথে সম্পর্কিত নয়।"
+  },
+  "signIn": {
+    "message": "সাইন ইন করুন"
+  },
+  "signOut": {
+    "message": "সাইন আউট করুন"
+  },
+  "retry": {
+    "message": "আবার চেষ্টা করুন"
+  },
+  "refresh": {
+    "message": "রিফ্রেশ করুন"
+  },
+  "save": {
+    "message": "সংরক্ষণ করুন"
+  },
+  "loading": {
+    "message": "লোড হচ্ছে…"
+  },
+  "resource": {
+    "message": "রিসোর্স"
+  },
+  "thisMonth": {
+    "message": "এই মাস"
+  },
+  "lastMonth": {
+    "message": "গত মাস"
+  },
+  "updatedAt": {
+    "message": "$1-এ আপডেট হয়েছে। Azure খরচের ডেটা কয়েক ঘণ্টা পিছিয়ে থাকে।"
+  },
+  "rateLimitedRetrying": {
+    "message": "Azure অনুরোধ সীমিত করেছে, $1-এ আবার চেষ্টা করা হবে…"
+  },
+  "popupOptions": {
+    "message": "বিকল্প"
+  },
+  "popupSigningIn": {
+    "message": "সাইন ইন হচ্ছে…"
+  },
+  "popupSignInPrompt": {
+    "message": "Azure-এর জন্য যে Microsoft অ্যাকাউন্ট ব্যবহার করেন সেটি দিয়ে সাইন ইন করুন।"
+  },
+  "popupLoadingTenants": {
+    "message": "টেন্যান্ট লোড হচ্ছে…"
+  },
+  "popupNoSubscriptions": {
+    "message": "এই অ্যাকাউন্টে কোনো সাবস্ক্রিপশন দেখা যাচ্ছে না।"
+  },
+  "popupSubscription": {
+    "message": "সাবস্ক্রিপশন"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1-এর জন্য সাইন ইন করা প্রয়োজন।"
+  },
+  "popupTenantFailed": {
+    "message": "$1 পড়া যায়নি: $2"
+  },
+  "popupTop5": {
+    "message": "এই মাসের শীর্ষ ৫"
+  },
+  "popupLoadingCosts": {
+    "message": "খরচ লোড হচ্ছে…"
+  },
+  "popupNoCosts": {
+    "message": "এই মাসে বা গত মাসে কোনো রিসোর্সের খরচ নেই।"
+  },
+  "popupNoCostAccess": {
+    "message": "এই সাবস্ক্রিপশনের খরচের ডেটায় অ্যাক্সেস নেই (Cost Management Reader ভূমিকা প্রয়োজন)।"
+  },
+  "popupRateLimited": {
+    "message": "Azure খরচের কোয়েরি সীমিত করছে। এক মিনিট পরে আবার চেষ্টা করুন।"
+  },
+  "panelLabel": {
+    "message": "azinfo খরচ প্যানেল"
+  },
+  "panelPillLabel": {
+    "message": "azinfo খরচ প্যানেল: $1। প্রসারিত করুন।"
+  },
+  "panelCollapse": {
+    "message": "সংকুচিত করুন"
+  },
+  "panelResourceGroup": {
+    "message": "রিসোর্স গ্রুপ"
+  },
+  "panelLoadingCost": {
+    "message": "খরচ লোড হচ্ছে…"
+  },
+  "panelSigningIn": {
+    "message": "সাইন ইন হচ্ছে… Microsoft-এর উইন্ডো খুললে সেখানেই সাইন ইন শেষ করুন। সেটি এই ব্রাউজার উইন্ডোর পেছনে থাকতে পারে।"
+  },
+  "signInChooseAccount": {
+    "message": "Azure-এর জন্য আপনি কোন অ্যাকাউন্ট ব্যবহার করেন?"
+  },
+  "signInWork": {
+    "message": "কর্মস্থল বা শিক্ষাপ্রতিষ্ঠানের অ্যাকাউন্ট"
+  },
+  "signInPersonal": {
+    "message": "ব্যক্তিগত Microsoft অ্যাকাউন্ট"
+  },
+  "signInTenantLabel": {
+    "message": "আপনার টেন্যান্ট"
+  },
+  "signInTenantHelp": {
+    "message": "Azure পোর্টালের অ্যাকাউন্ট মেনুতে আপনার নামের নিচে দেখা যায়, যেমন $1। আগে যেকোনো Azure রিসোর্স খুললে এটি নিজে থেকে পূরণ হয়।"
+  },
+  "signInTenantInvalid": {
+    "message": "আপনার টেন্যান্ট ডোমেইন (যেমন yourname.onmicrosoft.com) বা টেন্যান্ট ID লিখুন।"
+  },
+  "panelPersonalUsePopup": {
+    "message": "ব্যক্তিগত Microsoft অ্যাকাউন্ট? ব্রাউজার টুলবারের azinfo বোতাম থেকে সাইন ইন করুন।"
+  },
+  "signInAgainPrompt": {
+    "message": "আপনার সেশন শেষ হয়েছে, যেমন ব্রাউজার বন্ধ হলে। একই অ্যাকাউন্ট দিয়ে আবার সাইন ইন করুন।"
+  },
+  "signInAgainTenant": {
+    "message": "আবার সাইন ইন করুন ($1)"
+  },
+  "signInAgainWork": {
+    "message": "আবার সাইন ইন করুন (কর্মস্থল বা শিক্ষাপ্রতিষ্ঠানের অ্যাকাউন্ট)"
+  },
+  "signInOtherAccount": {
+    "message": "অন্য অ্যাকাউন্ট ব্যবহার করুন"
+  },
+  "panelSignInToSee": {
+    "message": "খরচ দেখতে সাইন ইন করুন।"
+  },
+  "panelOtherTenant": {
+    "message": "এই সাবস্ক্রিপশন অন্য একটি টেন্যান্টে আছে, যেখানে একবার সাইন ইন করতে হবে।"
+  },
+  "panelOtherTenantNamed": {
+    "message": "এই সাবস্ক্রিপশন অন্য একটি টেন্যান্টে ($1) আছে, যেখানে একবার সাইন ইন করতে হবে।"
+  },
+  "panelSignInToTenant": {
+    "message": "এই টেন্যান্টে সাইন ইন করুন"
+  },
+  "panelNoCostAccess": {
+    "message": "এই সাবস্ক্রিপশনের খরচের ডেটায় অ্যাক্সেস নেই। এর জন্য Cost Management Reader ভূমিকা প্রয়োজন।"
+  },
+  "panelNoData": {
+    "message": "এই রিসোর্সের জন্য এই মাসে বা গত মাসে কোনো খরচ নথিভুক্ত হয়নি।"
+  },
+  "panelNoDataHint": {
+    "message": "কিছু রিসোর্সের বিল অন্য রিসোর্সের মাধ্যমে আসে, যেমন একটি ওয়েব অ্যাপের বিল তার App Service plan-এর মাধ্যমে।"
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure খরচের কোয়েরি সীমিত করছে। $1-এর পরে আবার চেষ্টা করুন।"
+  },
+  "panelRateLimited": {
+    "message": "Azure খরচের কোয়েরি সীমিত করছে।"
+  },
+  "panelThisMonthSoFar": {
+    "message": "এই মাসে এখন পর্যন্ত"
+  },
+  "panelProjected": {
+    "message": "মাসের শেষে অনুমিত খরচ"
+  },
+  "panelVsLastMonth": {
+    "message": "এখন পর্যন্ত বনাম পুরো গত মাস"
+  },
+  "panelGroupThisMonth": {
+    "message": "গ্রুপ: এই মাসে এখন পর্যন্ত"
+  },
+  "panelGroupLastMonth": {
+    "message": "গ্রুপ: গত মাস"
+  },
+  "panelGroupNoCost": {
+    "message": "এই গ্রুপের কোনো রিসোর্সের এই মাসে বা গত মাসে খরচ নেই।"
+  },
+  "panelGroupListLabel": {
+    "message": "এই মাসে বা গত মাসে খরচ আছে এমন রিসোর্স"
+  },
+  "panelSpikeTitle": {
+    "message": "অনুমিত বৃদ্ধি"
+  },
+  "panelSpikeLabel": {
+    "message": "বৃদ্ধি"
+  },
+  "panelSpikeNote": {
+    "message": "▲ মাসের শেষের অনুমান গত মাসের চেয়ে $1%-এর বেশি।"
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1টি রিসোর্সের অনুমান গত মাসের চেয়ে $2%-এর বেশি।"
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1টি রিসোর্সের অনুমান গত মাসের চেয়ে $2%-এর বেশি।"
+  },
+  "panelFromTomorrow": {
+    "message": "আগামীকাল থেকে"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (প্রাথমিক অনুমান)"
+  },
+  "panelNewThisMonth": {
+    "message": "এই মাসে নতুন"
+  },
+  "panelByMeter": {
+    "message": "এই মাস মিটার অনুযায়ী"
+  },
+  "panelMeterOther": {
+    "message": "অন্যান্য"
+  },
+  "panelTipsHeading": {
+    "message": "সাশ্রয়ের পরামর্শ (Azure Advisor)"
+  },
+  "panelTipsNone": {
+    "message": "Azure Advisor থেকে কোনো সাশ্রয়ের পরামর্শ নেই।"
+  },
+  "panelTipsUnavailable": {
+    "message": "সাশ্রয়ের পরামর্শ পাওয়া যাচ্ছে না।"
+  },
+  "panelTipsNoAccess": {
+    "message": "সাশ্রয়ের পরামর্শ পাওয়া যাচ্ছে না: Azure Advisor-এ অ্যাক্সেস নেই।"
+  },
+  "panelTipBadge": {
+    "message": "পরামর্শ"
+  },
+  "panelTipBadgeTitle": {
+    "message": "Azure Advisor সাশ্রয়ের পরামর্শ"
+  },
+  "panelSaveYear": {
+    "message": "~$1/বছর সাশ্রয়"
+  },
+  "panelSavingsEstimated": {
+    "message": "আনুমানিক সাশ্রয় $1"
+  },
+  "impactHigh": {
+    "message": "উচ্চ"
+  },
+  "impactMedium": {
+    "message": "মাঝারি"
+  },
+  "impactLow": {
+    "message": "নিম্ন"
+  },
+  "pillSpike": {
+    "message": "বৃদ্ধি"
+  },
+  "pillSpikes_one": {
+    "message": "$1টি বৃদ্ধি"
+  },
+  "pillSpikes_other": {
+    "message": "$1টি বৃদ্ধি"
+  },
+  "pillTips_one": {
+    "message": "$1টি পরামর্শ"
+  },
+  "pillTips_other": {
+    "message": "$1টি পরামর্শ"
+  },
+  "pillMixed": {
+    "message": "মিশ্র"
+  },
+  "pillNoCost": {
+    "message": "খরচ নেই"
+  },
+  "pillSignIn": {
+    "message": "সাইন ইন"
+  },
+  "pillNoAccess": {
+    "message": "অ্যাক্সেস নেই"
+  },
+  "pillRateLimited": {
+    "message": "সীমিত"
+  },
+  "pillRateLimitedWaiting": {
+    "message": "সীমিত…"
+  },
+  "pillError": {
+    "message": "ত্রুটি"
+  },
+  "optTitle": {
+    "message": "azinfo বিকল্প"
+  },
+  "optSignInTitle": {
+    "message": "সাইন ইন"
+  },
+  "optSignInThrough": {
+    "message": "এই টেন্যান্টের মাধ্যমে সাইন ইন করুন"
+  },
+  "optReset": {
+    "message": "ডিফল্টে ফেরান"
+  },
+  "optSignInHelp": {
+    "message": "যে টেন্যান্টের মাধ্যমে আপনি সাইন ইন করেন। সাইন ইনের পরে আপনার অন্যান্য টেন্যান্ট নিজে থেকে খুঁজে পাওয়া যায়, এবং খরচ প্যানেল পোর্টালে আপনি যে টেন্যান্ট দেখছেন সেটি অনুসরণ করে। কর্মস্থল বা শিক্ষাপ্রতিষ্ঠানের অ্যাকাউন্ট: $1। ব্যক্তিগত Microsoft অ্যাকাউন্ট (Outlook, Gmail ইত্যাদি): আপনার নিজের টেন্যান্ট, যেমন $2, যা Azure পোর্টালের অ্যাকাউন্ট মেনুতে আপনার নামের নিচে দেখা যায়। এটি বদলালে আপনি সাইন আউট হয়ে যাবেন।"
+  },
+  "optSavedSignedOut": {
+    "message": "সংরক্ষিত: $1। আপনাকে সাইন আউট করা হয়েছে; টুলবারের বোতাম থেকে আবার সাইন ইন করুন।"
+  },
+  "optInvalidTenant": {
+    "message": "organizations, common, একটি টেন্যান্ট ডোমেইন (contoso.onmicrosoft.com) বা টেন্যান্ট ID লিখুন।"
+  },
+  "optCostTitle": {
+    "message": "খরচের ডেটা"
+  },
+  "optReuseFor": {
+    "message": "খরচের ডেটা আবার ব্যবহার করুন"
+  },
+  "optHours": {
+    "message": "ঘণ্টা"
+  },
+  "optCacheHelp": {
+    "message": "Azure প্রতি কয়েক ঘণ্টায় খরচের ডেটা আপডেট করে। কম সময় মানে বেশি কোয়েরি, যা Azure সীমিত করে।"
+  },
+  "optSpikeTitle": {
+    "message": "বৃদ্ধির চিহ্ন"
+  },
+  "optSpikeLabel": {
+    "message": "চিহ্ন দিন যখন মাসের শেষের অনুমান এর বেশি"
+  },
+  "optSpikeUnit": {
+    "message": "% গত মাসের চেয়ে বেশি"
+  },
+  "optSpikeHelp": {
+    "message": "মাসের ৬ তারিখ থেকে যাচাই করা হয়, যখন ৫ পূর্ণ দিনের ডেটা থাকে। গত মাসে খরচ না থাকলে কখনো চিহ্ন দেওয়া হয় না।"
+  },
+  "optDefault": {
+    "message": "ডিফল্ট: $1।"
+  },
+  "optNumberRange": {
+    "message": "$1 থেকে $2-এর মধ্যে একটি সংখ্যা লিখুন।"
+  },
+  "optSaved": {
+    "message": "সংরক্ষিত।"
+  },
+  "optCachedTitle": {
+    "message": "ক্যাশ করা ডেটা"
+  },
+  "optCachedHelp": {
+    "message": "এই ডিভাইসে সংরক্ষিত খরচের ডেটা, সাশ্রয়ের পরামর্শ এবং টেন্যান্ট তালিকা মুছে ফেলে। আপনার সাইন ইন এবং এই সেটিংস থাকবে।"
+  },
+  "optClearCache": {
+    "message": "ক্যাশ করা ডেটা মুছুন"
+  },
+  "optCacheCleared": {
+    "message": "ক্যাশ করা ডেটা মুছে ফেলা হয়েছে। পরের বার Azure থেকে আবার ডেটা আনা হবে।"
+  }
+}

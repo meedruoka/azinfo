@@ -11,7 +11,7 @@ limits or wording that should be checked against the store's form when submittin
 
 > Azure cost info next to the resource you are viewing in the Azure portal. Not affiliated with Microsoft.
 
-**Languages:** the summary above is translated in the package (`extDescription` in `public/_locales/<lang>/messages.json`) for 10 languages. Each store also asks for the description per language: translate it from the text below (see decision 005).
+**Languages:** the summary above is translated in the package (`extDescription` in `public/_locales/<lang>/messages.json`) for 15 languages (decisions 005 and 007). Each store also asks for the description per language: translate it from the text below.
 
 **Category:** Developer Tools (Chrome) / Developer tools (Edge). **Verify** that the category
 exists.

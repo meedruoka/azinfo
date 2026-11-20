@@ -1,0 +1,341 @@
+{
+  "extDescription": {
+    "message": "Azure पोर्टल में आप जो संसाधन देख रहे हैं, उसके पास Azure लागत की जानकारी। Microsoft से संबद्ध नहीं।"
+  },
+  "signIn": {
+    "message": "साइन इन करें"
+  },
+  "signOut": {
+    "message": "साइन आउट करें"
+  },
+  "retry": {
+    "message": "फिर से कोशिश करें"
+  },
+  "refresh": {
+    "message": "रीफ़्रेश करें"
+  },
+  "save": {
+    "message": "सहेजें"
+  },
+  "loading": {
+    "message": "लोड हो रहा है…"
+  },
+  "resource": {
+    "message": "संसाधन"
+  },
+  "thisMonth": {
+    "message": "इस महीने"
+  },
+  "lastMonth": {
+    "message": "पिछले महीने"
+  },
+  "updatedAt": {
+    "message": "$1 पर अपडेट किया गया। Azure लागत डेटा कुछ घंटे पीछे रहता है।"
+  },
+  "rateLimitedRetrying": {
+    "message": "Azure ने अनुरोध सीमित किए हैं, $1 पर फिर से कोशिश की जाएगी…"
+  },
+  "popupOptions": {
+    "message": "विकल्प"
+  },
+  "popupSigningIn": {
+    "message": "साइन इन हो रहा है…"
+  },
+  "popupSignInPrompt": {
+    "message": "उस Microsoft खाते से साइन इन करें जिसका उपयोग आप Azure के लिए करते हैं।"
+  },
+  "popupLoadingTenants": {
+    "message": "टेनेंट लोड हो रहे हैं…"
+  },
+  "popupNoSubscriptions": {
+    "message": "इस खाते को कोई सदस्यता नहीं दिख रही।"
+  },
+  "popupSubscription": {
+    "message": "सदस्यता"
+  },
+  "popupTenantNeedsSignIn": {
+    "message": "$1 के लिए साइन इन करना ज़रूरी है।"
+  },
+  "popupTenantFailed": {
+    "message": "$1 पढ़ा नहीं जा सका: $2"
+  },
+  "popupTop5": {
+    "message": "इस महीने के शीर्ष 5"
+  },
+  "popupLoadingCosts": {
+    "message": "लागत लोड हो रही है…"
+  },
+  "popupNoCosts": {
+    "message": "इस महीने या पिछले महीने कोई संसाधन लागत नहीं है।"
+  },
+  "popupNoCostAccess": {
+    "message": "इस सदस्यता के लागत डेटा तक पहुँच नहीं है (Cost Management Reader भूमिका चाहिए)।"
+  },
+  "popupRateLimited": {
+    "message": "Azure लागत क्वेरी सीमित कर रहा है। एक मिनट बाद फिर से कोशिश करें।"
+  },
+  "panelLabel": {
+    "message": "azinfo लागत पैनल"
+  },
+  "panelPillLabel": {
+    "message": "azinfo लागत पैनल: $1। विस्तृत करें।"
+  },
+  "panelCollapse": {
+    "message": "छोटा करें"
+  },
+  "panelResourceGroup": {
+    "message": "संसाधन समूह"
+  },
+  "panelLoadingCost": {
+    "message": "लागत लोड हो रही है…"
+  },
+  "panelSigningIn": {
+    "message": "साइन इन हो रहा है… अगर Microsoft विंडो खुलती है, तो वहीं साइन इन पूरा करें। वह इस ब्राउज़र विंडो के पीछे हो सकती है।"
+  },
+  "signInChooseAccount": {
+    "message": "आप Azure के लिए कौन-सा खाता इस्तेमाल करते हैं?"
+  },
+  "signInWork": {
+    "message": "कार्य या विद्यालय खाता"
+  },
+  "signInPersonal": {
+    "message": "व्यक्तिगत Microsoft खाता"
+  },
+  "signInTenantLabel": {
+    "message": "आपका टेनेंट"
+  },
+  "signInTenantHelp": {
+    "message": "Azure पोर्टल के खाता मेनू में आपके नाम के नीचे दिखता है, जैसे $1। पहले कोई भी Azure संसाधन खोलने पर यह अपने आप भर जाता है।"
+  },
+  "signInTenantInvalid": {
+    "message": "अपना टेनेंट डोमेन (जैसे yourname.onmicrosoft.com) या टेनेंट ID दर्ज करें।"
+  },
+  "panelPersonalUsePopup": {
+    "message": "व्यक्तिगत Microsoft खाता? ब्राउज़र टूलबार में azinfo बटन से साइन इन करें।"
+  },
+  "signInAgainPrompt": {
+    "message": "आपका सत्र समाप्त हो गया, जैसे ब्राउज़र बंद होने पर। उसी खाते से फिर से साइन इन करें।"
+  },
+  "signInAgainTenant": {
+    "message": "फिर से साइन इन करें ($1)"
+  },
+  "signInAgainWork": {
+    "message": "फिर से साइन इन करें (कार्य या विद्यालय खाता)"
+  },
+  "signInOtherAccount": {
+    "message": "किसी दूसरे खाते का उपयोग करें"
+  },
+  "panelSignInToSee": {
+    "message": "लागत देखने के लिए साइन इन करें।"
+  },
+  "panelOtherTenant": {
+    "message": "यह सदस्यता किसी दूसरे टेनेंट में है, जिसके लिए एक बार साइन इन करना होगा।"
+  },
+  "panelOtherTenantNamed": {
+    "message": "यह सदस्यता किसी दूसरे टेनेंट ($1) में है, जिसके लिए एक बार साइन इन करना होगा।"
+  },
+  "panelSignInToTenant": {
+    "message": "इस टेनेंट में साइन इन करें"
+  },
+  "panelNoCostAccess": {
+    "message": "इस सदस्यता के लागत डेटा तक पहुँच नहीं है। इसके लिए Cost Management Reader भूमिका चाहिए।"
+  },
+  "panelNoData": {
+    "message": "इस संसाधन के लिए इस महीने या पिछले महीने कोई लागत दर्ज नहीं है।"
+  },
+  "panelNoDataHint": {
+    "message": "कुछ संसाधनों का बिल किसी दूसरे संसाधन के ज़रिए आता है, जैसे वेब ऐप का बिल उसके App Service plan के ज़रिए।"
+  },
+  "panelRateLimitedUntil": {
+    "message": "Azure लागत क्वेरी सीमित कर रहा है। $1 के बाद फिर से कोशिश करें।"
+  },
+  "panelRateLimited": {
+    "message": "Azure लागत क्वेरी सीमित कर रहा है।"
+  },
+  "panelThisMonthSoFar": {
+    "message": "इस महीने अब तक"
+  },
+  "panelProjected": {
+    "message": "महीने के अंत का अनुमान"
+  },
+  "panelVsLastMonth": {
+    "message": "अब तक बनाम पूरा पिछला महीना"
+  },
+  "panelGroupThisMonth": {
+    "message": "समूह: इस महीने अब तक"
+  },
+  "panelGroupLastMonth": {
+    "message": "समूह: पिछला महीना"
+  },
+  "panelGroupNoCost": {
+    "message": "इस समूह के किसी संसाधन की इस महीने या पिछले महीने कोई लागत नहीं है।"
+  },
+  "panelGroupListLabel": {
+    "message": "इस महीने या पिछले महीने लागत वाले संसाधन"
+  },
+  "panelSpikeTitle": {
+    "message": "अनुमानित उछाल"
+  },
+  "panelSpikeLabel": {
+    "message": "उछाल"
+  },
+  "panelSpikeNote": {
+    "message": "▲ महीने के अंत का अनुमान पिछले महीने से $1% से ज़्यादा है।"
+  },
+  "panelSpikeNoteGroup_one": {
+    "message": "▲ $1 संसाधन का अनुमान पिछले महीने से $2% से ज़्यादा है।"
+  },
+  "panelSpikeNoteGroup_other": {
+    "message": "▲ $1 संसाधनों का अनुमान पिछले महीने से $2% से ज़्यादा है।"
+  },
+  "panelFromTomorrow": {
+    "message": "कल से"
+  },
+  "panelEarlyEstimate": {
+    "message": "$1 (शुरुआती अनुमान)"
+  },
+  "panelNewThisMonth": {
+    "message": "इस महीने नया"
+  },
+  "panelByMeter": {
+    "message": "इस महीने मीटर के अनुसार"
+  },
+  "panelMeterOther": {
+    "message": "अन्य"
+  },
+  "panelTipsHeading": {
+    "message": "बचत सुझाव (Azure Advisor)"
+  },
+  "panelTipsNone": {
+    "message": "Azure Advisor से कोई बचत सुझाव नहीं।"
+  },
+  "panelTipsUnavailable": {
+    "message": "बचत सुझाव उपलब्ध नहीं हैं।"
+  },
+  "panelTipsNoAccess": {
+    "message": "बचत सुझाव उपलब्ध नहीं: Azure Advisor तक पहुँच नहीं है।"
+  },
+  "panelTipBadge": {
+    "message": "सुझाव"
+  },
+  "panelTipBadgeTitle": {
+    "message": "Azure Advisor बचत सुझाव"
+  },
+  "panelSaveYear": {
+    "message": "~$1/वर्ष बचाएँ"
+  },
+  "panelSavingsEstimated": {
+    "message": "अनुमानित बचत $1"
+  },
+  "impactHigh": {
+    "message": "उच्च"
+  },
+  "impactMedium": {
+    "message": "मध्यम"
+  },
+  "impactLow": {
+    "message": "निम्न"
+  },
+  "pillSpike": {
+    "message": "उछाल"
+  },
+  "pillSpikes_one": {
+    "message": "$1 उछाल"
+  },
+  "pillSpikes_other": {
+    "message": "$1 उछाल"
+  },
+  "pillTips_one": {
+    "message": "$1 सुझाव"
+  },
+  "pillTips_other": {
+    "message": "$1 सुझाव"
+  },
+  "pillMixed": {
+    "message": "मिश्रित"
+  },
+  "pillNoCost": {
+    "message": "कोई लागत नहीं"
+  },
+  "pillSignIn": {
+    "message": "साइन इन"
+  },
+  "pillNoAccess": {
+    "message": "पहुँच नहीं"
+  },
+  "pillRateLimited": {
+    "message": "सीमित"
+  },
+  "pillRateLimitedWaiting": {
+    "message": "सीमित…"
+  },
+  "pillError": {
+    "message": "त्रुटि"
+  },
+  "optTitle": {
+    "message": "azinfo विकल्प"
+  },
+  "optSignInTitle": {
+    "message": "साइन इन"
+  },
+  "optSignInThrough": {
+    "message": "इस टेनेंट से साइन इन करें"
+  },
+  "optReset": {
+    "message": "डिफ़ॉल्ट पर रीसेट करें"
+  },
+  "optSignInHelp": {
+    "message": "वह टेनेंट जिसके ज़रिए आप साइन इन करते हैं। साइन इन के बाद आपके दूसरे टेनेंट अपने आप मिल जाते हैं, और लागत पैनल उसी टेनेंट का पालन करता है जिसे आप पोर्टल में देख रहे हैं। कार्य या विद्यालय खाते: $1। व्यक्तिगत Microsoft खाते (Outlook, Gmail आदि): आपका अपना टेनेंट, जैसे $2, जो Azure पोर्टल के खाता मेनू में आपके नाम के नीचे दिखता है। इसे बदलने पर आप साइन आउट हो जाते हैं।"
+  },
+  "optSavedSignedOut": {
+    "message": "सहेजा गया: $1। आपको साइन आउट कर दिया गया है; टूलबार बटन से फिर से साइन इन करें।"
+  },
+  "optInvalidTenant": {
+    "message": "organizations, common, कोई टेनेंट डोमेन (contoso.onmicrosoft.com) या टेनेंट ID दर्ज करें।"
+  },
+  "optCostTitle": {
+    "message": "लागत डेटा"
+  },
+  "optReuseFor": {
+    "message": "लागत डेटा को इतने समय तक दोबारा उपयोग करें"
+  },
+  "optHours": {
+    "message": "घंटे"
+  },
+  "optCacheHelp": {
+    "message": "Azure हर कुछ घंटों में लागत डेटा अपडेट करता है। कम समय का मतलब ज़्यादा क्वेरी, जिन्हें Azure सीमित करता है।"
+  },
+  "optSpikeTitle": {
+    "message": "उछाल संकेत"
+  },
+  "optSpikeLabel": {
+    "message": "तब संकेत दें जब महीने के अंत का अनुमान इससे ज़्यादा हो"
+  },
+  "optSpikeUnit": {
+    "message": "% पिछले महीने से ऊपर"
+  },
+  "optSpikeHelp": {
+    "message": "महीने की 6 तारीख से जाँचा जाता है, जब 5 पूरे दिनों का डेटा हो। अगर पिछले महीने कोई लागत नहीं थी, तो कभी संकेत नहीं दिया जाता।"
+  },
+  "optDefault": {
+    "message": "डिफ़ॉल्ट: $1।"
+  },
+  "optNumberRange": {
+    "message": "$1 से $2 तक की कोई संख्या दर्ज करें।"
+  },
+  "optSaved": {
+    "message": "सहेजा गया।"
+  },
+  "optCachedTitle": {
+    "message": "कैश किया गया डेटा"
+  },
+  "optCachedHelp": {
+    "message": "इस डिवाइस पर सहेजे गए लागत डेटा, बचत सुझाव और टेनेंट सूची को हटाता है। आपका साइन इन और ये सेटिंग बनी रहती हैं।"
+  },
+  "optClearCache": {
+    "message": "कैश किया गया डेटा साफ़ करें"
+  },
+  "optCacheCleared": {
+    "message": "कैश किया गया डेटा साफ़ हो गया। अगली बार Azure से फिर से डेटा लिया जाएगा।"
+  }
+}
