@@ -33,8 +33,8 @@ export default defineWebExtConfig({
 | Build | Extension ID | Redirect URI |
 |---|---|---|
 | Dev (unpacked, `pnpm dev`) | `jojhniohldijhpnpeihdnffjflgcpnpb` | `https://jojhniohldijhpnpeihdnffjflgcpnpb.chromiumapp.org/` |
-| Chrome Web Store | assigned at first upload | TBD |
-| Edge Add-ons | assigned at first upload | TBD |
+| Chrome Web Store | `agbbplllbldedlebmjoplcjilocgphia` | `https://agbbplllbldedlebmjoplcjilocgphia.chromiumapp.org/` (on the production registration) |
+| Edge Add-ons | `boklcincembcnlpajejonihmapalfedi` (CRX ID; Store ID `0RDCKGFWV30T`) | `https://boklcincembcnlpajejonihmapalfedi.chromiumapp.org/` (on the production registration) |
 
 The dev ID is pinned by the manifest `key` in `wxt.config.ts`, added in development
 mode only. The private half of that key is in `.keys/` (git-ignored); it is only

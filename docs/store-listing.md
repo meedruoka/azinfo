@@ -41,7 +41,8 @@ exists.
 > Requirements
 > • A Microsoft work, school or personal account with access to an Azure subscription
 > • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
-> • Some organisations require an administrator to approve the app the first time
+> • Work and school accounts: your administrator may need to approve azinfo once for your
+>   organisation
 >
 > Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis
 > in the portal for invoices and detailed reporting.
@@ -134,12 +135,17 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 3. [ ] **Store accounts:** Chrome Web Store developer account (one-time fee) and Microsoft Partner
    Center account for Edge Add-ons.
 4. [ ] **Get each store's extension ID:** upload a first draft package, then copy the item ID.
+   Chrome: `agbbplllbldedlebmjoplcjilocgphia` (draft uploaded 2026-11-19). Edge: CRX ID
+   `boklcincembcnlpajejonihmapalfedi`, Store ID `0RDCKGFWV30T`, Product ID
+   `bcaf0d3a-73c3-4fa7-8067-83f2dc349b14` (draft 2026-11-20). The redirect URI uses the CRX ID.
    - Chrome: shown in the developer dashboard after the draft upload.
    - Edge: shown in Partner Center after creating the extension.
 5. [ ] **Add both redirect URIs** to the production registration under *Single-page application*:
    `https://<chrome-store-id>.chromiumapp.org/` and `https://<edge-store-id>.chromiumapp.org/`.
    **Verify** the Edge one after the first install from the store: open the extension's service
    worker console and run `chrome.identity.getRedirectURL()`.
+   Chrome URI added 2026-11-19, Edge URI 2026-11-20 (Single-page application platform, no
+   implicit grant).
 6. [x] **Privacy policy** published at a public URL, placeholders filled in (2026-11-19, see
    "Privacy policy URL" above).
 7. [ ] **Administrator page** [admin-consent.md](admin-consent.md) published next to it, with
