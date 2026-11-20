@@ -58,6 +58,12 @@
   "panelPersonalUsePopup": {
     "message": "Persönliches Microsoft-Konto? Melden Sie sich über die azinfo-Schaltfläche in der Browser-Symbolleiste an."
   },
+  "signInAgainPrompt": {
+    "message": "Ihre Sitzung wurde beendet, zum Beispiel beim Schließen des Browsers. Melden Sie sich mit demselben Konto erneut an."
+  },
+  "signInAgainTenant": { "message": "Erneut anmelden ($1)" },
+  "signInAgainWork": { "message": "Erneut anmelden (Geschäfts-, Schul- oder Unikonto)" },
+  "signInOtherAccount": { "message": "Anderes Konto verwenden" },
   "panelSignInToSee": { "message": "Melden Sie sich an, um die Kosten zu sehen." },
   "panelOtherTenant": {
     "message": "Dieses Abonnement gehört zu einem anderen Mandanten, der eine einmalige Anmeldung erfordert."

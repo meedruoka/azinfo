@@ -56,6 +56,14 @@
   "panelPersonalUsePopup": {
     "message": "Account Microsoft personale? Accedi dal pulsante azinfo nella barra degli strumenti del browser."
   },
+  "signInAgainPrompt": {
+    "message": "La sessione è terminata, ad esempio alla chiusura del browser. Accedi di nuovo con lo stesso account."
+  },
+  "signInAgainTenant": { "message": "Accedi di nuovo ($1)" },
+  "signInAgainWork": {
+    "message": "Accedi di nuovo (account aziendale o dell'istituto di istruzione)"
+  },
+  "signInOtherAccount": { "message": "Usa un altro account" },
   "panelSignInToSee": { "message": "Accedi per vedere i costi." },
   "panelOtherTenant": {
     "message": "Questa sottoscrizione si trova in un altro tenant, che richiede un accesso una tantum."

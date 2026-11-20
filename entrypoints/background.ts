@@ -8,6 +8,7 @@ import {
 import { defaultAuthority, readAuthConfig } from '@/lib/auth/config';
 import { lastPortalTenantItem, planSignIn, signInAuthorityItem } from '@/lib/auth/sign-in-choice';
 import { TokenError } from '@/lib/auth/token-endpoint';
+import { signedInIntentItem } from '@/lib/auth/token-store';
 import { type Tip, totalSavings } from '@/lib/azure/advisor';
 import { ArmError } from '@/lib/azure/arm-client';
 import { CostRateLimitError } from '@/lib/azure/cost-client';
@@ -152,9 +153,13 @@ export default defineBackground(() => {
         await clearAccountData();
         return { cleared: true };
       case 'getAuthState': {
+        const chooseAccount = (await authorityItem.getValue()) === null;
         const choice = {
-          chooseAccount: (await authorityItem.getValue()) === null,
+          chooseAccount,
           lastPortalTenant: await lastPortalTenantItem.getValue(),
+          // Still meant to be signed in (no sign-out): offer "Sign in again" (decision 006).
+          returning: await signedInIntentItem.getValue(),
+          rememberedTenant: chooseAccount ? await signInAuthorityItem.getValue() : null,
         };
         if (await auth.isSignedIn()) return { signedIn: true, ...choice };
         // Session storage is empty after a browser restart: try a silent
@@ -163,7 +168,13 @@ export default defineBackground(() => {
           await auth.getAccessToken();
           return { signedIn: true, ...choice };
         } catch (e) {
-          if (e instanceof NotSignedInError) return { signedIn: false, ...choice };
+          if (e instanceof NotSignedInError) {
+            // Microsoft's reason only (e.g. login_required), never a token.
+            if (e.reason !== 'signed_out') {
+              console.warn('[azinfo] silent sign-in failed:', e.reason, e.detail ?? '');
+            }
+            return { signedIn: false, ...choice };
+          }
           throw e;
         }
       }

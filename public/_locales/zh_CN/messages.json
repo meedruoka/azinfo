@@ -50,6 +50,12 @@
   "panelPersonalUsePopup": {
     "message": "个人 Microsoft 帐户？请通过浏览器工具栏中的 azinfo 按钮登录。"
   },
+  "signInAgainPrompt": {
+    "message": "你的会话已结束（例如关闭了浏览器）。请使用同一帐户重新登录。"
+  },
+  "signInAgainTenant": { "message": "重新登录（$1）" },
+  "signInAgainWork": { "message": "重新登录（工作或学校帐户）" },
+  "signInOtherAccount": { "message": "使用其他帐户" },
   "panelSignInToSee": { "message": "登录以查看成本。" },
   "panelOtherTenant": { "message": "此订阅位于另一个租户中，需要你登录一次。" },
   "panelOtherTenantNamed": { "message": "此订阅位于另一个租户($1)中，需要你登录一次。" },

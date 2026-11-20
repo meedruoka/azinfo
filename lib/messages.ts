@@ -101,6 +101,10 @@ export interface ResponseMap {
     chooseAccount: boolean;
     /** Last tenant seen in a portal address this session, for personal accounts. */
     lastPortalTenant: string | null;
+    /** Signed in before and never signed out (e.g. the browser was closed): offer "Sign in again". */
+    returning: boolean;
+    /** Tenant of the last personal-account sign-in; null for work accounts. */
+    rememberedTenant: string | null;
   };
   signIn: { signedIn: boolean };
   signInTenant: { signedIn: boolean };

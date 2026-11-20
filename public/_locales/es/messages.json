@@ -58,6 +58,12 @@
   "panelPersonalUsePopup": {
     "message": "¿Cuenta Microsoft personal? Inicie sesión desde el botón de azinfo en la barra de herramientas del navegador."
   },
+  "signInAgainPrompt": {
+    "message": "Su sesión terminó, por ejemplo al cerrar el navegador. Vuelva a iniciar sesión con la misma cuenta."
+  },
+  "signInAgainTenant": { "message": "Volver a iniciar sesión ($1)" },
+  "signInAgainWork": { "message": "Volver a iniciar sesión (cuenta profesional o educativa)" },
+  "signInOtherAccount": { "message": "Usar otra cuenta" },
   "panelSignInToSee": { "message": "Inicie sesión para ver los costes." },
   "panelOtherTenant": {
     "message": "Esta suscripción está en otro inquilino, que requiere que inicie sesión una vez."

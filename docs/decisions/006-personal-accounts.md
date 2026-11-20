@@ -59,8 +59,30 @@ Test build that behaves like the store default (dev registration and ID, default
 | 1 | Personal account, panel on a resource page: "Personal Microsoft account" signs in with no options-page change | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 | 2 | Personal account, popup after visiting a resource page: tenant pre-filled, sign-in works | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 | 3 | Work account: "Work or school account" signs in through `organizations`, all tenants listed as before | Pending |
-| 4 | Browser restart after a personal sign-in: still signed in, silently | Pending |
+| 4 | Browser restart after a personal sign-in: still signed in, silently | Failed 2026-11-20 on the Edge store version: signed out after the restart. Tokens are in session storage by design (decision 001), so the restart relies on a silent `prompt=none` sign-in, which needs Microsoft's sign-in cookie; likely gone (not confirmed: the reason wasn't captured). The popup then doesn't offer the remembered personal tenant |
 | 5 | Sign out, then the choice is offered again | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
+
+## Addendum: after the session ends (0.1.2, 2026-11-20)
+
+Check 4 failed for both a personal and a work account: closing Edge signed the user out. Tokens
+are in session storage by design (decision 001); after a restart the worker tries a silent
+`prompt=none` sign-in, which only works while Microsoft's own sign-in cookie survives (it doesn't
+without "Stay signed in", and possibly not with several accounts signed in). Edge on the test PC
+has no clear-on-exit policy or setting. Keeping tokens on disk was not chosen: these refresh
+tokens expire after 24 hours anyway, so it would weaken the privacy promise for little gain.
+
+0.1.2:
+
+1. When the user was signed in and never signed out (`local:auth.signedInIntent`), the popup
+   shows **Sign in again (`<tenant>`)** for a personal account, or **Sign in again (work or
+   school account)**: one click with the same account. **Use another account** opens the usual
+   choice, with the remembered tenant pre-filled.
+2. A failed silent sign-in is logged in the service worker console: `[azinfo] silent sign-in
+   failed: <reason> <Microsoft's description>`. No token is ever logged.
+
+Still open: whether "Stay signed in → Yes" makes restarts silent, and if several signed-in
+accounts break the silent sign-in. If so, remember the account's sign-in name and pass it as
+`login_hint` (a privacy-policy change, since it stores the account name).
 
 ## Consequences
 

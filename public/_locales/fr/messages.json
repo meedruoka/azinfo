@@ -58,6 +58,12 @@
   "panelPersonalUsePopup": {
     "message": "Compte Microsoft personnel ? Connectez-vous depuis le bouton azinfo de la barre d'outils du navigateur."
   },
+  "signInAgainPrompt": {
+    "message": "Votre session a pris fin, par exemple à la fermeture du navigateur. Reconnectez-vous avec le même compte."
+  },
+  "signInAgainTenant": { "message": "Se reconnecter ($1)" },
+  "signInAgainWork": { "message": "Se reconnecter (compte professionnel ou scolaire)" },
+  "signInOtherAccount": { "message": "Utiliser un autre compte" },
   "panelSignInToSee": { "message": "Connectez-vous pour voir les coûts." },
   "panelOtherTenant": {
     "message": "Cet abonnement se trouve dans un autre locataire, qui demande une connexion unique."

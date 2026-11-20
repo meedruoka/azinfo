@@ -56,6 +56,12 @@
   "panelPersonalUsePopup": {
     "message": "Conta Microsoft pessoal? Entre pelo botão do azinfo na barra de ferramentas do navegador."
   },
+  "signInAgainPrompt": {
+    "message": "Sua sessão terminou, por exemplo ao fechar o navegador. Entre novamente com a mesma conta."
+  },
+  "signInAgainTenant": { "message": "Entrar novamente ($1)" },
+  "signInAgainWork": { "message": "Entrar novamente (conta corporativa ou de estudante)" },
+  "signInOtherAccount": { "message": "Usar outra conta" },
   "panelSignInToSee": { "message": "Entre para ver os custos." },
   "panelOtherTenant": {
     "message": "Esta assinatura está em outro locatário, que exige que você entre uma vez."

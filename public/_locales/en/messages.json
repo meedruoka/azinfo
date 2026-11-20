@@ -90,6 +90,12 @@
   "panelPersonalUsePopup": {
     "message": "Personal Microsoft account? Sign in from the azinfo button in the browser toolbar."
   },
+  "signInAgainPrompt": {
+    "message": "Your session ended, for example when the browser closed. Sign in again with the same account."
+  },
+  "signInAgainTenant": { "message": "Sign in again ($1)" },
+  "signInAgainWork": { "message": "Sign in again (work or school account)" },
+  "signInOtherAccount": { "message": "Use another account" },
   "panelSignInToSee": { "message": "Sign in to see costs." },
   "panelOtherTenant": {
     "message": "This subscription is in another tenant, which needs you to sign in once."

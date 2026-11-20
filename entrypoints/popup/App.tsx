@@ -18,13 +18,18 @@ export interface AppProps {
   request?: typeof sendRequest;
 }
 
-type SignInChoice = Pick<ResponseMap['getAuthState'], 'chooseAccount' | 'lastPortalTenant'>;
+type SignInChoice = Pick<
+  ResponseMap['getAuthState'],
+  'chooseAccount' | 'lastPortalTenant' | 'returning' | 'rememberedTenant'
+>;
 
 export function App({ request = sendRequest }: AppProps) {
   const [view, setView] = useState<View>({ kind: 'loading' });
   const [choice, setChoice] = useState<SignInChoice>({
     chooseAccount: true,
     lastPortalTenant: null,
+    returning: false,
+    rememberedTenant: null,
   });
 
   const loadDirectory = useCallback(
@@ -44,6 +49,9 @@ export function App({ request = sendRequest }: AppProps) {
     setChoice({
       chooseAccount: res.data.chooseAccount,
       lastPortalTenant: res.data.lastPortalTenant,
+      // Older workers may not send these: treat as a fresh sign-in.
+      returning: res.data.returning ?? false,
+      rememberedTenant: res.data.rememberedTenant ?? null,
     });
     if (res.data.signedIn) void loadDirectory();
     else setView({ kind: 'signedOut' });
@@ -99,7 +107,7 @@ export function App({ request = sendRequest }: AppProps) {
 
       {view.kind === 'signedOut' && (
         <SignIn
-          key={choice.lastPortalTenant ?? ''}
+          key={`${choice.lastPortalTenant ?? ''}|${choice.rememberedTenant ?? ''}|${choice.returning}`}
           {...choice}
           error={view.error}
           onSignIn={signIn}
@@ -142,13 +150,38 @@ const TENANT_EXAMPLE = 'yourname.onmicrosoft.com';
 function SignIn({
   chooseAccount,
   lastPortalTenant,
+  returning,
+  rememberedTenant,
   error,
   onSignIn,
 }: SignInChoice & { error?: string; onSignIn: (personalTenant?: string) => void }) {
   const [personal, setPersonal] = useState(false);
-  const [tenant, setTenant] = useState(lastPortalTenant ?? '');
+  const [tenant, setTenant] = useState(lastPortalTenant ?? rememberedTenant ?? '');
   const [invalid, setInvalid] = useState(false);
+  // After a browser restart the silent sign-in may fail: one click with the same account.
+  const [otherAccount, setOtherAccount] = useState(false);
   const tenantId = useId();
+
+  if (chooseAccount && returning && !otherAccount) {
+    return (
+      <>
+        <p>{t('signInAgainPrompt')}</p>
+        <button
+          type="button"
+          className="primary"
+          onClick={() => onSignIn(rememberedTenant ?? undefined)}
+        >
+          {rememberedTenant ? t('signInAgainTenant', rememberedTenant) : t('signInAgainWork')}
+        </button>
+        <p>
+          <button type="button" className="link" onClick={() => setOtherAccount(true)}>
+            {t('signInOtherAccount')}
+          </button>
+        </p>
+        {error && <p className="error">{error}</p>}
+      </>
+    );
+  }
 
   if (!chooseAccount) {
     return (

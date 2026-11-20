@@ -58,6 +58,12 @@
   "panelPersonalUsePopup": {
     "message": "個人用 Microsoft アカウントの場合は、ブラウザーのツールバーにある azinfo ボタンからサインインしてください。"
   },
+  "signInAgainPrompt": {
+    "message": "ブラウザーを閉じたなどの理由でセッションが終了しました。同じアカウントでもう一度サインインしてください。"
+  },
+  "signInAgainTenant": { "message": "もう一度サインイン ($1)" },
+  "signInAgainWork": { "message": "もう一度サインイン (職場または学校アカウント)" },
+  "signInOtherAccount": { "message": "別のアカウントを使用" },
   "panelSignInToSee": { "message": "コストを表示するにはサインインしてください。" },
   "panelOtherTenant": {
     "message": "このサブスクリプションは別のテナントにあり、一度サインインする必要があります。"

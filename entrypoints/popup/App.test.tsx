@@ -153,3 +153,63 @@ describe('popup sign-in choice (decision 006)', () => {
     expect(request).toHaveBeenCalledWith({ type: 'signIn' });
   });
 });
+
+describe('popup after the session ended (0.1.2)', () => {
+  beforeEach(() => fakeBrowser.reset());
+  afterEach(cleanup);
+
+  const PERSONAL = 'yourname.onmicrosoft.com';
+
+  function returningWorker(rememberedTenant: string | null) {
+    return vi.fn(async (req: Request) => {
+      switch (req.type) {
+        case 'getAuthState':
+          return {
+            ok: true,
+            data: {
+              signedIn: false,
+              chooseAccount: true,
+              lastPortalTenant: null,
+              returning: true,
+              rememberedTenant,
+            },
+          };
+        case 'signIn':
+          return { ok: true, data: { signedIn: true } };
+        case 'getDirectory':
+          return { ok: true, data: DIRECTORY };
+        case 'getTopCosts':
+          return { ok: true, data: { subscriptionId: req.subscriptionId, fetchedAt: 1, top: [] } };
+        default:
+          return { ok: false, kind: 'unknown', message: 'unexpected' };
+      }
+    });
+  }
+
+  it('signs a personal account in again with one click, through the remembered tenant', async () => {
+    const request = returningWorker(PERSONAL);
+    render(<App request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: `Sign in again (${PERSONAL})` }));
+    await screen.findByLabelText('Subscription');
+    expect(request).toHaveBeenCalledWith({ type: 'signIn', personalTenant: PERSONAL });
+  });
+
+  it('signs a work account in again with one click', async () => {
+    const request = returningWorker(null);
+    render(<App request={request as never} />);
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Sign in again (work or school account)' }),
+    );
+    await screen.findByLabelText('Subscription');
+    expect(request).toHaveBeenCalledWith({ type: 'signIn' });
+  });
+
+  it('offers the full choice under "Use another account", with the remembered tenant filled in', async () => {
+    const request = returningWorker(PERSONAL);
+    render(<App request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Use another account' }));
+    expect(screen.getByText('Which account do you use for Azure?')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Personal Microsoft account' }));
+    expect((screen.getByLabelText('Your tenant') as HTMLInputElement).value).toBe(PERSONAL);
+  });
+});
