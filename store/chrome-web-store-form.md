@@ -30,7 +30,8 @@ Private by design
 Requirements
 • A Microsoft work, school or personal account with access to an Azure subscription
 • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
-• Work and school accounts: your administrator may need to approve azinfo once for your organisation
+• Personal Microsoft accounts: choose "Personal Microsoft account" when signing in
+• Work and school accounts: your administrator may need to approve azinfo once for your organisation: https://akourmohamed.github.io/azinfo-site/admin-consent.html
 
 Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis in the portal for invoices and detailed reporting.
 

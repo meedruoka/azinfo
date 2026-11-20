@@ -41,8 +41,9 @@ exists.
 > Requirements
 > • A Microsoft work, school or personal account with access to an Azure subscription
 > • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
+> • Personal Microsoft accounts: choose "Personal Microsoft account" when signing in
 > • Work and school accounts: your administrator may need to approve azinfo once for your
->   organisation
+>   organisation: https://akourmohamed.github.io/azinfo-site/admin-consent.html
 >
 > Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis
 > in the portal for invoices and detailed reporting.
@@ -153,8 +154,8 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
    store description's "Requirements" line.
 
    Live 2026-11-20 at <https://akourmohamed.github.io/azinfo-site/admin-consent.html> (copy of
-   `docs/admin-consent.md`; copy it again after changes). Not yet linked from the store
-   descriptions: both were submitted without the link, so add it in the next listing update.
+   `docs/admin-consent.md`; copy it again after changes). Linked from the Chrome description
+   since 0.1.1; the Edge description still needs the same Requirements lines at its next edit.
 
 ### Each release
 
@@ -172,7 +173,7 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 | Version | Edge | Chrome |
 |---|---|---|
 | 0.1.0 | Submitted 2026-11-20 by hand, approved | Submitted 2026-11-20 by hand, published 2026-11-20 |
-| 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722). Decision 006 browser checks were skipped before submitting | Not uploaded yet |
+| 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722). Decision 006 browser checks were skipped before submitting | Submitted 2026-11-20 by hand, with the updated Requirements lines (personal accounts, admin page link) |
 6. [ ] After store approval: install from the store, sign in with a personal account (tenant
    setting) and a work account (`organizations`), and open a resource page.
 
