@@ -63,6 +63,13 @@ options page: popup → **Options**.
 | [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
 | [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages |
 
+## CI
+
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push to `main` and every pull
+request: frozen install, `lint`, `compile`, `test`, both production builds and `check:manifest`.
+CI has no `.env` files, so its builds contain no Entra client ID: store packages are always built
+locally with `.env.production.local`. pnpm is pinned by `packageManager` in `package.json`.
+
 ## Development rule
 
 Develop and test only against a personal Azure subscription and a personal Entra

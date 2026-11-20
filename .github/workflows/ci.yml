@@ -1,0 +1,39 @@
+# Checks every push to main and every pull request: lint, types, tests, both
+# store builds and the manifest check. CI builds have no Entra client ID
+# (.env.production.local is git-ignored), so they're checks, not store packages.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm version comes from "packageManager" in package.json.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm compile
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm build:edge
+      - run: pnpm check:manifest
