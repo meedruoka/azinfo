@@ -16,8 +16,9 @@ on:
       store:
         description: Which store to upload to
         type: choice
-        options: [both, edge, chrome]
-        default: both
+        # Chrome uploads are manual for now (no Google Cloud project): see README.
+        options: [edge, both, chrome]
+        default: edge
       publish:
         description: Submit for review after uploading (otherwise upload only)
         type: boolean

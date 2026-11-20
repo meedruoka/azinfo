@@ -95,6 +95,12 @@ Settings (repository **Settings → Secrets and variables → Actions**, or `gh`
 | `CHROME_PUBLISHER_ID` | variable | Chrome Developer Dashboard → Publisher → Settings → Publisher ID |
 | `CHROME_ITEM_ID` | variable | `agbbplllbldedlebmjoplcjilocgphia` |
 
+**Current choice (2026-11-20): Chrome uploads stay manual.** Setting up Google Cloud asked for a
+payment card, so the Google setup below hasn't been done and **Release** defaults to **edge**.
+For Chrome, upload `azinfo-<version>-chrome.zip` from the run's **store-packages** artifact (or
+`.output/`) in the Chrome Developer Dashboard and submit it. The Chrome step stays in the
+workflow, ready if this changes.
+
 ### One-time Google setup (Chrome)
 
 The Chrome Web Store API v2 accepts a **service account**, which suits CI: no browser sign-in and
