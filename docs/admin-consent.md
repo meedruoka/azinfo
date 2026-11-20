@@ -2,11 +2,19 @@
 
 azinfo is a browser extension that shows Azure cost information next to the resource a user is
 viewing in the Azure portal. Users sign in with their own Microsoft Entra account. If your
-organisation doesn't let users approve apps themselves, they see **"Need admin approval"** the
-first time, and an administrator approves azinfo once for the whole tenant.
+organisation doesn't let users approve apps themselves, they see **"Approval required"** (or
+**"Need admin approval"**) the first time, and an administrator approves azinfo once for the whole
+tenant.
 
 You need one of these Entra roles: **Global Administrator**, **Cloud Application Administrator**
 or **Application Administrator**.
+
+| | |
+|---|---|
+| App name | azinfo |
+| Application (client) ID | `e76d6bcf-bcea-4d90-a659-2d47135dfa96` |
+| Publisher | Mohamed Akour (individual developer) |
+| Privacy policy | <https://akourmohamed.github.io/azinfo-site/privacy-policy.html> |
 
 ## What azinfo asks for
 
@@ -42,7 +50,7 @@ What this means in practice:
 Open this link in any browser, after replacing `{tenant}` with your tenant ID or primary domain:
 
 ```
-https://login.microsoftonline.com/{tenant}/v2.0/adminconsent?client_id=<CLIENT_ID>&scope=https://management.azure.com/user_impersonation&redirect_uri=https://<CHROME_STORE_ID>.chromiumapp.org/
+https://login.microsoftonline.com/{tenant}/v2.0/adminconsent?client_id=e76d6bcf-bcea-4d90-a659-2d47135dfa96&scope=https://management.azure.com/user_impersonation&redirect_uri=https://agbbplllbldedlebmjoplcjilocgphia.chromiumapp.org/
 ```
 
 Sign in and choose **Accept**. Afterwards, the browser tries to open the extension's sign-in
@@ -80,6 +88,8 @@ cost data.
 
 ## Publisher status
 
-The consent screen may show azinfo as **unverified**. That means its publisher hasn't yet completed
-Microsoft's publisher verification. It says nothing about what the app can access: that is
-limited to the permissions above.
+The consent screen shows azinfo as **unverified**. That means its publisher, an individual
+developer, hasn't completed Microsoft's publisher verification. It says nothing about what the app
+can access: that is limited to the permissions above.
+
+Questions: <https://github.com/AkourMohamed/azinfo-site/issues>.

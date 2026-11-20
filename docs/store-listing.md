@@ -148,9 +148,13 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
    implicit grant).
 6. [x] **Privacy policy** published at a public URL, placeholders filled in (2026-11-19, see
    "Privacy policy URL" above).
-7. [ ] **Administrator page** [admin-consent.md](admin-consent.md) published next to it, with
+7. [x] **Administrator page** [admin-consent.md](admin-consent.md) published next to it, with
    `<CLIENT_ID>` and `<CHROME_STORE_ID>` replaced by the production values. Link it from the
    store description's "Requirements" line.
+
+   Live 2026-11-20 at <https://akourmohamed.github.io/azinfo-site/admin-consent.html> (copy of
+   `docs/admin-consent.md`; copy it again after changes). Not yet linked from the store
+   descriptions: both were submitted without the link, so add it in the next listing update.
 
 ### Each release
 
