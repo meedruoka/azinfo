@@ -1,0 +1,106 @@
+# Builds the store packages from main and uploads them to Edge Add-ons and/or
+# the Chrome Web Store through their APIs. Started by hand only (Actions >
+# Release > Run workflow). By default it only uploads; tick "publish" to submit
+# for review. Nothing reaches users before the store approves it.
+#
+# Needs, as repository settings (Settings > Secrets and variables > Actions):
+#   ENTRA_CLIENT_ID (variable)        production app registration "azinfo"
+#   Edge:   EDGE_CLIENT_ID, EDGE_API_KEY (secrets), EDGE_PRODUCT_ID (variable)
+#   Chrome: CHROME_SERVICE_ACCOUNT_KEY (secret), CHROME_PUBLISHER_ID, CHROME_ITEM_ID (variables)
+# Only this workflow reads them, and it runs on main only.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      store:
+        description: Which store to upload to
+        type: choice
+        options: [both, edge, chrome]
+        default: both
+      publish:
+        description: Submit for review after uploading (otherwise upload only)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Store builds sign in through the production registration; the client ID isn't a secret.
+      WXT_ENTRA_CLIENT_ID: ${{ vars.ENTRA_CLIENT_ID }}
+      WXT_ENTRA_AUTHORITY: organizations
+      TO_EDGE: ${{ inputs.store == 'both' || inputs.store == 'edge' }}
+      TO_CHROME: ${{ inputs.store == 'both' || inputs.store == 'chrome' }}
+      PUBLISH: ${{ inputs.publish }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Check release settings
+        run: |
+          missing=""
+          [ -n "$WXT_ENTRA_CLIENT_ID" ] || missing="$missing ENTRA_CLIENT_ID"
+          if [ "$TO_EDGE" = "true" ]; then
+            [ -n "${{ vars.EDGE_PRODUCT_ID }}" ] || missing="$missing EDGE_PRODUCT_ID"
+          fi
+          if [ "$TO_CHROME" = "true" ]; then
+            [ -n "${{ vars.CHROME_PUBLISHER_ID }}" ] || missing="$missing CHROME_PUBLISHER_ID"
+            [ -n "${{ vars.CHROME_ITEM_ID }}" ] || missing="$missing CHROME_ITEM_ID"
+          fi
+          [ -z "$missing" ] || { echo "::error::Repository variables not set:$missing"; exit 1; }
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm compile
+      - run: pnpm test
+
+      - run: pnpm zip
+      - run: pnpm zip:edge
+      - run: pnpm check:manifest
+
+      - name: Confirm both packages use the production client ID
+        run: |
+          for dir in chrome-mv3 edge-mv3; do
+            count=$(grep -c "$WXT_ENTRA_CLIENT_ID" ".output/$dir/background.js" || true)
+            [ "$count" = "1" ] || { echo "::error::$dir: expected the production client ID once in background.js, found $count"; exit 1; }
+          done
+
+      - name: Keep the packages
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: store-packages
+          path: .output/*.zip
+          retention-days: 30
+
+      - name: Upload to Edge Add-ons
+        if: env.TO_EDGE == 'true'
+        env:
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+          EDGE_PRODUCT_ID: ${{ vars.EDGE_PRODUCT_ID }}
+        run: node scripts/edge-publish.mjs $([ "$PUBLISH" = "true" ] && echo --publish)
+
+      - name: Upload to the Chrome Web Store
+        # Runs even when Edge failed, so one store's problem doesn't hold up the other.
+        if: ${{ !cancelled() && env.TO_CHROME == 'true' }}
+        env:
+          CHROME_SERVICE_ACCOUNT_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
+          CHROME_PUBLISHER_ID: ${{ vars.CHROME_PUBLISHER_ID }}
+          CHROME_ITEM_ID: ${{ vars.CHROME_ITEM_ID }}
+        run: node scripts/chrome-publish.mjs $([ "$PUBLISH" = "true" ] && echo --publish)

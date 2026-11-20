@@ -131,7 +131,8 @@ export function createEdgeClient({
 
     /** Submits the draft for certification with notes for the testers, and waits for the result. */
     async publish(notes) {
-      // The docs say "JSON" with a { notes } sample: send JSON with a notes field.
+      // The docs contradict themselves (JSON vs plain text). JSON with a notes field was
+      // accepted on 2026-11-20 (0.1.1, submission 1152921505702463722).
       const id = await start(
         'POST',
         `${product}/submissions`,

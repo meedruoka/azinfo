@@ -164,7 +164,15 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 4. [ ] Confirm the production bundle uses the **production** client ID:
    `grep -c <production-client-id> .output/chrome-mv3/background.js` should be 1.
 5. [ ] `pnpm zip && pnpm zip:edge`, then upload the zips from `.output/`. Edge can instead go
-   through **Actions → Release to Edge** (see the README); Chrome stays a manual upload.
+   through **Actions → Release** (see the README), and Chrome too once its service account is
+   set up.
+
+### Releases
+
+| Version | Edge | Chrome |
+|---|---|---|
+| 0.1.0 | Submitted 2026-11-20 by hand, approved | Submitted 2026-11-20 by hand, published 2026-11-20 |
+| 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722). Decision 006 browser checks were skipped before submitting | Not uploaded yet |
 6. [ ] After store approval: install from the store, sign in with a personal account (tenant
    setting) and a work account (`organizations`), and open a resource page.
 
