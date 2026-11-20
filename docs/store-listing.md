@@ -163,7 +163,8 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 3. [ ] `pnpm build && pnpm build:edge && pnpm check:manifest`
 4. [ ] Confirm the production bundle uses the **production** client ID:
    `grep -c <production-client-id> .output/chrome-mv3/background.js` should be 1.
-5. [ ] `pnpm zip && pnpm zip:edge`, then upload the zips from `.output/`.
+5. [ ] `pnpm zip && pnpm zip:edge`, then upload the zips from `.output/`. Edge can instead go
+   through **Actions → Release to Edge** (see the README); Chrome stays a manual upload.
 6. [ ] After store approval: install from the store, sign in with a personal account (tenant
    setting) and a work account (`organizations`), and open a resource page.
 

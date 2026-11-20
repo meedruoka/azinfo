@@ -1,0 +1,11 @@
+azinfo shows Azure cost data inside the Azure portal (portal.azure.com). It is read-only and has no backend server.
+
+No test account is provided. Testing needs a Microsoft account with access to an Azure subscription and at least the Cost Management Reader (or Reader) role on it. A free Azure account works; with no spending, costs show as 0.00.
+
+How to test:
+1. Click the azinfo toolbar icon. Choose "Work or school account", or "Personal Microsoft account" and enter your own tenant (shown under your name in the Azure portal's account menu, e.g. yourname.onmicrosoft.com). A Microsoft sign-in window opens (chrome.identity.launchWebAuthFlow, OAuth 2.0 with PKCE). Work or school accounts may see a consent screen, or "Approval required" if their organisation only allows admin-approved apps.
+2. The popup then lists your subscriptions and the five most expensive resources this month.
+3. Open any resource in the Azure portal (for example a storage account). A small "azinfo" pill appears in the bottom-right corner; click it to see this month's cost, the projection, last month, the cost by meter and any Azure Advisor savings tips.
+4. Open a resource group to see every resource in it, sorted by cost, with the group total.
+
+Network access: only login.microsoftonline.com (sign-in) and management.azure.com (subscriptions, Cost Management and Advisor read calls). Cost data can lag by several hours.

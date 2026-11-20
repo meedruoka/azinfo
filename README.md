@@ -69,6 +69,32 @@ options page: popup → **Options**.
 request: frozen install, `lint`, `compile`, `test`, both production builds and `check:manifest`.
 CI has no `.env` files, so its builds contain no Entra client ID: store packages are always built
 locally with `.env.production.local`. pnpm is pinned by `packageManager` in `package.json`.
+Actions are pinned to commit SHAs (the comment names the tag), because the release workflow holds
+the Edge API key: update a pin deliberately, after reading that action's changes.
+
+## Releasing to Edge (CD)
+
+[.github/workflows/release-edge.yml](.github/workflows/release-edge.yml) builds the Edge package
+from `main` and uploads it through the
+[Edge Add-ons API v1.1](https://learn.microsoft.com/en-us/microsoft-edge/extensions/update/api/using-addons-api).
+It only runs when started by hand: **Actions → Release to Edge → Run workflow**. By default it
+only replaces the draft in Partner Center; tick **publish** to submit for certification (with
+[store/certification-notes.txt](store/certification-notes.txt)). The package is also kept as a
+workflow artifact.
+
+One-time setup (repository **Settings → Secrets and variables → Actions**, or `gh`):
+
+| Name | Kind | Value |
+|---|---|---|
+| `EDGE_CLIENT_ID` | secret | Partner Center → Microsoft Edge → Publish API → Client ID |
+| `EDGE_API_KEY` | secret | Same page, the API key. **It expires**: Partner Center shows the date; renew it and update the secret |
+| `EDGE_PRODUCT_ID` | variable | `bcaf0d3a-73c3-4fa7-8067-83f2dc349b14` |
+| `ENTRA_CLIENT_ID` | variable | `e76d6bcf-bcea-4d90-a659-2d47135dfa96` (production registration) |
+
+Each release: bump `version` in `package.json`, push to `main`, wait for CI, run the workflow.
+Edge rejects a version it already has, and refuses a new submission while one is in review
+(`InProgressSubmission`). Locally: `node scripts/edge-publish.mjs --dry-run` checks the settings
+without calling Microsoft. Chrome Web Store uploads stay manual.
 
 ## Development rule
 
