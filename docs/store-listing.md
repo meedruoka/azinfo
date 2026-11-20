@@ -173,7 +173,7 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 | Version | Edge | Chrome |
 |---|---|---|
 | 0.1.0 | Submitted 2026-11-20 by hand, approved | Submitted 2026-11-20 by hand, published 2026-11-20 |
-| 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722). Decision 006 browser checks were skipped before submitting | Submitted 2026-11-20 by hand, with the updated Requirements lines (personal accounts, admin page link) |
+| 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722), approved and live (store data reports version 0.1.1). Decision 006 browser checks were skipped before submitting | Submitted 2026-11-20 by hand, with the updated Requirements lines (personal accounts, admin page link) |
 6. [ ] After store approval: install from the store, sign in with a personal account (tenant
    setting) and a work account (`organizations`), and open a resource page.
 

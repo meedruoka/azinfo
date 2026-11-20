@@ -1,6 +1,6 @@
 # 006: Sign-in for personal Microsoft accounts
 
-- **Status:** Implemented in 0.1.1. Browser checks below are pending.
+- **Status:** Implemented in 0.1.1, live on Edge. Checks 1, 2 and 5 passed on the Edge store version (2026-11-20); 3 and 4 not yet done.
 - **Date:** 2026-11-20
 
 ## Problem
@@ -56,11 +56,11 @@ Test build that behaves like the store default (dev registration and ID, default
 
 | # | Check | Result |
 |---|---|---|
-| 1 | Personal account, panel on a resource page: "Personal Microsoft account" signs in with no options-page change | Pending |
-| 2 | Personal account, popup after visiting a resource page: tenant pre-filled, sign-in works | Pending |
+| 1 | Personal account, panel on a resource page: "Personal Microsoft account" signs in with no options-page change | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
+| 2 | Personal account, popup after visiting a resource page: tenant pre-filled, sign-in works | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 | 3 | Work account: "Work or school account" signs in through `organizations`, all tenants listed as before | Pending |
 | 4 | Browser restart after a personal sign-in: still signed in, silently | Pending |
-| 5 | Sign out, then the choice is offered again | Pending |
+| 5 | Sign out, then the choice is offered again | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 
 ## Consequences
 
