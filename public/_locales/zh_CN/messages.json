@@ -39,6 +39,17 @@
   "panelSigningIn": {
     "message": "正在登录… 如果打开了 Microsoft 窗口，请在其中完成登录。该窗口可能在此浏览器窗口后面。"
   },
+  "signInChooseAccount": { "message": "你在 Azure 中使用哪种帐户？" },
+  "signInWork": { "message": "工作或学校帐户" },
+  "signInPersonal": { "message": "个人 Microsoft 帐户" },
+  "signInTenantLabel": { "message": "你的租户" },
+  "signInTenantHelp": {
+    "message": "显示在 Azure 门户帐户菜单中你的名称下方，例如 $1。先打开任意 Azure 资源会自动填写。"
+  },
+  "signInTenantInvalid": { "message": "请输入租户域（例如 yourname.onmicrosoft.com）或租户 ID。" },
+  "panelPersonalUsePopup": {
+    "message": "个人 Microsoft 帐户？请通过浏览器工具栏中的 azinfo 按钮登录。"
+  },
   "panelSignInToSee": { "message": "登录以查看成本。" },
   "panelOtherTenant": { "message": "此订阅位于另一个租户中，需要你登录一次。" },
   "panelOtherTenantNamed": { "message": "此订阅位于另一个租户($1)中，需要你登录一次。" },

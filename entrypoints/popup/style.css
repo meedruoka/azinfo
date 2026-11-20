@@ -43,6 +43,27 @@ h2 {
   gap: 2px;
 }
 
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+form.personal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+form.personal input {
+  font: inherit;
+  padding: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 select {
   font: inherit;
   padding: 4px;

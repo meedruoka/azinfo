@@ -7,7 +7,12 @@ import type { SpikeAssessment } from './cost/spike';
 /** Requests from popup/content script to the background worker. */
 export type Request =
   | { type: 'getAuthState' }
-  | { type: 'signIn' }
+  /**
+   * Home sign-in. `personalTenant`: a personal Microsoft account's own tenant
+   * (decision 006); absent for work or school accounts. Ignored when a tenant
+   * is set on the options page.
+   */
+  | { type: 'signIn'; personalTenant?: string }
   /** Interactive sign-in to one more tenant (consent, MFA, device checks there). */
   | { type: 'signInTenant'; tenantId: string }
   | { type: 'signOut' }
@@ -90,7 +95,13 @@ export interface DirectoryTenant {
 }
 
 export interface ResponseMap {
-  getAuthState: { signedIn: boolean };
+  getAuthState: {
+    signedIn: boolean;
+    /** No tenant set on the options page: sign-in asks for the account type. */
+    chooseAccount: boolean;
+    /** Last tenant seen in a portal address this session, for personal accounts. */
+    lastPortalTenant: string | null;
+  };
   signIn: { signedIn: boolean };
   signInTenant: { signedIn: boolean };
   signOut: { signedIn: boolean };

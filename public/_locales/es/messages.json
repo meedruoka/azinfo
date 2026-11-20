@@ -45,6 +45,19 @@
   "panelSigningIn": {
     "message": "Iniciando sesión… Si se abre una ventana de Microsoft, termine de iniciar sesión allí. Puede estar detrás de esta ventana del navegador."
   },
+  "signInChooseAccount": { "message": "¿Qué cuenta usa para Azure?" },
+  "signInWork": { "message": "Cuenta profesional o educativa" },
+  "signInPersonal": { "message": "Cuenta Microsoft personal" },
+  "signInTenantLabel": { "message": "Su inquilino" },
+  "signInTenantHelp": {
+    "message": "Se muestra bajo su nombre en el menú de cuenta del portal de Azure, por ejemplo $1. Si abre primero un recurso de Azure, se rellena automáticamente."
+  },
+  "signInTenantInvalid": {
+    "message": "Escriba el dominio de su inquilino (por ejemplo yourname.onmicrosoft.com) o el ID del inquilino."
+  },
+  "panelPersonalUsePopup": {
+    "message": "¿Cuenta Microsoft personal? Inicie sesión desde el botón de azinfo en la barra de herramientas del navegador."
+  },
   "panelSignInToSee": { "message": "Inicie sesión para ver los costes." },
   "panelOtherTenant": {
     "message": "Esta suscripción está en otro inquilino, que requiere que inicie sesión una vez."

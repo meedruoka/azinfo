@@ -262,13 +262,42 @@ describe('Panel', () => {
     ];
     const request = vi.fn(async (_req: Request) => answers.shift());
     render(<Panel context={APP} request={request as never} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Sign in' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Work or school account' }));
     expect(await screen.findByText('0%')).toBeTruthy();
     expect(request.mock.calls.map(([r]) => (r as Request).type)).toEqual([
       'getResourceCost',
       'signIn',
       'getResourceCost',
     ]);
+    // A work account signs in through the default: no personal tenant.
+    expect(request.mock.calls[1]?.[0]).toEqual({ type: 'signIn' });
+  });
+
+  it('signs a personal account in through the tenant in the page address', async () => {
+    const answers: unknown[] = [
+      { ok: false, kind: 'notSignedIn', message: '' },
+      { ok: true, data: { signedIn: true } },
+      costOf(APP, 5, 5),
+    ];
+    const request = vi.fn(async (_req: Request) => answers.shift());
+    render(<Panel context={APP} request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Personal Microsoft account' }));
+    expect(await screen.findByText('0%')).toBeTruthy();
+    expect(request.mock.calls[1]?.[0]).toEqual({
+      type: 'signIn',
+      personalTenant: 't.onmicrosoft.com',
+    });
+  });
+
+  it('without a tenant in the address, offers only the work account and points to the popup', async () => {
+    const noTenant = parsePortalUrl(
+      `https://portal.azure.com/#resource/subscriptions/${SUB}/resourceGroups/rg/providers/Microsoft.Web/sites/App-One/overview`,
+    ) as PortalContext;
+    const request = vi.fn(async () => ({ ok: false, kind: 'notSignedIn', message: '' }));
+    render(<Panel context={noTenant} request={request as never} />);
+    expect(await screen.findByRole('button', { name: 'Work or school account' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Personal Microsoft account' })).toBeNull();
+    expect(screen.getByText(/Sign in from the azinfo button/)).toBeTruthy();
   });
 
   it('offers a sign-in to the subscription tenant, then loads the cost', async () => {

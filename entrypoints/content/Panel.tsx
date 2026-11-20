@@ -6,7 +6,7 @@ import { type MeterShare, OTHER_METERS } from '@/lib/cost/breakdown';
 import { costStatusItem } from '@/lib/cost/cost-service';
 import { formatMoney, formatPercent, formatShare, formatTime } from '@/lib/format';
 import { t, tp } from '@/lib/i18n';
-import type { AssessedCost, Result, SpikeContext, TipsResult } from '@/lib/messages';
+import type { AssessedCost, Request, Result, SpikeContext, TipsResult } from '@/lib/messages';
 import { sendRequest } from '@/lib/messages';
 import {
   errorState,
@@ -165,15 +165,19 @@ function CostPanel({
     void panelCollapsedItem.setValue(next);
   };
 
-  const signIn = async (tenantId?: string) => {
+  const runSignIn = async (req: Request) => {
     // The Microsoft window may open behind the browser: say where to look.
     setState({ kind: 'loading', signingIn: true });
-    const res: Result<unknown> = await request(
-      tenantId ? { type: 'signInTenant', tenantId } : { type: 'signIn' },
-    );
+    const res: Result<unknown> = await request(req);
     if (res.ok) await load();
     else setState(errorState(res));
   };
+  const signIn = (tenantId?: string) =>
+    runSignIn(tenantId ? { type: 'signInTenant', tenantId } : { type: 'signIn' });
+  // A personal account signs in through the tenant in the page address (decision 006).
+  const signInPersonal = tenantLabel
+    ? () => runSignIn({ type: 'signIn', personalTenant: tenantLabel })
+    : undefined;
 
   if (collapsed) {
     return (
@@ -208,7 +212,13 @@ function CostPanel({
           –
         </button>
       </header>
-      <Body state={state} onRetry={() => load(true)} onSignIn={signIn} tenantLabel={tenantLabel} />
+      <Body
+        state={state}
+        onRetry={() => load(true)}
+        onSignIn={signIn}
+        onSignInPersonal={signInPersonal}
+        tenantLabel={tenantLabel}
+      />
     </section>
   );
 }
@@ -217,11 +227,14 @@ function Body({
   state,
   onRetry,
   onSignIn,
+  onSignInPersonal,
   tenantLabel,
 }: {
   state: PanelState;
   onRetry: () => void;
   onSignIn: (tenantId?: string) => void;
+  /** Absent when the page address names no tenant. */
+  onSignInPersonal?: () => void;
   tenantLabel?: string;
 }) {
   switch (state.kind) {
@@ -239,9 +252,17 @@ function Body({
       return (
         <>
           <p>{t('panelSignInToSee')}</p>
-          <button type="button" className="primary" onClick={() => onSignIn()}>
-            {t('signIn')}
-          </button>
+          <div className="choices">
+            <button type="button" className="primary" onClick={() => onSignIn()}>
+              {t('signInWork')}
+            </button>
+            {onSignInPersonal && (
+              <button type="button" onClick={onSignInPersonal}>
+                {t('signInPersonal')}
+              </button>
+            )}
+          </div>
+          {!onSignInPersonal && <p className="muted small">{t('panelPersonalUsePopup')}</p>}
         </>
       );
     case 'tenantSignIn':

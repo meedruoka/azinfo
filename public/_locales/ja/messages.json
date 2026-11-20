@@ -45,6 +45,19 @@
   "panelSigningIn": {
     "message": "サインインしています… Microsoft のウィンドウが開いたら、そこでサインインを完了してください。このブラウザー ウィンドウの後ろに表示されている場合があります。"
   },
+  "signInChooseAccount": { "message": "Azure で使用しているアカウントはどれですか?" },
+  "signInWork": { "message": "職場または学校アカウント" },
+  "signInPersonal": { "message": "個人用 Microsoft アカウント" },
+  "signInTenantLabel": { "message": "テナント" },
+  "signInTenantHelp": {
+    "message": "Azure portal のアカウント メニューで名前の下に表示されます (例: $1)。先に Azure のリソースを開くと自動で入力されます。"
+  },
+  "signInTenantInvalid": {
+    "message": "テナントのドメイン (例: yourname.onmicrosoft.com) またはテナント ID を入力してください。"
+  },
+  "panelPersonalUsePopup": {
+    "message": "個人用 Microsoft アカウントの場合は、ブラウザーのツールバーにある azinfo ボタンからサインインしてください。"
+  },
   "panelSignInToSee": { "message": "コストを表示するにはサインインしてください。" },
   "panelOtherTenant": {
     "message": "このサブスクリプションは別のテナントにあり、一度サインインする必要があります。"

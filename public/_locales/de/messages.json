@@ -45,6 +45,19 @@
   "panelSigningIn": {
     "message": "Anmeldung läuft… Wenn sich ein Microsoft-Fenster öffnet, schließen Sie die Anmeldung dort ab. Es kann hinter diesem Browserfenster liegen."
   },
+  "signInChooseAccount": { "message": "Welches Konto verwenden Sie für Azure?" },
+  "signInWork": { "message": "Geschäfts-, Schul- oder Unikonto" },
+  "signInPersonal": { "message": "Persönliches Microsoft-Konto" },
+  "signInTenantLabel": { "message": "Ihr Mandant" },
+  "signInTenantHelp": {
+    "message": "Wird im Azure-Portal im Kontomenü unter Ihrem Namen angezeigt, zum Beispiel $1. Wenn Sie zuerst eine Azure-Ressource öffnen, wird er automatisch ausgefüllt."
+  },
+  "signInTenantInvalid": {
+    "message": "Geben Sie die Domäne Ihres Mandanten (zum Beispiel yourname.onmicrosoft.com) oder die Mandanten-ID ein."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Persönliches Microsoft-Konto? Melden Sie sich über die azinfo-Schaltfläche in der Browser-Symbolleiste an."
+  },
   "panelSignInToSee": { "message": "Melden Sie sich an, um die Kosten zu sehen." },
   "panelOtherTenant": {
     "message": "Dieses Abonnement gehört zu einem anderen Mandanten, der eine einmalige Anmeldung erfordert."

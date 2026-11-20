@@ -150,8 +150,15 @@ p {
   margin: 8px 0 0;
 }
 
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 button.primary,
-.azinfo-card > button {
+.azinfo-card > button,
+.choices > button {
   padding: 4px 12px;
   border: 1px solid var(--border);
   border-radius: 4px;

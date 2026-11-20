@@ -6,6 +6,7 @@ import {
   TenantSignInRequiredError,
 } from '@/lib/auth/auth-service';
 import { defaultAuthority, readAuthConfig } from '@/lib/auth/config';
+import { lastPortalTenantItem, planSignIn, signInAuthorityItem } from '@/lib/auth/sign-in-choice';
 import { TokenError } from '@/lib/auth/token-endpoint';
 import { type Tip, totalSavings } from '@/lib/azure/advisor';
 import { ArmError } from '@/lib/azure/arm-client';
@@ -142,6 +143,7 @@ export default defineBackground(() => {
         // Tokens belong to the old authority: sign out and drop its cost data.
         await auth.signOut();
         await clearAccountData();
+        await signInAuthorityItem.removeValue();
         await authorityItem.setValue(authority);
         return { authority: authority ?? defaultAuthority() };
       }
@@ -149,20 +151,39 @@ export default defineBackground(() => {
         // Tenant and subscription names are cached on disk too.
         await clearAccountData();
         return { cleared: true };
-      case 'getAuthState':
-        if (await auth.isSignedIn()) return { signedIn: true };
+      case 'getAuthState': {
+        const choice = {
+          chooseAccount: (await authorityItem.getValue()) === null,
+          lastPortalTenant: await lastPortalTenantItem.getValue(),
+        };
+        if (await auth.isSignedIn()) return { signedIn: true, ...choice };
         // Session storage is empty after a browser restart: try a silent
         // sign-in, unless the user explicitly signed out.
         try {
           await auth.getAccessToken();
-          return { signedIn: true };
+          return { signedIn: true, ...choice };
         } catch (e) {
-          if (e instanceof NotSignedInError) return { signedIn: false };
+          if (e instanceof NotSignedInError) return { signedIn: false, ...choice };
           throw e;
         }
-      case 'signIn':
-        await auth.signIn();
+      }
+      case 'signIn': {
+        const plan = planSignIn(
+          await authorityItem.getValue(),
+          await signInAuthorityItem.getValue(),
+          request.personalTenant,
+        );
+        if (plan.kind === 'invalid') throw new Error(`Not a valid tenant: ${plan.input}`);
+        if (plan.kind === 'switch') {
+          // Tokens belong to the authority that issued them (decision 006).
+          await auth.signOut();
+          await clearAccountData();
+          if (plan.tenant) await signInAuthorityItem.setValue(plan.tenant);
+          else await signInAuthorityItem.removeValue();
+        }
+        await (await getAuth()).signIn();
         return { signedIn: true };
+      }
       case 'signInTenant':
         await auth.signInTenant(request.tenantId);
         // The tenant's subscriptions are reachable now: rebuild the directory.
@@ -171,6 +192,8 @@ export default defineBackground(() => {
       case 'signOut':
         await auth.signOut();
         await clearAccountData();
+        // The next sign-in asks for the account type again.
+        await signInAuthorityItem.removeValue();
         return { signedIn: false };
       case 'getDirectory': {
         const dir = await getDirectory().get(request.force);
@@ -250,7 +273,10 @@ export default defineBackground(() => {
   }
 
   function rememberHint(subscriptionId: string, hint?: string) {
-    if (hint) tenantHints.set(subscriptionId.toLowerCase(), hint.toLowerCase());
+    if (!hint) return;
+    tenantHints.set(subscriptionId.toLowerCase(), hint.toLowerCase());
+    // Offered to personal accounts in the popup (decision 006).
+    void lastPortalTenantItem.setValue(hint.toLowerCase());
   }
 
   const self = { id: browser.runtime.id, origin: originOf(browser.runtime.getURL('/')) ?? '' };

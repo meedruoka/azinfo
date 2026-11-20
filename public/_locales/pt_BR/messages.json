@@ -43,6 +43,19 @@
   "panelSigningIn": {
     "message": "Entrando… Se uma janela da Microsoft abrir, conclua a entrada nela. Ela pode estar atrás desta janela do navegador."
   },
+  "signInChooseAccount": { "message": "Qual conta você usa para o Azure?" },
+  "signInWork": { "message": "Conta corporativa ou de estudante" },
+  "signInPersonal": { "message": "Conta Microsoft pessoal" },
+  "signInTenantLabel": { "message": "Seu locatário" },
+  "signInTenantHelp": {
+    "message": "Aparece abaixo do seu nome no menu da conta do portal do Azure, por exemplo $1. Se você abrir primeiro um recurso do Azure, ele é preenchido automaticamente."
+  },
+  "signInTenantInvalid": {
+    "message": "Informe o domínio do seu locatário (por exemplo yourname.onmicrosoft.com) ou a ID do locatário."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Conta Microsoft pessoal? Entre pelo botão do azinfo na barra de ferramentas do navegador."
+  },
   "panelSignInToSee": { "message": "Entre para ver os custos." },
   "panelOtherTenant": {
     "message": "Esta assinatura está em outro locatário, que exige que você entre uma vez."

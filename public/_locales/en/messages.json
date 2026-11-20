@@ -77,6 +77,19 @@
   "panelSigningIn": {
     "message": "Signing in… If a Microsoft window opens, finish signing in there. It may be behind this browser window."
   },
+  "signInChooseAccount": { "message": "Which account do you use for Azure?" },
+  "signInWork": { "message": "Work or school account" },
+  "signInPersonal": { "message": "Personal Microsoft account" },
+  "signInTenantLabel": { "message": "Your tenant" },
+  "signInTenantHelp": {
+    "message": "Shown under your name in the Azure portal's account menu, for example $1. Opening any Azure resource first fills it in."
+  },
+  "signInTenantInvalid": {
+    "message": "Enter your tenant domain (for example yourname.onmicrosoft.com) or tenant ID."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Personal Microsoft account? Sign in from the azinfo button in the browser toolbar."
+  },
   "panelSignInToSee": { "message": "Sign in to see costs." },
   "panelOtherTenant": {
     "message": "This subscription is in another tenant, which needs you to sign in once."

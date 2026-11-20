@@ -1,4 +1,5 @@
 import { authorityItem } from '../settings';
+import { signInAuthorityItem } from './sign-in-choice';
 
 /** Entra sign-in settings. */
 export interface AuthConfig {
@@ -34,5 +35,15 @@ export async function readAuthConfig(): Promise<AuthConfig> {
       'WXT_ENTRA_CLIENT_ID is not set: .env.local for dev builds, .env.production.local for store builds (see .env.example).',
     );
   }
-  return { clientId, authority: (await authorityItem.getValue()) ?? defaultAuthority() };
+  return { clientId, authority: await signInAuthority() };
+}
+
+/**
+ * Authority for the home sign-in: the options-page setting, else the tenant
+ * of a personal-account sign-in, else the build default (decision 006).
+ */
+export async function signInAuthority(): Promise<string> {
+  return (
+    (await authorityItem.getValue()) ?? (await signInAuthorityItem.getValue()) ?? defaultAuthority()
+  );
 }

@@ -90,3 +90,66 @@ describe('popup', () => {
     expect(select.textContent).toBe('Home sub');
   });
 });
+
+describe('popup sign-in choice (decision 006)', () => {
+  beforeEach(() => fakeBrowser.reset());
+  afterEach(cleanup);
+
+  const PERSONAL = 'meedakourgmail.onmicrosoft.com';
+
+  function signedOut(choice: { chooseAccount: boolean; lastPortalTenant: string | null }) {
+    return vi.fn(async (req: Request) => {
+      switch (req.type) {
+        case 'getAuthState':
+          return { ok: true, data: { signedIn: false, ...choice } };
+        case 'signIn':
+          return { ok: true, data: { signedIn: true } };
+        case 'getDirectory':
+          return { ok: true, data: DIRECTORY };
+        case 'getTopCosts':
+          return { ok: true, data: { subscriptionId: req.subscriptionId, fetchedAt: 1, top: [] } };
+        default:
+          return { ok: false, kind: 'unknown', message: 'unexpected' };
+      }
+    });
+  }
+
+  it('signs a work or school account in through the default', async () => {
+    const request = signedOut({ chooseAccount: true, lastPortalTenant: null });
+    render(<App request={request as never} />);
+    expect(await screen.findByText('Which account do you use for Azure?')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Work or school account' }));
+    await screen.findByLabelText('Subscription');
+    expect(request).toHaveBeenCalledWith({ type: 'signIn' });
+  });
+
+  it('pre-fills the last portal tenant for a personal account', async () => {
+    const request = signedOut({ chooseAccount: true, lastPortalTenant: PERSONAL });
+    render(<App request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Personal Microsoft account' }));
+    const input = screen.getByLabelText('Your tenant') as HTMLInputElement;
+    expect(input.value).toBe(PERSONAL);
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }));
+    await screen.findByLabelText('Subscription');
+    expect(request).toHaveBeenCalledWith({ type: 'signIn', personalTenant: PERSONAL });
+  });
+
+  it('refuses organizations as a personal tenant without calling the worker', async () => {
+    const request = signedOut({ chooseAccount: true, lastPortalTenant: null });
+    render(<App request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Personal Microsoft account' }));
+    fireEvent.change(screen.getByLabelText('Your tenant'), { target: { value: 'organizations' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }));
+    expect(await screen.findByText(/Enter your tenant domain/)).toBeTruthy();
+    expect(request.mock.calls.some(([r]) => r.type === 'signIn')).toBe(false);
+  });
+
+  it('shows one Sign in button when a tenant is set on the options page', async () => {
+    const request = signedOut({ chooseAccount: false, lastPortalTenant: PERSONAL });
+    render(<App request={request as never} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Sign in' }));
+    expect(screen.queryByRole('button', { name: 'Personal Microsoft account' })).toBeNull();
+    await screen.findByLabelText('Subscription');
+    expect(request).toHaveBeenCalledWith({ type: 'signIn' });
+  });
+});

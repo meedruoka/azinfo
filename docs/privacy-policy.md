@@ -1,6 +1,6 @@
 # azinfo privacy policy
 
-_Last updated: 19 November 2026_
+_Last updated: 20 November 2026_
 
 azinfo is a browser extension that shows Microsoft Azure cost information next to the resource you
 are viewing in the Azure portal. It's an independent tool and isn't affiliated with or endorsed by
@@ -28,10 +28,10 @@ read operations.
 
 | Data | Stored in | Kept until |
 |---|---|---|
-| Sign-in tokens | Browser **session** storage (memory only, never written to disk) | You sign out or close the browser |
+| Sign-in tokens, and the last tenant seen in a portal address (offered when a personal account signs in) | Browser **session** storage (memory only, never written to disk) | You sign out or close the browser |
 | Cached cost figures, Advisor savings tips, and your tenants and subscriptions (names and IDs) | Browser **local** storage on your device | Replaced after the cache period (default 4 hours), or deleted when you sign out or click **Clear cached data** |
 | Settings (tenant, cache period, spike threshold, panel collapsed or expanded) | Browser local storage | You change them or remove the extension |
-| Whether you are signed in (yes or no), and when a cost request that Azure slowed down will be retried | Browser local storage | You sign out, or the retry happens |
+| Whether you are signed in (yes or no), the tenant a personal Microsoft account signed in through, and when a cost request that Azure slowed down will be retried | Browser local storage | You sign out, or the retry happens |
 
 Removing the extension deletes all of the above.
 

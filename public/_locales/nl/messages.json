@@ -43,6 +43,19 @@
   "panelSigningIn": {
     "message": "Bezig met aanmelden… Als er een Microsoft-venster opent, voltooi de aanmelding daar. Het kan achter dit browservenster staan."
   },
+  "signInChooseAccount": { "message": "Welk account gebruikt u voor Azure?" },
+  "signInWork": { "message": "Werk- of schoolaccount" },
+  "signInPersonal": { "message": "Persoonlijk Microsoft-account" },
+  "signInTenantLabel": { "message": "Uw tenant" },
+  "signInTenantHelp": {
+    "message": "Staat onder uw naam in het accountmenu van de Azure-portal, bijvoorbeeld $1. Als u eerst een Azure-resource opent, wordt dit automatisch ingevuld."
+  },
+  "signInTenantInvalid": {
+    "message": "Voer het domein van uw tenant in (bijvoorbeeld yourname.onmicrosoft.com) of de tenant-ID."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Persoonlijk Microsoft-account? Meld u aan via de azinfo-knop in de werkbalk van de browser."
+  },
   "panelSignInToSee": { "message": "Meld u aan om de kosten te zien." },
   "panelOtherTenant": {
     "message": "Dit abonnement staat in een andere tenant, waarvoor u zich eenmalig moet aanmelden."

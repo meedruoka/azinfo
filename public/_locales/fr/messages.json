@@ -45,6 +45,19 @@
   "panelSigningIn": {
     "message": "Connexion en cours… Si une fenêtre Microsoft s'ouvre, terminez la connexion dans celle-ci. Elle peut se trouver derrière cette fenêtre du navigateur."
   },
+  "signInChooseAccount": { "message": "Quel compte utilisez-vous pour Azure ?" },
+  "signInWork": { "message": "Compte professionnel ou scolaire" },
+  "signInPersonal": { "message": "Compte Microsoft personnel" },
+  "signInTenantLabel": { "message": "Votre locataire" },
+  "signInTenantHelp": {
+    "message": "Affiché sous votre nom dans le menu du compte du portail Azure, par exemple $1. Il est rempli automatiquement si vous ouvrez d'abord une ressource Azure."
+  },
+  "signInTenantInvalid": {
+    "message": "Saisissez le domaine de votre locataire (par exemple yourname.onmicrosoft.com) ou son ID."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Compte Microsoft personnel ? Connectez-vous depuis le bouton azinfo de la barre d'outils du navigateur."
+  },
   "panelSignInToSee": { "message": "Connectez-vous pour voir les coûts." },
   "panelOtherTenant": {
     "message": "Cet abonnement se trouve dans un autre locataire, qui demande une connexion unique."

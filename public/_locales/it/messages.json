@@ -43,6 +43,19 @@
   "panelSigningIn": {
     "message": "Accesso in corso… Se si apre una finestra Microsoft, completa l'accesso lì. Potrebbe trovarsi dietro questa finestra del browser."
   },
+  "signInChooseAccount": { "message": "Quale account usi per Azure?" },
+  "signInWork": { "message": "Account aziendale o dell'istituto di istruzione" },
+  "signInPersonal": { "message": "Account Microsoft personale" },
+  "signInTenantLabel": { "message": "Il tuo tenant" },
+  "signInTenantHelp": {
+    "message": "Visibile sotto il tuo nome nel menu dell'account del portale di Azure, ad esempio $1. Se apri prima una risorsa Azure, viene compilato automaticamente."
+  },
+  "signInTenantInvalid": {
+    "message": "Inserisci il dominio del tuo tenant (ad esempio yourname.onmicrosoft.com) o l'ID del tenant."
+  },
+  "panelPersonalUsePopup": {
+    "message": "Account Microsoft personale? Accedi dal pulsante azinfo nella barra degli strumenti del browser."
+  },
   "panelSignInToSee": { "message": "Accedi per vedere i costi." },
   "panelOtherTenant": {
     "message": "Questa sottoscrizione si trova in un altro tenant, che richiede un accesso una tantum."
