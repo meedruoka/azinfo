@@ -14,7 +14,7 @@ describe('normaliseAuthority', () => {
   it.each([
     ['organizations', 'organizations'],
     [' Common ', 'common'],
-    ['meedakourgmail.onmicrosoft.com', 'meedakourgmail.onmicrosoft.com'],
+    ['yourname.onmicrosoft.com', 'yourname.onmicrosoft.com'],
     ['Contoso.COM', 'contoso.com'],
     ['72F988BF-86F1-41AF-91AB-2D7CD011DB47', '72f988bf-86f1-41af-91ab-2d7cd011db47'],
   ])('accepts %j', (input, expected) => {

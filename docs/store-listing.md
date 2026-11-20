@@ -132,7 +132,7 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
    WXT_ENTRA_AUTHORITY=organizations
    ```
    Without the second line, a production build silently inherits the dev authority
-   (`meedakourgmail.onmicrosoft.com`) from `.env.local`.
+   (the developer's own tenant) from `.env.local`.
 3. [ ] **Store accounts:** Chrome Web Store developer account (one-time fee) and Microsoft Partner
    Center account for Edge Add-ons.
 4. [ ] **Get each store's extension ID:** upload a first draft package, then copy the item ID.

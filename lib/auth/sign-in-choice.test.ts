@@ -6,9 +6,9 @@ import { personalTenant, planSignIn, signInAuthorityItem } from './sign-in-choic
 
 describe('personalTenant', () => {
   it.each([
-    ['meedakourgmail.onmicrosoft.com', 'meedakourgmail.onmicrosoft.com'],
+    ['yourname.onmicrosoft.com', 'yourname.onmicrosoft.com'],
     ['  Contoso.OnMicrosoft.com ', 'contoso.onmicrosoft.com'],
-    ['eeeeeeee-0000-0000-0000-000000000000', 'eeeeeeee-0000-0000-0000-000000000000'],
+    ['0f0f0f0f-1234-4abc-8def-000000000001', '0f0f0f0f-1234-4abc-8def-000000000001'],
     ['organizations', null],
     ['common', null],
     ['consumers', null],
@@ -20,7 +20,7 @@ describe('personalTenant', () => {
 });
 
 describe('planSignIn', () => {
-  const PERSONAL = 'meedakourgmail.onmicrosoft.com';
+  const PERSONAL = 'yourname.onmicrosoft.com';
 
   it('lets the options-page tenant win over any choice', () => {
     expect(planSignIn('contoso.com', null, PERSONAL)).toEqual({ kind: 'keep' });
@@ -59,12 +59,12 @@ describe('signInAuthority', () => {
   });
 
   it('uses the personal tenant over the default', async () => {
-    await signInAuthorityItem.setValue('meedakourgmail.onmicrosoft.com');
-    expect(await signInAuthority()).toBe('meedakourgmail.onmicrosoft.com');
+    await signInAuthorityItem.setValue('yourname.onmicrosoft.com');
+    expect(await signInAuthority()).toBe('yourname.onmicrosoft.com');
   });
 
   it('uses the options-page tenant over everything', async () => {
-    await signInAuthorityItem.setValue('meedakourgmail.onmicrosoft.com');
+    await signInAuthorityItem.setValue('yourname.onmicrosoft.com');
     await authorityItem.setValue('contoso.com');
     expect(await signInAuthority()).toBe('contoso.com');
   });

@@ -95,7 +95,7 @@ describe('popup sign-in choice (decision 006)', () => {
   beforeEach(() => fakeBrowser.reset());
   afterEach(cleanup);
 
-  const PERSONAL = 'meedakourgmail.onmicrosoft.com';
+  const PERSONAL = 'yourname.onmicrosoft.com';
 
   function signedOut(choice: { chooseAccount: boolean; lastPortalTenant: string | null }) {
     return vi.fn(async (req: Request) => {

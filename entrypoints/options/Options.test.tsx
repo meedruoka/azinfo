@@ -38,13 +38,13 @@ describe('Options', () => {
     const request = fakeWorker();
     render(<Options request={request as never} />);
     const input = await screen.findByLabelText('Sign in through tenant');
-    fireEvent.change(input, { target: { value: ' MeedAkourGmail.onmicrosoft.com ' } });
+    fireEvent.change(input, { target: { value: ' YourName.OnMicrosoft.com ' } });
     fireEvent.click(screen.getAllByRole('button', { name: 'Save' })[0] as HTMLElement);
 
     expect(await screen.findByText(/You have been signed out/)).toBeTruthy();
     expect(request).toHaveBeenCalledWith({
       type: 'setAuthority',
-      authority: 'meedakourgmail.onmicrosoft.com',
+      authority: 'yourname.onmicrosoft.com',
     });
 
     fireEvent.click(await screen.findByRole('button', { name: 'Reset to default' }));
