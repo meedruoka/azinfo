@@ -155,7 +155,11 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 
    Live 2026-11-20 at <https://meedruoka.github.io/azinfo-site/admin-consent.html> (copy of
    `docs/admin-consent.md`; copy it again after changes). Linked from the Chrome description
-   since 0.1.1; the Edge description still needs the same Requirements lines at its next edit.
+   since 0.1.1, and from the Edge description since 2026-11-21.
+
+   On 2026-11-21 the GitHub username changed to `meedruoka`. GitHub Pages doesn't redirect, so
+   the site moved to `meedruoka.github.io`; both store listings were updated by hand (privacy
+   policy URL and admin page link).
 
 ### Each release
 
