@@ -185,6 +185,7 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
 | 0.1.1 | Submitted 2026-11-20 through Release to Edge (submission 1152921505702463722), approved and live (store data reports version 0.1.1). Decision 006 browser checks were skipped before submitting | Submitted 2026-11-20 by hand, with the updated Requirements lines (personal accounts, admin page link) |
 | 0.1.2 | Submitted 2026-11-20 through Release (submission 1152921505702464017), then cancelled the same day in Partner Center at the user's request: it shouldn't have been submitted without an explicit go-ahead. 0.1.1 stays live. Resubmitted the same day on the owner's request, now with the 15 languages of decision 007 (submission 1152921505702464612), approved and live (store data reports 0.1.2, 2026-11-21) | Waiting for the 0.1.1 review to finish, then upload by hand |
 | 0.1.3 | Submitted 2026-11-21 through Release on the owner's request (submission 1152921505702467839): account hint for silent sign-in, 15 languages. Privacy policy republished first (stored account hint) | Owner uploads `azinfo-0.1.3-chrome.zip` by hand |
+| 0.1.4 | Uploaded 2026-11-21 through Release without publish (draft, not submitted): no code change, first package with signed build provenance (run 44944923208, built from 7035d60). `gh attestation verify` passes on both zips | Not uploaded |
 6. [ ] After store approval: install from the store, sign in with a personal account (tenant
    setting) and a work account (`organizations`), and open a resource page.
 
