@@ -34,6 +34,6 @@
 |---|---|---|
 | 1 | Tests: every locale has the same keys and substitutions as English; the manifest summary stays under 132 characters | Automated |
 | 2 | `check:manifest` expects all 15 locales in both builds | Automated |
-| 3 | Arabic layout: popup, options page and panel mirror correctly | Panel and popup checked 2026-11-20 on the screenshot page (`?scene=…&lang=ar`): mirrored, names and amounts readable after the `<bdi>` fix. Not yet seen in a browser set to Arabic |
+| 3 | Arabic layout: popup, options page and panel mirror correctly | Panel and popup checked 2026-11-20 on the screenshot page (`?scene=…&lang=ar`), then **passed 2026-11-21 in Edge set to Arabic** with the 0.1.3 test build (reported by the user). An earlier "still English" was an old local package without the new languages |
 | 4 | Native review of the five new languages | Pending |
 | 5 | Store listings in the new languages | Pending |

@@ -1,6 +1,6 @@
 # 006: Sign-in for personal Microsoft accounts
 
-- **Status:** Implemented in 0.1.1, live on Edge. Checks 1, 2 and 5 passed on the Edge store version (2026-11-20); 3 and 4 not yet done.
+- **Status:** Implemented in 0.1.1 to 0.1.3. Checks 1, 2 and 5 passed on the Edge store version (2026-11-20); check 4 passed with the 0.1.3 test build in Edge (2026-11-21); check 3 not yet done.
 - **Date:** 2026-11-20
 
 ## Problem
@@ -59,7 +59,7 @@ Test build that behaves like the store default (dev registration and ID, default
 | 1 | Personal account, panel on a resource page: "Personal Microsoft account" signs in with no options-page change | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 | 2 | Personal account, popup after visiting a resource page: tenant pre-filled, sign-in works | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 | 3 | Work account: "Work or school account" signs in through `organizations`, all tenants listed as before | Pending |
-| 4 | Browser restart after a personal sign-in: still signed in, silently | Failed 2026-11-20 on the Edge store version: signed out after the restart. Tokens are in session storage by design (decision 001), so the restart relies on a silent `prompt=none` sign-in, which needs Microsoft's sign-in cookie; likely gone (not confirmed: the reason wasn't captured). The popup then doesn't offer the remembered personal tenant |
+| 4 | Browser restart after a personal sign-in: still signed in, silently | Failed 2026-11-20 on Edge 0.1.1 and 0.1.2: signed out after the restart (cause: AADSTS16000, several accounts in the browser; see the addendum). **Passed 2026-11-21 with the 0.1.3 test build in Edge** (reported by the user): still signed in after closing and reopening Edge |
 | 5 | Sign out, then the choice is offered again | Passed 2026-11-20, Edge store 0.1.1 (reported by the user) |
 
 ## Addendum: after the session ends (0.1.2, 2026-11-20)
