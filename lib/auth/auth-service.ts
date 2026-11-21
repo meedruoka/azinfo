@@ -1,3 +1,4 @@
+import { accountHintFromIdToken, loginHintItem } from './account-hint';
 import { buildAuthorizeUrl, parseAuthorizeRedirect } from './authorize';
 import type { AuthConfig } from './config';
 import { createPkcePair, randomUrlSafe } from './pkce';
@@ -102,6 +103,9 @@ export function createAuthService(deps: AuthDeps) {
       };
     });
     if (startedIn !== generation) throw new NotSignedInError('signed_out');
+    // Remember which account this is, for silent sign-ins later (0.1.3).
+    const hint = accountHintFromIdToken(tokens.idToken);
+    if (hint) await loginHintItem.setValue(hint);
   }
 
   function authorityFor(key: string): AuthConfig {
@@ -118,6 +122,9 @@ export function createAuthService(deps: AuthDeps) {
       state,
       codeChallenge: challenge,
       prompt: interactive ? undefined : 'none',
+      // Silent only: the interactive window keeps its account picker, so the
+      // user can still choose another account.
+      loginHint: interactive ? undefined : ((await loginHintItem.getValue()) ?? undefined),
     });
 
     let redirectedTo: string | undefined;
@@ -251,6 +258,7 @@ export function createAuthService(deps: AuthDeps) {
       inFlight.clear();
       await updateSession(() => null);
       await signedInIntentItem.setValue(false);
+      await loginHintItem.removeValue();
     },
 
     async isSignedIn(): Promise<boolean> {

@@ -6,6 +6,8 @@ export interface AuthorizeParams {
   codeChallenge: string;
   /** `none` for silent sign-in. */
   prompt?: 'none' | 'select_account';
+  /** Which account is meant, so Entra can sign in silently with several accounts present. */
+  loginHint?: string;
 }
 
 export function buildAuthorizeUrl(config: AuthConfig, params: AuthorizeParams): string {
@@ -22,6 +24,7 @@ export function buildAuthorizeUrl(config: AuthConfig, params: AuthorizeParams): 
   q.set('code_challenge', params.codeChallenge);
   q.set('code_challenge_method', 'S256');
   if (params.prompt) q.set('prompt', params.prompt);
+  if (params.loginHint) q.set('login_hint', params.loginHint);
   return url.toString();
 }
 

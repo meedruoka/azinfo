@@ -2,6 +2,7 @@ import { HttpResponse, http } from 'msw';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { server } from '@/tests/msw-server';
+import { loginHintItem } from './account-hint';
 import {
   createAuthService,
   NotSignedInError,
@@ -344,5 +345,55 @@ describe('auth service', () => {
         .catch((e) => e);
       expect(err).toBeInstanceOf(NotSignedInError);
     });
+  });
+});
+
+describe('account hint for silent sign-in (0.1.3)', () => {
+  beforeEach(() => {
+    fakeBrowser.reset();
+  });
+
+  const HINT = 'O.opaque-account-hint';
+  const idToken = (claims: Record<string, unknown>) => {
+    const part = (o: unknown) => Buffer.from(JSON.stringify(o)).toString('base64url');
+    return `${part({ alg: 'none' })}.${part(claims)}.sig`;
+  };
+
+  it('remembers the account from the ID token and sends it on the silent sign-in after a restart', async () => {
+    tokenEndpoint(() => ({ ...ok('AT', 'RT'), id_token: idToken({ login_hint: HINT }) }));
+    const flow = fakeFlow();
+    await service(flow).signIn();
+    expect(await loginHintItem.getValue()).toBe(HINT);
+
+    // Browser restart: session storage is empty, the intent and the hint remain.
+    await sessionItem.removeValue();
+    const silent = fakeFlow();
+    await service(silent).getAccessToken();
+    const url = new URL(silent.mock.calls[0]?.[0].url ?? '');
+    expect(url.searchParams.get('prompt')).toBe('none');
+    expect(url.searchParams.get('login_hint')).toBe(HINT);
+  });
+
+  it('never sends the hint on an interactive sign-in, so another account can be chosen', async () => {
+    await loginHintItem.setValue(HINT);
+    tokenEndpoint(() => ok('AT', 'RT'));
+    const flow = vi.fn(async (details: WebAuthFlowDetails) => {
+      const state = new URL(details.url).searchParams.get('state');
+      // Silent attempt refused, then the interactive one succeeds.
+      return details.interactive
+        ? `${REDIRECT}?code=CODE&state=${state}`
+        : `${REDIRECT}?error=interaction_required&state=${state}`;
+    });
+    await service(flow).signIn();
+    const [silent, interactive] = flow.mock.calls.map(([d]) => new URL(d.url).searchParams);
+    expect(silent?.get('login_hint')).toBe(HINT);
+    expect(interactive?.has('login_hint')).toBe(false);
+  });
+
+  it('forgets the account on sign-out', async () => {
+    await signedInSession();
+    await loginHintItem.setValue(HINT);
+    await service().signOut();
+    expect(await loginHintItem.getValue()).toBeNull();
   });
 });

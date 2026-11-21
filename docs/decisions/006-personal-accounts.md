@@ -80,7 +80,26 @@ tokens expire after 24 hours anyway, so it would weaken the privacy promise for 
 2. A failed silent sign-in is logged in the service worker console: `[azinfo] silent sign-in
    failed: <reason> <Microsoft's description>`. No token is ever logged.
 
-Still open: whether "Stay signed in → Yes" makes restarts silent, and if several signed-in
+Edge store 0.1.2 (2026-11-21): after closing Edge, signing in again opened Microsoft's window with
+the account already shown, and Microsoft asked for the sign-in again. So Microsoft's own session
+did not survive the restart; azinfo's part (one click, same account) works. Microsoft decides when
+to ask for credentials, and azinfo can't skip that safely.
+
+Cause confirmed the same day by 0.1.2's log line: `[azinfo] silent sign-in failed:
+interaction_required AADSTS16000: Either multiple user identities are available for the current
+request or selected account is not supported for the scenario.` The browser was signed in to
+several Microsoft accounts, and `prompt=none` without a `login_hint` can't pick one.
+
+**0.1.3 (2026-11-21):** after each token response, azinfo keeps one value from the ID token in
+`local:auth.loginHint`: the opaque `login_hint` claim if Entra issues it, else
+`preferred_username` (or `upn`, `email`). It's sent as `login_hint` on **silent** sign-ins only;
+the interactive window keeps its account picker, so "Use another account" still works. Removed on
+sign-out. The ID token's signature isn't checked: it comes straight from the token endpoint over
+HTTPS and is only a hint that Entra checks again. The privacy policy lists it. To get the opaque
+claim instead of the sign-in name, the app registrations need the optional claim `login_hint` on
+the ID token (Entra → Token configuration); not done yet.
+
+Earlier open question, now answered for this case: whether "Stay signed in → Yes" makes restarts silent, and if several signed-in
 accounts break the silent sign-in. If so, remember the account's sign-in name and pass it as
 `login_hint` (a privacy-policy change, since it stores the account name).
 

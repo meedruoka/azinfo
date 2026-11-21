@@ -20,6 +20,8 @@ export interface TokenSet {
   refreshToken?: string;
   /** Epoch ms when the access token expires. */
   expiresAt: number;
+  /** Present with the `openid` scope; only its account hint is kept (account-hint.ts). */
+  idToken?: string;
 }
 
 /**
@@ -98,6 +100,7 @@ async function postToken(
     accessToken: ok.data.access_token,
     refreshToken: ok.data.refresh_token,
     expiresAt: now + ok.data.expires_in * 1000,
+    idToken: ok.data.id_token,
   };
 }
 
