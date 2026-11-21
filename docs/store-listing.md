@@ -43,7 +43,7 @@ exists.
 > • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
 > • Personal Microsoft accounts: choose "Personal Microsoft account" when signing in
 > • Work and school accounts: your administrator may need to approve azinfo once for your
->   organisation: https://meedruoka.github.io/azinfo-site/admin-consent.html
+>   organisation: https://meedruoka.github.io/azinfo/admin-consent.html
 >
 > Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis
 > in the portal for invoices and detailed reporting.
@@ -73,11 +73,12 @@ answers, conservatively:
 Certify all three: not sold to third parties; not used for unrelated purposes; not used for
 creditworthiness or lending.
 
-**Privacy policy URL:** <https://meedruoka.github.io/azinfo-site/privacy-policy.html>
+**Privacy policy URL:** <https://meedruoka.github.io/azinfo/privacy-policy.html>
 
-It's published from the public repo `meedruoka/azinfo-site` (GitHub Pages, branch `main`).
-`docs/privacy-policy.md` here is the source: after changing it, copy it to that repo, update the
-date, and push. Support channel: <https://github.com/meedruoka/azinfo-site/issues>.
+It's published from this repo by [.github/workflows/pages.yml](../.github/workflows/pages.yml)
+(GitHub Pages, source "GitHub Actions"), which copies `docs/privacy-policy.md` and
+`docs/admin-consent.md` next to `site/index.md`. After changing either page, update its date and
+push to `main`. Support channel: <https://github.com/meedruoka/azinfo/issues>.
 
 ## Images
 
@@ -160,6 +161,10 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
    On 2026-11-21 the GitHub username changed to `meedruoka`. GitHub Pages doesn't redirect, so
    the site moved to `meedruoka.github.io`; both store listings were updated by hand (privacy
    policy URL and admin page link).
+
+   On 2026-11-21 the source repo went public and the pages moved from the separate `azinfo-site`
+   repo to this one, at <https://meedruoka.github.io/azinfo/>. Both store listings need the new
+   privacy policy, admin page, homepage and support URLs before `azinfo-site` is deleted.
 
 ### Each release
 

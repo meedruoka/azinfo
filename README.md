@@ -1,139 +1,127 @@
 # azinfo
 
-Browser extension (Chrome + Edge, Manifest V3) that shows Azure cost info next to
-the resource you are viewing in the Azure portal. Read-only, no backend.
-Not affiliated with Microsoft.
+A browser extension for Chrome and Edge that shows what an Azure resource costs, right next to it
+in the Azure portal: this month, last month, what the cost is made of, and Azure Advisor's savings
+tips.
 
-## Commands
+- [Chrome Web Store](https://chromewebstore.google.com/detail/agbbplllbldedlebmjoplcjilocgphia)
+- [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/boklcincembcnlpajejonihmapalfedi)
+- [Privacy policy](https://meedruoka.github.io/azinfo/privacy-policy.html) ·
+  [For administrators](https://meedruoka.github.io/azinfo/admin-consent.html) ·
+  [Issues](https://github.com/meedruoka/azinfo/issues)
 
-| Command | What it does |
+azinfo is an independent tool. It isn't affiliated with or endorsed by Microsoft.
+
+## Checking the code
+
+This README is written for people who want to check what azinfo does before installing it, or
+before approving it for their organisation. In short:
+
+- **No server.** There's no backend and no analytics. The extension only talks to Microsoft.
+- **Read-only.** It calls read operations only. It never changes anything in Azure.
+- **Your own permissions.** It signs in as you and sees only what your Azure roles already let you
+  see.
+- **Small surface.** Two browser permissions (`identity`, `storage`) and three hosts.
+
+### Where it connects
+
+These are the only network calls in the code. You can confirm it with
+`grep -rn "fetch(" lib entrypoints`.
+
+| Host | What for | Code |
+|---|---|---|
+| `login.microsoftonline.com` | Sign-in (OAuth 2.0 authorization code with PKCE) and token refresh | [lib/auth/token-endpoint.ts](lib/auth/token-endpoint.ts), [lib/auth/authorize.ts](lib/auth/authorize.ts) |
+| `management.azure.com` | Tenants, subscriptions, Advisor tips (GET) and the Cost Management query (POST, read-only) | [lib/azure/arm-client.ts](lib/azure/arm-client.ts), [lib/azure/cost-client.ts](lib/azure/cost-client.ts) |
+| `portal.azure.com` | Not called. The content script runs here and reads only the page address, to know which resource you're viewing | [lib/portal/parse-portal-url.ts](lib/portal/parse-portal-url.ts) |
+
+### Permissions
+
+| Manifest entry | Value |
 |---|---|
-| `pnpm dev` / `pnpm dev:edge` | Dev build with hot reload; opens Chrome / Edge with the extension loaded |
-| `pnpm build:local` / `pnpm build:local:edge` | One-off build with the pinned dev ID, no dev server, in `.output/chrome-mv3-dev` / `.output/edge-mv3-dev`. Load it with "Load unpacked" in your own browser |
-| `pnpm build` / `pnpm build:edge` | Production build in `.output/chrome-mv3` / `.output/edge-mv3` |
-| `pnpm zip` / `pnpm zip:edge` | Store-ready zip |
-| `pnpm check:manifest` | Checks the built production manifests against the spec's permissions (run after both builds) |
-| `pnpm render:icons` | Renders `assets-src/icon.svg` to `public/icon/*.png` and `store/logo-300.png` with headless Edge. Slow on this machine; about a minute per size |
-| `pnpm store:shots` | Store screenshots (1280×800, light and dark) of the real UI with invented sample data, in `store/screenshots/`. Uses headless Edge. The page also takes `?lang=<locale>` (e.g. `ar`) to check a language and its direction |
-| `pnpm test` | Vitest (MSW blocks any unmocked network request) |
-| `pnpm lint` / `pnpm format` | Biome check / fix |
-| `pnpm compile` | TypeScript type check |
+| `permissions` | `identity`, `storage` |
+| `host_permissions` | `https://portal.azure.com/*`, `https://management.azure.com/*`, `https://login.microsoftonline.com/*` |
+| Content script | `https://portal.azure.com/*` only |
+| Remote code | None. Everything is bundled at build time, under the default Manifest V3 content security policy |
 
-`pnpm dev:edge` needs a git-ignored `web-ext.config.ts` with the Edge binary path:
+There's no `tabs`, `cookies`, `webRequest`, `scripting` or access to any other site. Every entry
+is explained in [docs/permissions.md](docs/permissions.md). `pnpm check:manifest` fails the build
+if the built manifest asks for anything else.
 
-```ts
-import { defineWebExtConfig } from 'wxt';
-export default defineWebExtConfig({
-  binaries: { edge: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe' },
-});
+### What it stores
+
+| Data | Where | Kept until |
+|---|---|---|
+| Sign-in tokens | `chrome.storage.session` (memory only) | The browser closes or you sign out |
+| Cost figures, Advisor tips, your tenant and subscription names and IDs | `chrome.storage.local` | The cache period ends (4 hours by default), you sign out, or you clear it on the options page |
+| Settings, and which account signed in (so Microsoft can sign you in again without asking) | `chrome.storage.local` | You change them, sign out or uninstall |
+
+Nothing leaves your browser except the calls to Microsoft listed above. The full detail is in the
+[privacy policy](docs/privacy-policy.md).
+
+### Where to start reading
+
+| Path | What's there |
+|---|---|
+| [entrypoints/background.ts](entrypoints/background.ts) | The service worker: handles every request, holds the sign-in |
+| [lib/sender-policy.ts](lib/sender-policy.ts) | What the in-portal panel is allowed to ask the worker for, and from which origin |
+| [lib/auth/](lib/auth/) | Sign-in, PKCE, token storage and refresh |
+| [lib/azure/](lib/azure/) | The Azure API clients |
+| [lib/cost/](lib/cost/) | Building the cost query and shaping the results |
+| [entrypoints/content/](entrypoints/content/) | The panel shown inside the Azure portal |
+| [entrypoints/popup/](entrypoints/popup/), [entrypoints/options/](entrypoints/options/) | The toolbar popup and the settings page |
+| [docs/decisions/](docs/decisions/) | Why things are built the way they are (sign-in, cost query, tenants, and more) |
+
+Tests sit next to the code (`*.test.ts`). They run with [MSW](https://mswjs.io/), which fails any
+network request a test didn't mock.
+
+## How releases are built
+
+1. Every push and pull request runs [CI](.github/workflows/ci.yml): lint, type check, tests, both
+   production builds and the manifest check.
+2. A release is started by hand from `main` only, with the
+   [Release workflow](.github/workflows/release.yml). It runs the same checks again, builds the
+   Chrome and Edge packages, and uploads them to the stores through their APIs.
+3. Each store reviews the package before anyone gets the update.
+
+Every third-party GitHub Action is pinned to a commit SHA, dependencies install from the locked
+`pnpm-lock.yaml`, and the store keys are repository secrets that only the release workflow reads.
+The built packages are kept as a workflow artifact for 30 days.
+
+### Comparing a store package with this code
+
+There are no signed build attestations yet, so you can't prove that a store package came from a
+given commit. You can still compare them yourself:
+
+1. Check out the commit that set the version you installed (`version` in `package.json`).
+2. Build with the production sign-in settings, which aren't secret:
+   ```sh
+   pnpm install --frozen-lockfile
+   WXT_ENTRA_CLIENT_ID=e76d6bcf-bcea-4d90-a659-2d47135dfa96 WXT_ENTRA_AUTHORITY=organizations pnpm build
+   ```
+3. Compare `.output/chrome-mv3/` with the installed extension's folder (`chrome://extensions` with
+   developer mode on shows its ID; the files are in your browser profile under `Extensions/<id>/`).
+   The stores add their own files, such as `_metadata/`, so leave those out.
+
+Builds haven't been checked to be byte-for-byte identical across machines yet. If you find a
+difference, please [open an issue](https://github.com/meedruoka/azinfo/issues).
+
+## Building it yourself
+
+You need Node.js 24 and pnpm (the version is pinned in `package.json`).
+
+```sh
+pnpm install
+pnpm test
+pnpm build        # Chrome, in .output/chrome-mv3
+pnpm build:edge   # Edge, in .output/edge-mv3
 ```
 
-## Extension IDs and redirect URIs
+To sign in from your own build, you need your own Entra app registration. Everything else
+(commands, dev setup, the release process) is in [docs/development.md](docs/development.md).
 
-| Build | Extension ID | Redirect URI |
-|---|---|---|
-| Dev (unpacked, `pnpm dev`) | `jojhniohldijhpnpeihdnffjflgcpnpb` | `https://jojhniohldijhpnpeihdnffjflgcpnpb.chromiumapp.org/` |
-| Chrome Web Store | `agbbplllbldedlebmjoplcjilocgphia` | `https://agbbplllbldedlebmjoplcjilocgphia.chromiumapp.org/` (on the production registration) |
-| Edge Add-ons | `boklcincembcnlpajejonihmapalfedi` (CRX ID; Store ID `0RDCKGFWV30T`) | `https://boklcincembcnlpajejonihmapalfedi.chromiumapp.org/` (on the production registration) |
+## Reporting a problem
 
-The dev ID is pinned by the manifest `key` in `wxt.config.ts`, added in development
-mode only. The private half of that key is in `.keys/` (git-ignored); it is only
-needed for packing a `.crx`, never for the ID itself.
-
-Dev builds also get `tabs`, `scripting` and `http://localhost/*` from WXT for hot
-reload. Production builds contain only the permissions in the spec.
-
-## Sign-in setup
-
-Create an Entra app registration and a `.env.local` as described in
-[docs/entra-setup.md](docs/entra-setup.md). Design decision:
-[docs/decisions/001-auth.md](docs/decisions/001-auth.md).
-
-Settings (tenant, cache duration, spike threshold, clear cached data) are on the
-options page: popup → **Options**.
-
-## Docs
-
-| Document | Contents |
-|---|---|
-| [docs/entra-setup.md](docs/entra-setup.md) | App registration, tenant setting, admin consent, production registration |
-| [docs/admin-consent.md](docs/admin-consent.md) | For tenant administrators: what azinfo asks for and how to approve, limit or remove it |
-| [docs/permissions.md](docs/permissions.md) | Every permission and host, with store justifications |
-| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy, published at <https://meedruoka.github.io/azinfo-site/privacy-policy.html> (copy changes to the `azinfo-site` repo) |
-| [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
-| [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages, 006 personal accounts, 007 five more languages and right-to-left |
-
-## CI
-
-[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push to `main` and every pull
-request: frozen install, `lint`, `compile`, `test`, both production builds and `check:manifest`.
-CI has no `.env` files, so its builds contain no Entra client ID: store packages are always built
-locally with `.env.production.local`. pnpm is pinned by `packageManager` in `package.json`.
-Actions are pinned to commit SHAs (the comment names the tag), because the release workflow holds
-the Edge API key: update a pin deliberately, after reading that action's changes.
-
-## Releasing (CD)
-
-[.github/workflows/release.yml](.github/workflows/release.yml) builds both store packages from
-`main` and uploads them through the
-[Edge Add-ons API v1.1](https://learn.microsoft.com/en-us/microsoft-edge/extensions/update/api/using-addons-api)
-and the [Chrome Web Store API v2](https://developer.chrome.com/docs/webstore/using-api). It only
-runs when started by hand: **Actions → Release → Run workflow**, choosing **both**, **edge** or
-**chrome**. By default it only uploads; tick **publish** to submit for review (Edge sends
-[store/certification-notes.txt](store/certification-notes.txt)). Both packages are also kept as a
-workflow artifact. The Chrome upload still runs if the Edge one fails.
-
-Settings (repository **Settings → Secrets and variables → Actions**, or `gh`):
-
-| Name | Kind | Value |
-|---|---|---|
-| `ENTRA_CLIENT_ID` | variable | `e76d6bcf-bcea-4d90-a659-2d47135dfa96` (production registration) |
-| `EDGE_CLIENT_ID` | secret | Partner Center → Microsoft Edge → Publish API → Client ID |
-| `EDGE_API_KEY` | secret | Same page, the API key. **It expires**: Partner Center shows the date; renew it and update the secret |
-| `EDGE_PRODUCT_ID` | variable | `bcaf0d3a-73c3-4fa7-8067-83f2dc349b14` |
-| `CHROME_SERVICE_ACCOUNT_KEY` | secret | The whole JSON key file of the Google service account (setup below) |
-| `CHROME_PUBLISHER_ID` | variable | Chrome Developer Dashboard → Publisher → Settings → Publisher ID |
-| `CHROME_ITEM_ID` | variable | `agbbplllbldedlebmjoplcjilocgphia` |
-
-**Current choice (2026-11-20): Chrome uploads stay manual.** Setting up Google Cloud asked for a
-payment card, so the Google setup below hasn't been done and **Release** defaults to **edge**.
-For Chrome, upload `azinfo-<version>-chrome.zip` from the run's **store-packages** artifact (or
-`.output/`) in the Chrome Developer Dashboard and submit it. The Chrome step stays in the
-workflow, ready if this changes.
-
-### One-time Google setup (Chrome)
-
-The Chrome Web Store API v2 accepts a **service account**, which suits CI: no browser sign-in and
-no refresh token that can lapse.
-
-1. [Google Cloud console](https://console.cloud.google.com/): create a project (for example
-   `azinfo-release`), then **APIs & Services → Library → Chrome Web Store API → Enable**.
-2. **IAM & Admin → Service accounts → Create service account** (for example `azinfo-release`).
-   Give it **no** roles.
-3. Open it → **Keys → Add key → Create new key → JSON**. A `.json` file downloads.
-4. [Chrome Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **Account**: add
-   the service account's e-mail (`…@….iam.gserviceaccount.com`). One per publisher.
-5. Same dashboard → **Publisher → Settings**: copy the **Publisher ID**.
-6. Store them, then delete the downloaded key file:
-   ```
-   gh secret set CHROME_SERVICE_ACCOUNT_KEY --repo meedruoka/azinfo < path\to\key.json
-   gh variable set CHROME_PUBLISHER_ID --repo meedruoka/azinfo --body <publisher ID>
-   gh variable set CHROME_ITEM_ID --repo meedruoka/azinfo --body agbbplllbldedlebmjoplcjilocgphia
-   ```
-
-The key doesn't expire by itself: to rotate it, add a new key, update the secret, delete the old
-key in Google Cloud. If the item's visibility is changed in the dashboard, publish once by hand
-before the API can publish again (Google's rule).
-
-### Each release
-
-Bump `version` in `package.json`, push to `main`, wait for CI, run **Release** (first without
-**publish**, then with it). Both stores reject a version they already have. Edge refuses a new
-submission while one is in review (`InProgressSubmission`). Locally,
-`node scripts/edge-publish.mjs --dry-run` and `node scripts/chrome-publish.mjs --dry-run` check
-the settings without calling either store.
-
-## Development rule
-
-Develop and test only against a personal Azure subscription and a personal Entra
-app registration.
+For bugs and questions, [open an issue](https://github.com/meedruoka/azinfo/issues). For a
+security problem, please use
+[private vulnerability reporting](https://github.com/meedruoka/azinfo/security/advisories/new)
+instead of a public issue.
