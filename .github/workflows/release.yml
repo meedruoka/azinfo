@@ -119,6 +119,9 @@ jobs:
           path: |
             .output/*.zip
             .output/SHA256SUMS.txt
+          # .output starts with a dot, and upload-artifact skips hidden paths by default.
+          include-hidden-files: true
+          if-no-files-found: error
           retention-days: 30
 
       - name: Upload to Edge Add-ons
