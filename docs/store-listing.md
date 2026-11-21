@@ -43,7 +43,7 @@ exists.
 > • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
 > • Personal Microsoft accounts: choose "Personal Microsoft account" when signing in
 > • Work and school accounts: your administrator may need to approve azinfo once for your
->   organisation: https://akourmohamed.github.io/azinfo-site/admin-consent.html
+>   organisation: https://meedruoka.github.io/azinfo-site/admin-consent.html
 >
 > Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis
 > in the portal for invoices and detailed reporting.
@@ -73,11 +73,11 @@ answers, conservatively:
 Certify all three: not sold to third parties; not used for unrelated purposes; not used for
 creditworthiness or lending.
 
-**Privacy policy URL:** <https://akourmohamed.github.io/azinfo-site/privacy-policy.html>
+**Privacy policy URL:** <https://meedruoka.github.io/azinfo-site/privacy-policy.html>
 
-It's published from the public repo `AkourMohamed/azinfo-site` (GitHub Pages, branch `main`).
+It's published from the public repo `meedruoka/azinfo-site` (GitHub Pages, branch `main`).
 `docs/privacy-policy.md` here is the source: after changing it, copy it to that repo, update the
-date, and push. Support channel: <https://github.com/AkourMohamed/azinfo-site/issues>.
+date, and push. Support channel: <https://github.com/meedruoka/azinfo-site/issues>.
 
 ## Images
 
@@ -153,7 +153,7 @@ ones if wanted. Reviewed 2026-11-19 for tenant domains, e-mails, IDs and real co
    `<CLIENT_ID>` and `<CHROME_STORE_ID>` replaced by the production values. Link it from the
    store description's "Requirements" line.
 
-   Live 2026-11-20 at <https://akourmohamed.github.io/azinfo-site/admin-consent.html> (copy of
+   Live 2026-11-20 at <https://meedruoka.github.io/azinfo-site/admin-consent.html> (copy of
    `docs/admin-consent.md`; copy it again after changes). Linked from the Chrome description
    since 0.1.1; the Edge description still needs the same Requirements lines at its next edit.
 

@@ -31,7 +31,7 @@ Requirements
 • A Microsoft work, school or personal account with access to an Azure subscription
 • The Cost Management Reader role (or Reader, Contributor or Owner) on the subscription
 • Personal Microsoft accounts: choose "Personal Microsoft account" when signing in
-• Work and school accounts: your administrator may need to approve azinfo once for your organisation: https://akourmohamed.github.io/azinfo-site/admin-consent.html
+• Work and school accounts: your administrator may need to approve azinfo once for your organisation: https://meedruoka.github.io/azinfo-site/admin-consent.html
 
 Cost figures come from Azure Cost Management, which updates every few hours. Use Cost analysis in the portal for invoices and detailed reporting.
 
@@ -45,8 +45,8 @@ azinfo is an independent tool and isn't affiliated with or endorsed by Microsoft
 | Store icon (128×128) | `public\icon\128.png` |
 | Screenshots (1280×800, max 5) | `store\screenshots\1-resource-light.png` … `5-pill-light.png` |
 | Small promo tile (440×280) | empty unless required |
-| Homepage URL | `https://akourmohamed.github.io/azinfo-site/` |
-| Support URL | `https://github.com/AkourMohamed/azinfo-site/issues` |
+| Homepage URL | `https://meedruoka.github.io/azinfo-site/` |
+| Support URL | `https://github.com/meedruoka/azinfo-site/issues` |
 | Official URL | empty |
 | Mature content | No |
 
@@ -83,7 +83,7 @@ https://login.microsoftonline.com/*: exchanges the sign-in code for tokens and r
 | Remote code | No |
 | Data usage | Authentication information; Financial and payment information. Nothing else |
 | Certifications | all three (read them first: you are the one certifying) |
-| Privacy policy URL | `https://akourmohamed.github.io/azinfo-site/privacy-policy.html` |
+| Privacy policy URL | `https://meedruoka.github.io/azinfo-site/privacy-policy.html` |
 
 **Test instructions** (if the form has this field)
 

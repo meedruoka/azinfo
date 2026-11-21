@@ -14,7 +14,7 @@ or **Application Administrator**.
 | App name | azinfo |
 | Application (client) ID | `e76d6bcf-bcea-4d90-a659-2d47135dfa96` |
 | Publisher | Mohamed Akour (individual developer) |
-| Privacy policy | <https://akourmohamed.github.io/azinfo-site/privacy-policy.html> |
+| Privacy policy | <https://meedruoka.github.io/azinfo-site/privacy-policy.html> |
 
 ## What azinfo asks for
 
@@ -92,4 +92,4 @@ The consent screen shows azinfo as **unverified**. That means its publisher, an 
 developer, hasn't completed Microsoft's publisher verification. It says nothing about what the app
 can access: that is limited to the permissions above.
 
-Questions: <https://github.com/AkourMohamed/azinfo-site/issues>.
+Questions: <https://github.com/meedruoka/azinfo-site/issues>.

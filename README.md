@@ -59,7 +59,7 @@ options page: popup → **Options**.
 | [docs/entra-setup.md](docs/entra-setup.md) | App registration, tenant setting, admin consent, production registration |
 | [docs/admin-consent.md](docs/admin-consent.md) | For tenant administrators: what azinfo asks for and how to approve, limit or remove it |
 | [docs/permissions.md](docs/permissions.md) | Every permission and host, with store justifications |
-| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy, published at <https://akourmohamed.github.io/azinfo-site/privacy-policy.html> (copy changes to the `azinfo-site` repo) |
+| [docs/privacy-policy.md](docs/privacy-policy.md) | Privacy policy, published at <https://meedruoka.github.io/azinfo-site/privacy-policy.html> (copy changes to the `azinfo-site` repo) |
 | [docs/store-listing.md](docs/store-listing.md) | Listing text, screenshot checklist, release checklist, publisher verification risk |
 | [docs/decisions/](docs/decisions/) | 001 sign-in platform, 002 cost query, 003 multi-tenant, 004 Advisor tips and meter breakdown, 005 languages, 006 personal accounts, 007 five more languages and right-to-left |
 
@@ -116,9 +116,9 @@ no refresh token that can lapse.
 5. Same dashboard → **Publisher → Settings**: copy the **Publisher ID**.
 6. Store them, then delete the downloaded key file:
    ```
-   gh secret set CHROME_SERVICE_ACCOUNT_KEY --repo AkourMohamed/azinfo < path\to\key.json
-   gh variable set CHROME_PUBLISHER_ID --repo AkourMohamed/azinfo --body <publisher ID>
-   gh variable set CHROME_ITEM_ID --repo AkourMohamed/azinfo --body agbbplllbldedlebmjoplcjilocgphia
+   gh secret set CHROME_SERVICE_ACCOUNT_KEY --repo meedruoka/azinfo < path\to\key.json
+   gh variable set CHROME_PUBLISHER_ID --repo meedruoka/azinfo --body <publisher ID>
+   gh variable set CHROME_ITEM_ID --repo meedruoka/azinfo --body agbbplllbldedlebmjoplcjilocgphia
    ```
 
 The key doesn't expire by itself: to rotate it, add a new key, update the secret, delete the old

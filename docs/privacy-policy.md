@@ -59,4 +59,4 @@ Any change to this policy will be published here with a new date.
 ## Contact
 
 Mohamed Akour. Questions or requests: open an issue at
-<https://github.com/AkourMohamed/azinfo-site/issues>.
+<https://github.com/meedruoka/azinfo-site/issues>.
