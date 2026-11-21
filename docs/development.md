@@ -79,7 +79,14 @@ and the [Chrome Web Store API v2](https://developer.chrome.com/docs/webstore/usi
 runs when started by hand: **Actions → Release → Run workflow**, choosing **both**, **edge** or
 **chrome**. By default it only uploads; tick **publish** to submit for review (Edge sends
 [store/certification-notes.txt](../store/certification-notes.txt)). Both packages are also kept as a
-workflow artifact. The Chrome upload still runs if the Edge one fails.
+workflow artifact, with `SHA256SUMS.txt`. The Chrome upload still runs if the Edge one fails.
+
+Every run signs a build provenance attestation for both zips
+([actions/attest-build-provenance](https://github.com/actions/attest-build-provenance)). A run
+with **publish** also creates the GitHub Release `v<version>` (zips and checksums attached) once
+the store submissions succeed, so a version can only be published once: the run stops early if
+that release already exists. Check a zip with
+`gh attestation verify azinfo-<version>-chrome.zip -R meedruoka/azinfo`.
 
 Settings (repository **Settings → Secrets and variables → Actions**, or `gh`):
 

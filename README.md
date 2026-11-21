@@ -80,6 +80,24 @@ extension asks for no extra permissions). Packages are built by
 [GitHub Actions](.github/workflows/) from this repository, not on a personal computer, and each
 store reviews every update before it reaches you.
 
+### Verify a release
+
+Each version sent to the stores is also published on the
+[Releases page](https://github.com/meedruoka/azinfo/releases), with the exact Chrome and Edge
+packages and their SHA-256 checksums. GitHub signs a record of how each package was built
+(an [artifact attestation](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)),
+so you can check that it came from this repository's release workflow and wasn't changed
+afterwards:
+
+```sh
+gh attestation verify azinfo-<version>-chrome.zip -R meedruoka/azinfo
+```
+
+The output names the commit it was built from, so you can read the code of that exact version.
+The stores add a few files of their own (such as `_metadata/`) and re-sign what they serve, so to
+compare with the extension installed in your browser, unzip the package and compare the files,
+leaving those out.
+
 ## Build it from source
 
 You need Node.js 24 and pnpm.
