@@ -6,8 +6,9 @@ import type { Tip } from '@/lib/azure/advisor';
 import type { MeterShare } from '@/lib/cost/breakdown';
 import { costStatusItem } from '@/lib/cost/cost-service';
 import type { Request, ResponseMap, Result, TipsResult } from '@/lib/messages';
+import { undock } from '@/lib/panel/dock';
 import { type PortalContext, parsePortalUrl } from '@/lib/portal/parse-portal-url';
-import { Panel, panelCollapsedItem } from './Panel';
+import { Panel, panelCollapsedItem, panelDockWidthItem, panelLayoutItem } from './Panel';
 
 const SUB = '44444444-0000-0000-0000-000000000000';
 const BASE = `https://portal.azure.com/#@t.onmicrosoft.com/resource/subscriptions/${SUB}/resourceGroups/rg`;
@@ -475,6 +476,84 @@ describe('Panel', () => {
     await expand();
     expect(await screen.findByText('So far vs. all of last month')).toBeTruthy();
     expect(await panelCollapsedItem.getValue()).toBe(false);
+  });
+
+  describe('docked sidebar (decision 009)', () => {
+    const viewport = (width: number) =>
+      act(() => {
+        (
+          window as unknown as { happyDOM: { setViewport(v: { width: number }): void } }
+        ).happyDOM.setViewport({ width });
+      });
+    const docked = () => document.documentElement.classList.contains('azinfo-docked');
+
+    beforeEach(() => viewport(1600));
+    afterEach(() => undock(document));
+
+    it('docks beside the portal, remembers it, and floats again', async () => {
+      const request = vi.fn(async () => groupOf([{ name: 'web', mtd: 3 }]));
+      render(<Panel context={RG} request={request as never} />);
+      fireEvent.click(await screen.findByRole('button', { name: 'Dock as a sidebar' }));
+
+      expect(await panelLayoutItem.getValue()).toBe('docked');
+      expect(docked()).toBe(true);
+      expect(screen.getByRole('region', { name: 'azinfo cost panel' }).className).toContain(
+        'docked',
+      );
+      expect(screen.getByRole('separator', { name: 'Resize the sidebar' })).toBeTruthy();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Float over the page' }));
+      expect(await panelLayoutItem.getValue()).toBe('floating');
+      // Released on the next task (navigation keeps it docked).
+      await vi.waitFor(() => expect(docked()).toBe(false));
+    });
+
+    it('gives the portal its width back when collapsed or on other pages', async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      await panelLayoutItem.setValue('docked');
+      const request = vi.fn(async () => costOf(APP, 3, 1));
+      const { rerender } = render(<Panel context={APP} request={request as never} />);
+      await screen.findByRole('button', { name: 'Float over the page' });
+      expect(docked()).toBe(true);
+
+      fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
+      await act(async () => vi.runAllTimers());
+      expect(docked()).toBe(false);
+
+      await expand();
+      await screen.findByRole('button', { name: 'Float over the page' });
+      expect(docked()).toBe(true);
+
+      rerender(
+        <Panel
+          context={parsePortalUrl('https://portal.azure.com/#home')}
+          request={request as never}
+        />,
+      );
+      await act(async () => vi.runAllTimers());
+      expect(docked()).toBe(false);
+      vi.useRealTimers();
+    });
+
+    it('floats in a window too narrow to share, without the switch', async () => {
+      await panelLayoutItem.setValue('docked');
+      viewport(900);
+      render(<Panel context={APP} request={vi.fn(async () => costOf(APP, 3, 1)) as never} />);
+      await screen.findByText('So far vs. all of last month');
+      expect(screen.queryByRole('button', { name: 'Float over the page' })).toBeNull();
+      expect(docked()).toBe(false);
+    });
+
+    it('resizes with the keyboard and remembers the width', async () => {
+      await panelLayoutItem.setValue('docked');
+      await panelDockWidthItem.setValue(400);
+      render(<Panel context={APP} request={vi.fn(async () => costOf(APP, 3, 1)) as never} />);
+      const handle = await screen.findByRole('separator', { name: 'Resize the sidebar' });
+      await vi.waitFor(() => expect(handle.getAttribute('aria-valuenow')).toBe('400'));
+      fireEvent.keyDown(handle, { key: 'ArrowLeft' });
+      expect(await panelDockWidthItem.getValue()).toBe(416);
+      expect(document.documentElement.style.getPropertyValue('--azinfo-dock-width')).toBe('416px');
+    });
   });
 
   describe('quick answers, trend and trust (decision 008)', () => {

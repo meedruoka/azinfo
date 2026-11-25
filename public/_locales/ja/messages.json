@@ -40,6 +40,9 @@
   "panelLabel": { "message": "azinfo コスト パネル" },
   "panelPillLabel": { "message": "azinfo コスト パネル: $1。展開します。" },
   "panelCollapse": { "message": "折りたたむ" },
+  "panelDock": { "message": "サイドバーとしてドッキング" },
+  "panelFloat": { "message": "ページの上に表示" },
+  "panelResizeDock": { "message": "サイドバーのサイズを変更" },
   "panelResourceGroup": { "message": "リソース グループ" },
   "panelLoadingCost": { "message": "コストを読み込み中…" },
   "panelSigningIn": {

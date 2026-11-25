@@ -40,6 +40,9 @@
   "panelLabel": { "message": "Panneau de coûts azinfo" },
   "panelPillLabel": { "message": "Panneau de coûts azinfo : $1. Développer." },
   "panelCollapse": { "message": "Réduire" },
+  "panelDock": { "message": "Ancrer en barre latérale" },
+  "panelFloat": { "message": "Superposer à la page" },
+  "panelResizeDock": { "message": "Redimensionner la barre latérale" },
   "panelResourceGroup": { "message": "Groupe de ressources" },
   "panelLoadingCost": { "message": "Chargement du coût…" },
   "panelSigningIn": {

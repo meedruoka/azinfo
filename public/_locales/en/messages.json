@@ -72,6 +72,18 @@
     "message": "Collapse",
     "description": "Screen-reader label of the button that shrinks the panel"
   },
+  "panelDock": {
+    "message": "Dock as a sidebar",
+    "description": "Button that docks the panel to the right of the portal, which narrows to make room"
+  },
+  "panelFloat": {
+    "message": "Float over the page",
+    "description": "Button that turns the docked sidebar back into a card floating over the portal"
+  },
+  "panelResizeDock": {
+    "message": "Resize the sidebar",
+    "description": "Screen-reader label and tooltip of the draggable left edge of the docked sidebar"
+  },
   "panelResourceGroup": { "message": "Resource group", "description": "Azure resource group" },
   "panelLoadingCost": { "message": "Loading cost…" },
   "panelSigningIn": {

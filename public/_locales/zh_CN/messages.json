@@ -34,6 +34,9 @@
   "panelLabel": { "message": "azinfo 成本面板" },
   "panelPillLabel": { "message": "azinfo 成本面板：$1。展开。" },
   "panelCollapse": { "message": "折叠" },
+  "panelDock": { "message": "停靠为侧边栏" },
+  "panelFloat": { "message": "浮动在页面上方" },
+  "panelResizeDock": { "message": "调整侧边栏大小" },
   "panelResourceGroup": { "message": "资源组" },
   "panelLoadingCost": { "message": "正在加载成本…" },
   "panelSigningIn": {

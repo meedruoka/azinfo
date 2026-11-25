@@ -83,6 +83,9 @@
   "panelCollapse": {
     "message": "طي"
   },
+  "panelDock": { "message": "تثبيت كشريط جانبي" },
+  "panelFloat": { "message": "عرض فوق الصفحة" },
+  "panelResizeDock": { "message": "تغيير حجم الشريط الجانبي" },
   "panelResourceGroup": {
     "message": "مجموعة الموارد"
   },

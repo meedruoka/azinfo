@@ -40,6 +40,9 @@
   "panelLabel": { "message": "azinfo-Kostenbereich" },
   "panelPillLabel": { "message": "azinfo-Kostenbereich: $1. Erweitern." },
   "panelCollapse": { "message": "Einklappen" },
+  "panelDock": { "message": "Als Seitenleiste andocken" },
+  "panelFloat": { "message": "Über der Seite schweben lassen" },
+  "panelResizeDock": { "message": "Seitenleiste in der Größe ändern" },
   "panelResourceGroup": { "message": "Ressourcengruppe" },
   "panelLoadingCost": { "message": "Kosten werden geladen…" },
   "panelSigningIn": {

@@ -1,5 +1,6 @@
 // Renders one store-screenshot scene with the real azinfo components and
-// sample data. Scene from the URL: ?scene=resource|spike|group|popup|pill|options
+// sample data. Scene from the URL: ?scene=resource|spike|group|popup|pill|options,
+// and ?layout=docked for the panel docked as a sidebar (decision 009).
 import type { ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Panel } from '@/entrypoints/content/Panel';
@@ -14,6 +15,7 @@ import { presetStorage } from './storage-shim';
 
 const params = new URLSearchParams(location.search);
 const scene = params.get('scene') ?? 'resource';
+const layout = params.get('layout') === 'docked' ? 'docked' : 'floating';
 const request = sampleRequest as never;
 
 // ?lang=ar (or any shipped locale): answer the i18n API from that locale file,
@@ -49,7 +51,8 @@ const forShadow = (css: string) => css.replace(/:root/g, ':host').replace(/\bbod
 function mount(className: string, css: string, node: ReactNode) {
   const host = document.createElement('div');
   host.className = className;
-  document.body.append(host);
+  // Like the extension: on the html element, outside the body docking narrows.
+  document.documentElement.append(host);
   const shadow = host.attachShadow({ mode: 'open' });
   const style = document.createElement('style');
   style.textContent = css;
@@ -76,7 +79,7 @@ switch (scene) {
       scene === 'spike' ? 'shop-batch-vm' : 'shop-web',
       scene === 'spike' ? 'Virtual machine · rg-shop-prod' : 'App Service · rg-shop-prod',
     );
-    presetStorage({ 'local:panel.collapsed': scene === 'pill' });
+    presetStorage({ 'local:panel.collapsed': scene === 'pill', 'local:panel.layout': layout });
     mount(
       '',
       panelCss,
@@ -88,7 +91,7 @@ switch (scene) {
   }
   case 'group':
     backdrop('rg-shop-prod', 'Resource group · Production');
-    presetStorage({ 'local:panel.collapsed': false });
+    presetStorage({ 'local:panel.collapsed': false, 'local:panel.layout': layout });
     mount(
       '',
       panelCss,

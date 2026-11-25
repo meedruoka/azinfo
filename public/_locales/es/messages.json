@@ -40,6 +40,9 @@
   "panelLabel": { "message": "Panel de costes de azinfo" },
   "panelPillLabel": { "message": "Panel de costes de azinfo: $1. Expandir." },
   "panelCollapse": { "message": "Contraer" },
+  "panelDock": { "message": "Acoplar como barra lateral" },
+  "panelFloat": { "message": "Flotar sobre la página" },
+  "panelResizeDock": { "message": "Cambiar el tamaño de la barra lateral" },
   "panelResourceGroup": { "message": "Grupo de recursos" },
   "panelLoadingCost": { "message": "Cargando coste…" },
   "panelSigningIn": {

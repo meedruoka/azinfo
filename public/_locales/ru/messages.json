@@ -83,6 +83,9 @@
   "panelCollapse": {
     "message": "Свернуть"
   },
+  "panelDock": { "message": "Закрепить как боковую панель" },
+  "panelFloat": { "message": "Поверх страницы" },
+  "panelResizeDock": { "message": "Изменить ширину боковой панели" },
   "panelResourceGroup": {
     "message": "Группа ресурсов"
   },

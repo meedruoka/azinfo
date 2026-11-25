@@ -16,8 +16,9 @@ export default defineContentScript({
     let context: PortalContext | null = null;
     let lastHref = '';
 
-    // Floating panel in a shadow root at the end of <body>; never placed
-    // inside the portal's own layout.
+    // Panel in a shadow root on the html element, after body: never inside
+    // the portal's own layout, and outside the body that docked mode narrows
+    // (decision 009).
     const ui = await createShadowRootUi(ctx, {
       name: 'azinfo-panel',
       css: panelCss,
@@ -25,7 +26,7 @@ export default defineContentScript({
       // panel's buttons through element.shadowRoot.
       mode: 'closed',
       position: 'inline',
-      anchor: 'body',
+      anchor: 'html',
       append: 'last',
       // Keystrokes typed in the panel must not trigger portal shortcuts.
       isolateEvents: true,

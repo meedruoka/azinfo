@@ -1,4 +1,12 @@
-import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  type ReactNode,
+  type PointerEvent as ReactPointerEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { storage } from 'wxt/utils/storage';
 import type { Savings, Tip } from '@/lib/azure/advisor';
 import type { MonthlyBudget } from '@/lib/azure/budgets';
@@ -17,6 +25,14 @@ import type {
 } from '@/lib/messages';
 import { sendRequest } from '@/lib/messages';
 import {
+  canDock,
+  clampDockWidth,
+  DOCK_WIDTH,
+  dock,
+  type PanelLayout,
+  releaseDock,
+} from '@/lib/panel/dock';
+import {
   changeFrom,
   errorState,
   groupPanelStateFromResult,
@@ -31,6 +47,16 @@ import type { CostType } from '@/lib/settings';
 /** Per-browser convenience only: whether the panel is shrunk to a pill. */
 export const panelCollapsedItem = storage.defineItem<boolean>('local:panel.collapsed', {
   fallback: true,
+});
+
+/** Floating card or sidebar docked beside the portal (decision 009). */
+export const panelLayoutItem = storage.defineItem<PanelLayout>('local:panel.layout', {
+  fallback: 'floating',
+});
+
+/** The docked sidebar's width in CSS pixels, as the user last dragged it. */
+export const panelDockWidthItem = storage.defineItem<number>('local:panel.dockWidth', {
+  fallback: DOCK_WIDTH.default,
 });
 
 export interface PanelProps {
@@ -236,6 +262,10 @@ function CostPanel({
     void panelCollapsedItem.setValue(next);
   };
 
+  const { layout, setLayout, docked, width, setWidth, saveWidth, dockable } = useDockedLayout(
+    !collapsed,
+  );
+
   const runSignIn = async (req: Request) => {
     // The Microsoft window may open behind the browser: say where to look.
     setState({ kind: 'loading', signingIn: true });
@@ -264,8 +294,14 @@ function CostPanel({
     );
   }
 
+  const layoutLabel = layout === 'docked' ? t('panelFloat') : t('panelDock');
   return (
-    <section className="azinfo-card" aria-label={t('panelLabel')}>
+    <section
+      className={docked ? 'azinfo-card docked' : 'azinfo-card'}
+      style={docked ? { width: `${width}px` } : undefined}
+      aria-label={t('panelLabel')}
+    >
+      {docked && <ResizeHandle width={width} onResize={setWidth} onDone={saveWidth} />}
       <header>
         <div className="title">
           <span className="brand">azinfo</span>
@@ -274,14 +310,29 @@ function CostPanel({
           </span>
           <span className="type">{subtitle}</span>
         </div>
-        <button
-          type="button"
-          className="icon"
-          onClick={() => toggle(true)}
-          aria-label={t('panelCollapse')}
-        >
-          –
-        </button>
+        <div className="actions">
+          {dockable && (
+            <button
+              type="button"
+              className="icon"
+              onClick={() => setLayout(layout === 'docked' ? 'floating' : 'docked')}
+              aria-label={layoutLabel}
+              title={layoutLabel}
+            >
+              {/* Pictures where the click takes the panel, like the label. */}
+              <LayoutIcon docked={layout !== 'docked'} />
+            </button>
+          )}
+          <button
+            type="button"
+            className="icon"
+            onClick={() => toggle(true)}
+            aria-label={t('panelCollapse')}
+            title={t('panelCollapse')}
+          >
+            –
+          </button>
+        </div>
       </header>
       <Body
         state={state}
@@ -292,6 +343,130 @@ function CostPanel({
         tenantLabel={tenantLabel}
       />
     </section>
+  );
+}
+
+/**
+ * The chosen layout, and whether the sidebar is docked right now: only while
+ * the panel is open and the window is wide enough (decision 009). Narrows the
+ * portal while docked and gives it back its width otherwise.
+ */
+function useDockedLayout(open: boolean) {
+  const [layout, setLayoutState] = useState<PanelLayout>('floating');
+  const [storedWidth, setStoredWidth] = useState<number>(DOCK_WIDTH.default);
+  const [viewport, setViewport] = useState(() => window.innerWidth);
+
+  useEffect(() => {
+    void panelLayoutItem.getValue().then(setLayoutState);
+    void panelDockWidthItem.getValue().then(setStoredWidth);
+    const unwatchLayout = panelLayoutItem.watch(setLayoutState);
+    const unwatchWidth = panelDockWidthItem.watch(setStoredWidth);
+    return () => {
+      unwatchLayout();
+      unwatchWidth();
+    };
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => setViewport(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const dockable = canDock(viewport);
+  const docked = open && layout === 'docked' && dockable;
+  const width = clampDockWidth(storedWidth, viewport);
+
+  // Before paint, so the portal and the sidebar never overlap for a frame.
+  useLayoutEffect(() => {
+    if (!docked) return;
+    dock(document, width);
+    return () => releaseDock(document);
+  }, [docked, width]);
+
+  const setLayout = (next: PanelLayout) => {
+    setLayoutState(next);
+    void panelLayoutItem.setValue(next);
+  };
+  const saveWidth = (next: number) => void panelDockWidthItem.setValue(next);
+  return {
+    layout,
+    setLayout,
+    docked,
+    width,
+    setWidth: setStoredWidth,
+    saveWidth,
+    dockable,
+  };
+}
+
+/** Drag the sidebar's left edge; arrow keys move it 16px at a time. */
+function ResizeHandle({
+  width,
+  onResize,
+  onDone,
+}: {
+  width: number;
+  onResize: (width: number) => void;
+  onDone: (width: number) => void;
+}) {
+  const widthAt = (clientX: number) =>
+    clampDockWidth(window.innerWidth - clientX, window.innerWidth);
+  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) onResize(widthAt(event.clientX));
+  };
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+    onDone(widthAt(event.clientX));
+  };
+  const step = (delta: number) => {
+    const next = clampDockWidth(width + delta, window.innerWidth);
+    onResize(next);
+    onDone(next);
+  };
+  return (
+    // biome-ignore lint/a11y/useSemanticElements: a vertical splitter has no native element.
+    <div
+      className="resize-handle"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label={t('panelResizeDock')}
+      aria-valuenow={width}
+      aria-valuemin={DOCK_WIDTH.min}
+      aria-valuemax={DOCK_WIDTH.max}
+      title={t('panelResizeDock')}
+      tabIndex={0}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onKeyDown={(event) => {
+        // Physical keys: the sidebar is on the right in every language.
+        if (event.key === 'ArrowLeft') step(16);
+        else if (event.key === 'ArrowRight') step(-16);
+        else return;
+        event.preventDefault();
+      }}
+    />
+  );
+}
+
+/** A window with a side panel: filled when docked, outlined when floating. */
+function LayoutIcon({ docked }: { docked: boolean }) {
+  return (
+    <svg className="layout-icon" viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" />
+      {docked ? (
+        <rect className="fill" x="9.5" y="2.5" width="5" height="11" />
+      ) : (
+        <rect className="fill" x="8.5" y="8" width="4.5" height="4" rx="0.5" />
+      )}
+    </svg>
   );
 }
 

@@ -83,6 +83,9 @@
   "panelCollapse": {
     "message": "Ciutkan"
   },
+  "panelDock": { "message": "Sematkan sebagai bilah sisi" },
+  "panelFloat": { "message": "Mengambang di atas halaman" },
+  "panelResizeDock": { "message": "Ubah ukuran bilah sisi" },
   "panelResourceGroup": {
     "message": "Grup sumber daya"
   },

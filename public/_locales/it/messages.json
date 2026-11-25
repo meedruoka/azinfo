@@ -38,6 +38,9 @@
   "panelLabel": { "message": "Pannello dei costi di azinfo" },
   "panelPillLabel": { "message": "Pannello dei costi di azinfo: $1. Espandi." },
   "panelCollapse": { "message": "Comprimi" },
+  "panelDock": { "message": "Ancora come barra laterale" },
+  "panelFloat": { "message": "Sovrapponi alla pagina" },
+  "panelResizeDock": { "message": "Ridimensiona la barra laterale" },
   "panelResourceGroup": { "message": "Gruppo di risorse" },
   "panelLoadingCost": { "message": "Caricamento del costo…" },
   "panelSigningIn": {

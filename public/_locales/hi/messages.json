@@ -83,6 +83,9 @@
   "panelCollapse": {
     "message": "छोटा करें"
   },
+  "panelDock": { "message": "साइडबार के रूप में जोड़ें" },
+  "panelFloat": { "message": "पेज के ऊपर दिखाएँ" },
+  "panelResizeDock": { "message": "साइडबार का आकार बदलें" },
   "panelResourceGroup": {
     "message": "संसाधन समूह"
   },

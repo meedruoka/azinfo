@@ -83,6 +83,9 @@
   "panelCollapse": {
     "message": "সংকুচিত করুন"
   },
+  "panelDock": { "message": "সাইডবার হিসেবে যুক্ত করুন" },
+  "panelFloat": { "message": "পৃষ্ঠার উপরে ভাসিয়ে রাখুন" },
+  "panelResizeDock": { "message": "সাইডবারের আকার বদলান" },
   "panelResourceGroup": {
     "message": "রিসোর্স গ্রুপ"
   },

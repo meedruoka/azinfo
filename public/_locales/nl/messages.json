@@ -38,6 +38,9 @@
   "panelLabel": { "message": "azinfo-kostenpaneel" },
   "panelPillLabel": { "message": "azinfo-kostenpaneel: $1. Uitvouwen." },
   "panelCollapse": { "message": "Samenvouwen" },
+  "panelDock": { "message": "Vastzetten als zijbalk" },
+  "panelFloat": { "message": "Boven de pagina zweven" },
+  "panelResizeDock": { "message": "Formaat van zijbalk wijzigen" },
   "panelResourceGroup": { "message": "Resourcegroep" },
   "panelLoadingCost": { "message": "Kosten laden…" },
   "panelSigningIn": {

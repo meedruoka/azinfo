@@ -36,6 +36,9 @@
   "panelLabel": { "message": "azinfo 비용 패널" },
   "panelPillLabel": { "message": "azinfo 비용 패널: $1. 펼치기." },
   "panelCollapse": { "message": "접기" },
+  "panelDock": { "message": "사이드바로 고정" },
+  "panelFloat": { "message": "페이지 위에 띄우기" },
+  "panelResizeDock": { "message": "사이드바 크기 조정" },
   "panelResourceGroup": { "message": "리소스 그룹" },
   "panelLoadingCost": { "message": "비용을 로드하는 중…" },
   "panelSigningIn": {
