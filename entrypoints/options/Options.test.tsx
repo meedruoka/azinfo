@@ -4,7 +4,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { defaultAuthority } from '@/lib/auth/config';
 import type { Request } from '@/lib/messages';
-import { authorityItem, cacheTtlHoursItem, spikeThresholdPctItem } from '@/lib/settings';
+import {
+  authorityItem,
+  cacheTtlHoursItem,
+  costTypeItem,
+  spikeThresholdPctItem,
+} from '@/lib/settings';
 import { Options } from './Options';
 
 function fakeWorker() {
@@ -89,5 +94,14 @@ describe('Options', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Clear cached data' }));
     expect(await screen.findByText(/Cached data cleared/)).toBeTruthy();
     expect(request).toHaveBeenCalledWith({ type: 'clearCache' });
+  });
+
+  it('switches between actual and amortized cost', async () => {
+    render(<Options request={fakeWorker() as never} />);
+    const actual = (await screen.findByRole('radio', { name: /^Actual cost/ })) as HTMLInputElement;
+    await vi.waitFor(() => expect(actual.checked).toBe(true));
+    fireEvent.click(screen.getByRole('radio', { name: /^Amortized cost/ }));
+    await vi.waitFor(async () => expect(await costTypeItem.getValue()).toBe('AmortizedCost'));
+    expect(await screen.findByText('Saved.')).toBeTruthy();
   });
 });

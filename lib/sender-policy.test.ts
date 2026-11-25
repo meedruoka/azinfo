@@ -13,7 +13,13 @@ describe('isAllowedRequest', () => {
   });
 
   it('limits the portal panel to reading costs and signing in', () => {
-    for (const type of ['getResourceCost', 'getResourceGroupCosts', 'signIn', 'signInTenant']) {
+    for (const type of [
+      'getResourceCost',
+      'getResourceGroupCosts',
+      'getTrend',
+      'signIn',
+      'signInTenant',
+    ]) {
       expect(isAllowedRequest({ type }, panel, self)).toBe(true);
     }
     for (const type of ['signOut', 'setAuthority', 'clearCache', 'getDirectory', 'getTopCosts']) {

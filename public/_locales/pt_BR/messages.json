@@ -168,5 +168,34 @@
     "message": "Remove os dados de custo, as dicas de economia e a lista de locatários armazenados neste dispositivo. Sua entrada e estas configurações são mantidas."
   },
   "optClearCache": { "message": "Limpar dados em cache" },
-  "optCacheCleared": { "message": "Cache limpo. A próxima exibição consultará o Azure novamente." }
+  "optCacheCleared": { "message": "Cache limpo. A próxima exibição consultará o Azure novamente." },
+
+  "signInTrustNote": {
+    "message": "Somente leitura: o azinfo precisa da função Cost Management Reader (ou Leitor) e nunca altera nada no Azure. Os dados de custo vão direto da Microsoft para este navegador."
+  },
+  "privacyPolicy": { "message": "Política de privacidade" },
+  "costTypeActual": { "message": "Custo real" },
+  "costTypeAmortized": { "message": "Custo amortizado" },
+  "optCostTypeTitle": { "message": "Tipo de custo" },
+  "optCostTypeActualHelp": {
+    "message": "O que foi faturado. A compra de uma reserva ou de um plano de economia aparece como uma única cobrança, então os recursos que a usam podem parecer gratuitos."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Compras de reservas e planos de economia são distribuídas pelos dias e recursos que as usam. Corresponde à visão Custo amortizado da análise de custos."
+  },
+  "optCostTypeHelp": {
+    "message": "Vale para os próximos números carregados. Cada tipo de custo tem seu próprio cache."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Mês passado, primeiro $1 dia" },
+  "panelSameDaysLastMonth_other": { "message": "Mês passado, primeiros $1 dias" },
+  "panelVsSameDays_one": { "message": "Este mês em relação ao mesmo $1 dia" },
+  "panelVsSameDays_other": { "message": "Este mês em relação aos mesmos $1 dias" },
+  "panelTrendHeading": { "message": "Total acumulado, dia a dia" },
+  "panelTrendLabel": { "message": "Total acumulado neste mês: $1. Todo o mês passado: $2." },
+  "panelTrendUnavailable": { "message": "Tendência diária indisponível." },
+  "panelBudget": { "message": "Orçamento $1" },
+  "panelBudgetUsed": { "message": "Orçamento $1 ($2 usado)" },
+  "panelTipsLoading": { "message": "Carregando dicas de economia…" },
+  "panelRefreshing": { "message": "Mostrando números das $1 enquanto são atualizados…" },
+  "panelRefreshFailed": { "message": "Não foi possível atualizar. Números das $1." }
 }

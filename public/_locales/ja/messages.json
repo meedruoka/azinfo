@@ -164,5 +164,34 @@
   "optClearCache": { "message": "キャッシュをクリア" },
   "optCacheCleared": {
     "message": "キャッシュをクリアしました。次回の表示で Azure に再度問い合わせます。"
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "読み取り専用: azinfo には Cost Management Reader ロール (または閲覧者) が必要で、Azure の内容を変更することはありません。コスト データは Microsoft からこのブラウザーに直接届きます。"
+  },
+  "privacyPolicy": { "message": "プライバシー ポリシー" },
+  "costTypeActual": { "message": "実際のコスト" },
+  "costTypeAmortized": { "message": "償却コスト" },
+  "optCostTypeTitle": { "message": "コストの種類" },
+  "optCostTypeActualHelp": {
+    "message": "請求された金額です。予約や節約プランの購入は 1 回の請求として表示されるため、それを使うリソースは無料に見えることがあります。"
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "予約と節約プランの購入を、それを使う日とリソースに配分します。コスト分析の「償却コスト」ビューと一致します。"
+  },
+  "optCostTypeHelp": {
+    "message": "次に読み込む数値から適用されます。コストの種類ごとに別々にキャッシュされます。"
+  },
+  "panelSameDaysLastMonth_one": { "message": "先月の最初の $1 日間" },
+  "panelSameDaysLastMonth_other": { "message": "先月の最初の $1 日間" },
+  "panelVsSameDays_one": { "message": "先月の同じ $1 日間との比較" },
+  "panelVsSameDays_other": { "message": "先月の同じ $1 日間との比較" },
+  "panelTrendHeading": { "message": "日ごとの累計" },
+  "panelTrendLabel": { "message": "今月の累計: $1。先月全体: $2。" },
+  "panelTrendUnavailable": { "message": "日ごとの推移を表示できません。" },
+  "panelBudget": { "message": "予算 $1" },
+  "panelBudgetUsed": { "message": "予算 $1 ($2 使用済み)" },
+  "panelTipsLoading": { "message": "節約のヒントを読み込み中…" },
+  "panelRefreshing": { "message": "更新中のため $1 時点の数値を表示しています…" },
+  "panelRefreshFailed": { "message": "更新できませんでした。$1 時点の数値です。" }
 }

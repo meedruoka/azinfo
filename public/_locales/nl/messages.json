@@ -166,5 +166,34 @@
     "message": "Verwijdert kostengegevens, besparingstips en de tenantlijst die op dit apparaat zijn opgeslagen. Uw aanmelding en deze instellingen blijven behouden."
   },
   "optClearCache": { "message": "Cache wissen" },
-  "optCacheCleared": { "message": "Cache gewist. De volgende weergave vraagt Azure opnieuw op." }
+  "optCacheCleared": { "message": "Cache gewist. De volgende weergave vraagt Azure opnieuw op." },
+
+  "signInTrustNote": {
+    "message": "Alleen-lezen: azinfo heeft de rol Cost Management Reader (of Lezer) nodig en wijzigt nooit iets in Azure. Kostengegevens gaan rechtstreeks van Microsoft naar deze browser."
+  },
+  "privacyPolicy": { "message": "Privacybeleid" },
+  "costTypeActual": { "message": "Werkelijke kosten" },
+  "costTypeAmortized": { "message": "Afgeschreven kosten" },
+  "optCostTypeTitle": { "message": "Kostentype" },
+  "optCostTypeActualHelp": {
+    "message": "Wat is gefactureerd. Een aankoop van een reservering of besparingsplan verschijnt als één post, dus de resources die het gebruiken kunnen gratis lijken."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Aankopen van reserveringen en besparingsplannen worden verdeeld over de dagen en resources die ze gebruiken. Komt overeen met de weergave Afgeschreven kosten in Kostenanalyse."
+  },
+  "optCostTypeHelp": {
+    "message": "Geldt voor de volgende cijfers die worden geladen. Elk kostentype wordt apart in de cache bewaard."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Vorige maand, eerste $1 dag" },
+  "panelSameDaysLastMonth_other": { "message": "Vorige maand, eerste $1 dagen" },
+  "panelVsSameDays_one": { "message": "Deze maand t.o.v. dezelfde $1 dag" },
+  "panelVsSameDays_other": { "message": "Deze maand t.o.v. dezelfde $1 dagen" },
+  "panelTrendHeading": { "message": "Lopend totaal, dag voor dag" },
+  "panelTrendLabel": { "message": "Lopend totaal deze maand: $1. Hele vorige maand: $2." },
+  "panelTrendUnavailable": { "message": "Dagelijks verloop niet beschikbaar." },
+  "panelBudget": { "message": "Budget $1" },
+  "panelBudgetUsed": { "message": "Budget $1 ($2 gebruikt)" },
+  "panelTipsLoading": { "message": "Besparingstips laden…" },
+  "panelRefreshing": { "message": "Cijfers van $1 worden getoond terwijl ze worden vernieuwd…" },
+  "panelRefreshFailed": { "message": "Vernieuwen mislukt. Cijfers van $1." }
 }

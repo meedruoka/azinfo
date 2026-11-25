@@ -2,6 +2,7 @@ import { storage } from 'wxt/utils/storage';
 import { ArmError } from '../azure/arm-client';
 import { type CostClientDeps, runCostQuery } from '../azure/cost-client';
 import { createTtlCache } from '../cache/ttl-cache';
+import type { CostType } from '../settings';
 import { normaliseCostRows, type ResourceCost } from './normalise';
 import { buildCostQuery, monthsFor, QUERY_SHAPES, type QueryShape } from './query';
 
@@ -12,7 +13,12 @@ export interface SubscriptionCosts {
   fetchedAt: number;
   /** Cost column and meter grouping this subscription accepted, tried first next time. */
   shape: QueryShape;
+  /** Actual or amortized: each has its own cache entry. */
+  costType: CostType;
 }
+
+/** Costs as served: `stale` marks an expired cache entry returned for a quick first paint. */
+export type ServedCosts = SubscriptionCosts & { stale?: boolean };
 
 /** Per-subscription fetch state that the popup and in-portal panel watch. */
 export type CostStatus = { state: 'rateLimited'; retryAt: number };
@@ -29,12 +35,14 @@ export const costStatusItem = storage.defineItem<Record<string, CostStatus>>('lo
 export const DEFAULT_COST_TTL_MS = 4 * 60 * 60 * 1000;
 
 /** Cache key version: bump when SubscriptionCosts changes shape. */
-export const COST_CACHE_PREFIX = 'cost.v2.';
+export const COST_CACHE_PREFIX = 'cost.v3.';
 
 export interface CostServiceDeps {
   /** Token for the tenant that can query this subscription. */
   getAccessToken: (subscriptionId: string) => Promise<string>;
   ttlMs?: () => number | Promise<number>;
+  /** Read on every call, so a changed setting applies to the next request. */
+  costType?: () => CostType | Promise<CostType>;
   now?: () => number;
   client?: Omit<CostClientDeps, 'onRateLimited' | 'now'>;
 }
@@ -57,11 +65,16 @@ export function createCostService(deps: CostServiceDeps) {
     await costStatusItem.setValue(all);
   }
 
-  async function query(subscriptionId: string, shape: QueryShape) {
+  const costTypeNow = async () => (deps.costType ? await deps.costType() : 'ActualCost');
+  /** Cache key: one entry per subscription and cost type. */
+  const keyFor = (subscriptionId: string, costType: CostType) =>
+    `${costType.toLowerCase()}.${subscriptionId.toLowerCase()}`;
+
+  async function query(subscriptionId: string, shape: QueryShape, costType: CostType) {
     const at = now();
     const result = await runCostQuery(
       subscriptionId,
-      buildCostQuery(shape, at),
+      buildCostQuery(shape, at, costType),
       await deps.getAccessToken(subscriptionId),
       {
         ...deps.client,
@@ -76,6 +89,7 @@ export function createCostService(deps: CostServiceDeps) {
   async function fetchFromAzure(
     subscriptionId: string,
     preferred: QueryShape | undefined,
+    costType: CostType,
   ): Promise<SubscriptionCosts> {
     // Agreement types name the cost column differently, and a scope may not
     // know a meter dimension: a 400 means "try the next shape".
@@ -88,7 +102,7 @@ export function createCostService(deps: CostServiceDeps) {
       for (const candidate of order) {
         try {
           shape = candidate;
-          response = await query(subscriptionId, candidate);
+          response = await query(subscriptionId, candidate, costType);
           break;
         } catch (e) {
           const isLast = candidate === order[order.length - 1];
@@ -102,6 +116,7 @@ export function createCostService(deps: CostServiceDeps) {
     const { columns, rows, pages } = response.result;
     // Shape only (no costs, IDs or tokens): shows which layout Azure returned.
     console.info('[azinfo] cost query', {
+      costType,
       costColumn: shape.costColumn,
       meter: shape.meter,
       columns: columns.map((c) => `${c.name}:${c.type}`),
@@ -109,37 +124,70 @@ export function createCostService(deps: CostServiceDeps) {
       pages,
     });
     const resources = normaliseCostRows(columns, rows, monthsFor(response.at));
-    return { subscriptionId, resources, fetchedAt: response.at, shape };
+    return { subscriptionId, resources, fetchedAt: response.at, shape, costType };
   }
 
-  async function load(key: string, force: boolean): Promise<SubscriptionCosts> {
+  /** An entry from a previous UTC month labels last month's cost as "this month". */
+  const sameMonth = (costs: SubscriptionCosts) =>
+    monthsFor(costs.fetchedAt).current === monthsFor(now()).current;
+
+  /** The stored entry whatever its age, if it is from this UTC month. */
+  async function stored(key: string): Promise<SubscriptionCosts | null> {
+    const entry = await storage.getItem<{ value: SubscriptionCosts }>(
+      `local:${COST_CACHE_PREFIX}${key}`,
+    );
+    return entry && sameMonth(entry.value) ? entry.value : null;
+  }
+
+  async function load(
+    subscriptionId: string,
+    key: string,
+    costType: CostType,
+    force: boolean,
+  ): Promise<SubscriptionCosts> {
     const startedIn = generation;
     const cached = force ? null : await cache.get(key);
-    // An entry from a previous UTC month labels last month's cost as "this
-    // month", so it is stale even within the TTL.
-    if (cached && monthsFor(cached.value.fetchedAt).current === monthsFor(now()).current) {
-      return cached.value;
-    }
+    // Stale even within the TTL once the UTC month has changed.
+    if (cached && sameMonth(cached.value)) return cached.value;
     // Reuse the shape the subscription accepted last time, even if expired.
     const previous = await storage.getItem<{ value: SubscriptionCosts }>(
       `local:${COST_CACHE_PREFIX}${key}`,
     );
-    const costs = await fetchFromAzure(key, previous?.value.shape);
+    const costs = await fetchFromAzure(subscriptionId, previous?.value.shape, costType);
     if (startedIn === generation) await cache.set(key, costs);
     return costs;
   }
 
   return {
+    /**
+     * An expired entry from this UTC month, for a quick first paint while a
+     * refresh runs (decision 008). Null when the cache is fresh (ask normally:
+     * it answers at once) or holds nothing usable. Never fetches.
+     */
+    async getStaleCosts(subscriptionId: string): Promise<ServedCosts | null> {
+      const key = keyFor(subscriptionId, await costTypeNow());
+      const fresh = await cache.get(key);
+      if (fresh && sameMonth(fresh.value)) return null;
+      const old = await stored(key);
+      return old ? { ...old, stale: true } : null;
+    },
+
     /** Cached costs if fresh, otherwise one query to Azure (shared by concurrent callers). */
     async getSubscriptionCosts(
       subscriptionId: string,
       opts: { force?: boolean } = {},
-    ): Promise<SubscriptionCosts> {
-      const key = subscriptionId.toLowerCase();
+    ): Promise<ServedCosts> {
+      const costType = await costTypeNow();
+      const key = keyFor(subscriptionId, costType);
       // Checked and registered synchronously so concurrent callers share it.
       let pending = inFlight.get(key);
       if (!pending) {
-        const started = load(key, opts.force ?? false).finally(() => {
+        const started = load(
+          subscriptionId.toLowerCase(),
+          key,
+          costType,
+          opts.force ?? false,
+        ).finally(() => {
           // clear() may have replaced the entry; only remove our own.
           if (inFlight.get(key) === started) inFlight.delete(key);
         });

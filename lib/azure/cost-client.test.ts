@@ -215,3 +215,28 @@ describe('retryAfterMs', () => {
     expect(retryAfterMs(new Headers(), NOW)).toBeNull();
   });
 });
+
+describe('runCostQuery at resource-group scope', () => {
+  it('runs at resource-group scope, still only on the query path', async () => {
+    const urls: string[] = [];
+    server.use(
+      http.post(
+        `https://management.azure.com/subscriptions/${SUB}/resourceGroups/rg-web_1/providers/Microsoft.CostManagement/query`,
+        ({ request }) => {
+          urls.push(request.url);
+          return HttpResponse.json(EMPTY);
+        },
+      ),
+    );
+    await runCostQuery({ subscriptionId: SUB, resourceGroup: 'rg-web_1' }, BODY, 'AT', noSleep());
+    expect(urls).toHaveLength(1);
+  });
+
+  it('refuses a resource group name that would change the path', async () => {
+    for (const resourceGroup of ['..', '.']) {
+      await expect(
+        runCostQuery({ subscriptionId: SUB, resourceGroup }, BODY, 'AT', noSleep()),
+      ).rejects.toThrow('Not a resource group name');
+    }
+  });
+});

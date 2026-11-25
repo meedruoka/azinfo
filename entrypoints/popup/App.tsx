@@ -139,6 +139,20 @@ export function App({ request = sendRequest }: AppProps) {
   );
 }
 
+const PRIVACY_URL = 'https://meedruoka.github.io/azinfo/privacy-policy.html';
+
+/** What azinfo can and can't do, under every sign-in button (decision 008). */
+function TrustNote() {
+  return (
+    <p className="muted small trust">
+      {t('signInTrustNote')}{' '}
+      <a href={PRIVACY_URL} target="_blank" rel="noreferrer">
+        {t('privacyPolicy')}
+      </a>
+    </p>
+  );
+}
+
 /** A value to type, so not translated (decision 005). */
 const TENANT_EXAMPLE = 'yourname.onmicrosoft.com';
 
@@ -179,6 +193,7 @@ function SignIn({
           </button>
         </p>
         {error && <p className="error">{error}</p>}
+        <TrustNote />
       </>
     );
   }
@@ -191,6 +206,7 @@ function SignIn({
           {t('signIn')}
         </button>
         {error && <p className="error">{error}</p>}
+        <TrustNote />
       </>
     );
   }
@@ -235,6 +251,7 @@ function SignIn({
         </form>
       )}
       {error && <p className="error">{error}</p>}
+      <TrustNote />
     </>
   );
 }

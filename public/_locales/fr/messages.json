@@ -170,5 +170,34 @@
   "optClearCache": { "message": "Vider le cache" },
   "optCacheCleared": {
     "message": "Cache vidé. Le prochain affichage interrogera de nouveau Azure."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "Lecture seule : azinfo a besoin du rôle Cost Management Reader (ou Lecteur) et ne modifie jamais rien dans Azure. Les données de coût vont directement de Microsoft à ce navigateur."
+  },
+  "privacyPolicy": { "message": "Politique de confidentialité" },
+  "costTypeActual": { "message": "Coût réel" },
+  "costTypeAmortized": { "message": "Coût amorti" },
+  "optCostTypeTitle": { "message": "Type de coût" },
+  "optCostTypeActualHelp": {
+    "message": "Ce qui a été facturé. Un achat de réservation ou de plan d'économies apparaît comme une seule charge : les ressources qui l'utilisent peuvent sembler gratuites."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Les achats de réservations et de plans d'économies sont répartis sur les jours et les ressources qui les utilisent. Correspond à la vue Coût amorti de l'analyse des coûts."
+  },
+  "optCostTypeHelp": {
+    "message": "S'applique aux prochains chiffres chargés. Chaque type de coût a son propre cache."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Mois dernier, $1 premier jour" },
+  "panelSameDaysLastMonth_other": { "message": "Mois dernier, $1 premiers jours" },
+  "panelVsSameDays_one": { "message": "Ce mois-ci par rapport au même $1 jour" },
+  "panelVsSameDays_other": { "message": "Ce mois-ci par rapport aux mêmes $1 jours" },
+  "panelTrendHeading": { "message": "Cumul, jour par jour" },
+  "panelTrendLabel": { "message": "Cumul ce mois-ci : $1. Tout le mois dernier : $2." },
+  "panelTrendUnavailable": { "message": "Tendance quotidienne indisponible." },
+  "panelBudget": { "message": "Budget $1" },
+  "panelBudgetUsed": { "message": "Budget $1 ($2 utilisé)" },
+  "panelTipsLoading": { "message": "Chargement des conseils d'économies…" },
+  "panelRefreshing": { "message": "Chiffres de $1 affichés pendant l'actualisation…" },
+  "panelRefreshFailed": { "message": "Actualisation impossible. Chiffres de $1." }
 }

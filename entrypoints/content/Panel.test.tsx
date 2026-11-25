@@ -36,6 +36,7 @@ function costOf(
     data: {
       resourceId: context.resourceId,
       fetchedAt: AT,
+      costType: 'ActualCost',
       cost: { resourceId: context.resourceId, mtd, lastMonth, currency: 'EUR' },
       assessment,
       spikeContext: SPIKE_CONTEXT,
@@ -64,6 +65,7 @@ function groupOf(
     data: {
       resourceGroupId: RG.resourceId,
       fetchedAt: AT,
+      costType: 'ActualCost',
       resources,
       total: resources.length
         ? {
@@ -150,6 +152,7 @@ describe('Panel', () => {
         resourceGroupId: RG.resourceId,
         tenantHint: 't.onmicrosoft.com',
         force: false,
+        staleOk: true,
       });
       const names = screen
         .getAllByRole('row')
@@ -210,6 +213,7 @@ describe('Panel', () => {
       resourceId: APP.resourceId,
       tenantHint: 't.onmicrosoft.com',
       force: false,
+      staleOk: true,
     });
   });
 
@@ -268,6 +272,8 @@ describe('Panel', () => {
       'getResourceCost',
       'signIn',
       'getResourceCost',
+      // The daily trend comes after the main figures.
+      'getTrend',
     ]);
     // A work account signs in through the default: no personal tenant.
     expect(request.mock.calls[1]?.[0]).toEqual({ type: 'signIn' });
@@ -469,5 +475,116 @@ describe('Panel', () => {
     await expand();
     expect(await screen.findByText('So far vs. all of last month')).toBeTruthy();
     expect(await panelCollapsedItem.getValue()).toBe(false);
+  });
+
+  describe('quick answers, trend and trust (decision 008)', () => {
+    type TrendResult = Result<ResponseMap['getTrend']>;
+
+    const TREND: TrendResult = {
+      ok: true,
+      data: {
+        summary: {
+          current: [1, 2, 3],
+          previous: Array.from({ length: 31 }, (_, i) => i + 1),
+          daysCompared: 3,
+          sameDays: { thisMonth: 3, lastMonth: 2 },
+          daysInMonth: 30,
+        },
+        currency: 'EUR',
+        budget: null,
+        fetchedAt: AT,
+      },
+    };
+
+    /** Answers by request type: a queue of cost answers, one trend answer. */
+    function routed(costs: unknown[], trend: unknown = TREND) {
+      return vi.fn(async (req: Request) => (req.type === 'getTrend' ? trend : costs.shift()));
+    }
+
+    function stale(result: CostResult): CostResult {
+      return result.ok ? { ok: true, data: { ...result.data, stale: true } } : result;
+    }
+
+    it('shows old figures at once, then the refreshed ones', async () => {
+      let release: (r: unknown) => void = () => {};
+      const refreshed = new Promise((resolve) => {
+        release = resolve;
+      });
+      const answers: unknown[] = [stale(costOf(APP, 7, 10)), refreshed];
+      const request = routed(answers);
+      render(<Panel context={APP} request={request as never} />);
+      expect(await screen.findByText(/while they refresh/)).toBeTruthy();
+      expect(screen.getAllByText(/7[.,]00/).length).toBeGreaterThan(0);
+      await act(async () => release(costOf(APP, 8, 10)));
+      expect(await screen.findByText(/Updated/)).toBeTruthy();
+      expect(screen.getAllByText(/8[.,]00/).length).toBeGreaterThan(0);
+      const calls = request.mock.calls.map(([r]) => r as Request);
+      expect(calls.map((r) => r.type)).toEqual(['getResourceCost', 'getResourceCost', 'getTrend']);
+      expect(calls[1]).toMatchObject({ staleOk: false, force: false });
+    });
+
+    it('keeps the old figures, marked, when the refresh fails', async () => {
+      const request = routed([
+        stale(costOf(APP, 7, 10)),
+        { ok: false, kind: 'rateLimited', message: '', retryAt: AT },
+      ]);
+      render(<Panel context={APP} request={request as never} />);
+      expect(await screen.findByText(/Couldn't refresh/)).toBeTruthy();
+      expect(screen.getAllByText(/7[.,]00/).length).toBeGreaterThan(0);
+    });
+
+    it('drops the old figures when the refresh says the user is signed out', async () => {
+      const request = routed([
+        stale(costOf(APP, 7, 10)),
+        { ok: false, kind: 'notSignedIn', message: '' },
+      ]);
+      render(<Panel context={APP} request={request as never} />);
+      expect(await screen.findByText('Sign in to see costs.')).toBeTruthy();
+      expect(screen.queryByText(/7[.,]00/)).toBeNull();
+    });
+
+    it('compares the same days of last month and draws the running total', async () => {
+      render(<Panel context={APP} request={routed([costOf(APP, 4, 40)]) as never} />);
+      expect(await screen.findByText('Last month, first 3 days')).toBeTruthy();
+      expect(screen.getByText('This month vs the same 3 days')).toBeTruthy();
+      expect(screen.getByText('+50%')).toBeTruthy();
+      expect(screen.queryByText('So far vs. all of last month')).toBeNull();
+      expect(screen.getByRole('img', { name: /Running total this month/ })).toBeTruthy();
+    });
+
+    it('keeps the month comparison when the trend fails', async () => {
+      const failed = { ok: false, kind: 'azure', message: 'x' };
+      render(<Panel context={APP} request={routed([costOf(APP, 3, 12)], failed) as never} />);
+      expect(await screen.findByText('Daily trend unavailable.')).toBeTruthy();
+      expect(screen.getByText('So far vs. all of last month')).toBeTruthy();
+    });
+
+    it("draws a group's budget and how much of it is used", async () => {
+      const trend = {
+        ...TREND,
+        data: { ...(TREND.ok && TREND.data), budget: { name: 'b', amount: 100, currency: 'EUR' } },
+      };
+      const request = routed([groupOf([{ name: 'a', mtd: 40 }])], trend);
+      render(<Panel context={RG} request={request as never} />);
+      expect(await screen.findByText(/Budget .*100.* \(40\s?%/)).toBeTruthy();
+    });
+
+    it('says what azinfo needs and does under the sign-in buttons', async () => {
+      const request = vi.fn(async () => ({ ok: false, kind: 'notSignedIn', message: '' }));
+      render(<Panel context={APP} request={request as never} />);
+      expect(
+        await screen.findByText(/Read-only: azinfo needs the Cost Management Reader/),
+      ).toBeTruthy();
+      expect(screen.getByRole('link', { name: 'Privacy policy' }).getAttribute('href')).toBe(
+        'https://meedruoka.github.io/azinfo/privacy-policy.html',
+      );
+    });
+
+    it('names the cost type in the footer', async () => {
+      const amortized = costOf(APP, 3, 12);
+      if (amortized.ok) amortized.data.costType = 'AmortizedCost';
+      render(<Panel context={APP} request={routed([amortized]) as never} />);
+      expect(await screen.findByText(/Amortized cost/)).toBeTruthy();
+    });
   });
 });

@@ -106,7 +106,7 @@ export function toMonthKey(value: unknown): string | null {
   return iso ? `${iso[1]}-${iso[2]}` : null;
 }
 
-function toNumber(value: unknown): number {
+export function toNumber(value: unknown): number {
   const n = typeof value === 'number' ? value : Number(value);
   if (!Number.isFinite(n)) throw new CostShapeError(`Non-numeric cost value: ${String(value)}`);
   return n;

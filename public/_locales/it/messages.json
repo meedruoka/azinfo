@@ -172,5 +172,36 @@
   "optClearCache": { "message": "Svuota la cache" },
   "optCacheCleared": {
     "message": "Cache svuotata. La prossima visualizzazione interrogherà di nuovo Azure."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "Sola lettura: azinfo richiede il ruolo Cost Management Reader (o Lettore) e non modifica mai nulla in Azure. I dati sui costi vanno direttamente da Microsoft a questo browser."
+  },
+  "privacyPolicy": { "message": "Informativa sulla privacy" },
+  "costTypeActual": { "message": "Costo effettivo" },
+  "costTypeAmortized": { "message": "Costo ammortizzato" },
+  "optCostTypeTitle": { "message": "Tipo di costo" },
+  "optCostTypeActualHelp": {
+    "message": "Ciò che è stato fatturato. L'acquisto di una prenotazione o di un piano di risparmio appare come un unico addebito, quindi le risorse che lo usano possono sembrare gratuite."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Gli acquisti di prenotazioni e piani di risparmio sono distribuiti sui giorni e sulle risorse che li usano. Corrisponde alla vista Costo ammortizzato dell'analisi dei costi."
+  },
+  "optCostTypeHelp": {
+    "message": "Vale per i prossimi dati caricati. Ogni tipo di costo ha una cache separata."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Mese scorso, primo $1 giorno" },
+  "panelSameDaysLastMonth_other": { "message": "Mese scorso, primi $1 giorni" },
+  "panelVsSameDays_one": { "message": "Questo mese rispetto allo stesso $1 giorno" },
+  "panelVsSameDays_other": { "message": "Questo mese rispetto agli stessi $1 giorni" },
+  "panelTrendHeading": { "message": "Totale progressivo, giorno per giorno" },
+  "panelTrendLabel": {
+    "message": "Totale progressivo di questo mese: $1. Tutto il mese scorso: $2."
+  },
+  "panelTrendUnavailable": { "message": "Andamento giornaliero non disponibile." },
+  "panelBudget": { "message": "Budget $1" },
+  "panelBudgetUsed": { "message": "Budget $1 ($2 usato)" },
+  "panelTipsLoading": { "message": "Caricamento dei consigli di risparmio…" },
+  "panelRefreshing": { "message": "Dati delle $1 mostrati durante l'aggiornamento…" },
+  "panelRefreshFailed": { "message": "Aggiornamento non riuscito. Dati delle $1." }
 }

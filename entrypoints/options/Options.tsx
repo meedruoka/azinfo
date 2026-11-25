@@ -6,9 +6,13 @@ import { sendRequest } from '@/lib/messages';
 import {
   authorityItem,
   CACHE_TTL_HOURS,
+  COST_TYPES,
+  type CostType,
   cacheTtlHoursItem,
   clampSetting,
+  costTypeItem,
   normaliseAuthority,
+  readCostType,
   SPIKE_THRESHOLD,
   spikeThresholdPctItem,
 } from '@/lib/settings';
@@ -33,6 +37,7 @@ export function Options({ request = sendRequest }: OptionsProps) {
         bounds={CACHE_TTL_HOURS}
         item={cacheTtlHoursItem}
       />
+      <CostTypeSection />
       <ClearCacheSection request={request} />
       <NumberSetting
         title={t('optSpikeTitle')}
@@ -179,6 +184,54 @@ function NumberSetting({
       <p className="help">
         {help} {t('optDefault', bounds.default)}
       </p>
+      <NoticeLine notice={notice} />
+    </section>
+  );
+}
+
+const COST_TYPE_TEXT = {
+  ActualCost: { label: 'costTypeActual', help: 'optCostTypeActualHelp' },
+  AmortizedCost: { label: 'costTypeAmortized', help: 'optCostTypeAmortizedHelp' },
+} as const;
+
+/** Actual or amortized cost (decision 008). Each has its own cache, so switching is instant once fetched. */
+function CostTypeSection() {
+  const name = useId();
+  const [value, setValue] = useState<CostType>('ActualCost');
+  const [notice, setNotice] = useState<Notice>(null);
+
+  useEffect(() => {
+    void readCostType().then(setValue);
+  }, []);
+
+  async function choose(next: CostType) {
+    setValue(next);
+    await costTypeItem.setValue(next);
+    setNotice({ kind: 'ok', text: t('optSaved') });
+  }
+
+  return (
+    <section>
+      <h2>{t('optCostTypeTitle')}</h2>
+      <fieldset className="choices-list">
+        <legend className="visually-hidden">{t('optCostTypeTitle')}</legend>
+        {COST_TYPES.map((type) => (
+          <label key={type} className="choice">
+            <input
+              type="radio"
+              name={name}
+              value={type}
+              checked={value === type}
+              onChange={() => choose(type)}
+            />
+            <span>
+              <strong>{t(COST_TYPE_TEXT[type].label)}</strong>
+              <span className="help">{t(COST_TYPE_TEXT[type].help)}</span>
+            </span>
+          </label>
+        ))}
+      </fieldset>
+      <p className="help">{t('optCostTypeHelp')}</p>
       <NoticeLine notice={notice} />
     </section>
   );

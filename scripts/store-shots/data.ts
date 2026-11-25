@@ -63,6 +63,7 @@ const resourceCost = (
 ): Cost => ({
   resourceId: context.resourceId,
   fetchedAt: FETCHED_AT,
+  costType: 'ActualCost',
   cost: { resourceId: context.resourceId, mtd, lastMonth, currency: USD },
   assessment: { projected, spike },
   spikeContext: SPIKE_CONTEXT,
@@ -159,6 +160,7 @@ const sum = (key: 'mtd' | 'lastMonth') => groupView.reduce((s, r) => s + r[key],
 const group: ResponseMap['getResourceGroupCosts'] = {
   resourceGroupId: contexts.group.resourceId,
   fetchedAt: FETCHED_AT,
+  costType: 'ActualCost',
   resources: groupView,
   total: { mtd: sum('mtd'), lastMonth: sum('lastMonth'), currency: USD },
   spikeContext: SPIKE_CONTEXT,
@@ -191,10 +193,40 @@ const directory: ResponseMap['getDirectory'] = {
 const topCosts: ResponseMap['getTopCosts'] = {
   subscriptionId: SUB,
   fetchedAt: FETCHED_AT,
+  costType: 'ActualCost',
   top: groupRows.slice(0, 5).map(({ assessment: _a, tipCount: _t, ...cost }) => cost),
 };
 
 const ok = <T>(data: T): Result<T> => ({ ok: true, data });
+
+/**
+ * Running totals that end at the sample's month-to-date (18 completed days,
+ * a gentle weekday rhythm) and last month's total over October's 31 days.
+ */
+function sampleTrend(mtd: number, lastMonth: number, budget: number | null) {
+  const rhythm = (day: number) => 1 + 0.25 * Math.sin(day * 0.9);
+  const running = (total: number, days: number, creep: number) => {
+    const weights = Array.from({ length: days }, (_, i) => rhythm(i) * (1 + creep * i));
+    const scale = total / weights.reduce((a, b) => a + b, 0);
+    let sum = 0;
+    return weights.map((w) => (sum += w * scale));
+  };
+  const daysCompared = 18;
+  const current = running(mtd * (18 / 18.6), daysCompared, 0.02);
+  const previous = running(lastMonth, 31, 0);
+  return ok({
+    summary: {
+      current,
+      previous,
+      daysCompared,
+      sameDays: { thisMonth: current[17] ?? 0, lastMonth: previous[17] ?? 0 },
+      daysInMonth: 30,
+    },
+    currency: USD,
+    budget: budget === null ? null : { name: 'shop-prod-monthly', amount: budget, currency: USD },
+    fetchedAt: FETCHED_AT,
+  });
+}
 
 /** Answers the UI's requests the way the background worker would. */
 export async function sampleRequest(req: Request): Promise<Result<unknown>> {
@@ -209,6 +241,13 @@ export async function sampleRequest(req: Request): Promise<Result<unknown>> {
       return ok(costs[req.resourceId]);
     case 'getResourceGroupCosts':
       return ok(group);
+    case 'getTrend': {
+      if (req.target.kind === 'resourceGroup') {
+        return sampleTrend(group.total?.mtd ?? 0, group.total?.lastMonth ?? 0, 2400);
+      }
+      const cost = costs[req.target.resourceId]?.cost;
+      return sampleTrend(cost?.mtd ?? 0, cost?.lastMonth ?? 0, null);
+    }
     default:
       return ok({});
   }

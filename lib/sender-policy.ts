@@ -8,6 +8,7 @@ import type { Request } from './messages';
 export const CONTENT_SCRIPT_REQUESTS: ReadonlySet<Request['type']> = new Set([
   'getResourceCost',
   'getResourceGroupCosts',
+  'getTrend',
   'signIn',
   'signInTenant',
 ]);

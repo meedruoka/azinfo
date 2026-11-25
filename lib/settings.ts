@@ -20,6 +20,24 @@ export const cacheTtlHoursItem = storage.defineItem<number>('local:settings.cach
 });
 
 /**
+ * Which cost Cost Management reports. `ActualCost` is what was billed, so a
+ * reservation or savings plan shows up as one purchase. `AmortizedCost`
+ * spreads those purchases over the resources that use them (decision 008).
+ */
+export type CostType = 'ActualCost' | 'AmortizedCost';
+export const COST_TYPES: readonly CostType[] = ['ActualCost', 'AmortizedCost'];
+
+export const costTypeItem = storage.defineItem<CostType>('local:settings.costType', {
+  fallback: 'ActualCost',
+});
+
+/** The stored cost type, or `ActualCost` for anything unexpected. */
+export async function readCostType(): Promise<CostType> {
+  const value = await costTypeItem.getValue();
+  return COST_TYPES.includes(value) ? value : 'ActualCost';
+}
+
+/**
  * Entra authority used for sign-in. Null means "use the build default"
  * (`WXT_ENTRA_AUTHORITY`, else `organizations`).
  */

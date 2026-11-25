@@ -248,5 +248,65 @@
     "message": "Removes cost data, savings tips and the tenant list stored on this device. Your sign-in and these settings stay."
   },
   "optClearCache": { "message": "Clear cached data", "description": "Button" },
-  "optCacheCleared": { "message": "Cached data cleared. The next view queries Azure again." }
+  "optCacheCleared": { "message": "Cached data cleared. The next view queries Azure again." },
+
+  "signInTrustNote": {
+    "message": "Read-only: azinfo needs the Cost Management Reader role (or Reader) and never changes anything in Azure. Cost data goes straight from Microsoft to this browser.",
+    "description": "Shown under sign-in buttons. 'Cost Management Reader' and 'Reader' are Azure role names: keep 'Cost Management Reader' in English"
+  },
+  "privacyPolicy": {
+    "message": "Privacy policy",
+    "description": "Link to the privacy policy page"
+  },
+  "costTypeActual": {
+    "message": "Actual cost",
+    "description": "Azure cost type, as named in Cost analysis"
+  },
+  "costTypeAmortized": {
+    "message": "Amortized cost",
+    "description": "Azure cost type, as named in Cost analysis"
+  },
+  "optCostTypeTitle": { "message": "Cost type" },
+  "optCostTypeActualHelp": {
+    "message": "What was billed. A reservation or savings plan purchase shows up as one charge, so the resources that use it can look free."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Reservation and savings plan purchases spread over the days and resources that use them. Matches the Amortized cost view in Cost analysis."
+  },
+  "optCostTypeHelp": {
+    "message": "Applies to the next figures loaded. Each cost type is cached separately."
+  },
+  "panelSameDaysLastMonth_one": {
+    "message": "Last month, first $1 day",
+    "description": "$1 = number of days. Label next to an amount: last month's cost over its first $1 days"
+  },
+  "panelSameDaysLastMonth_other": { "message": "Last month, first $1 days" },
+  "panelVsSameDays_one": {
+    "message": "This month vs the same $1 day",
+    "description": "$1 = number of days. Label next to a percentage change"
+  },
+  "panelVsSameDays_other": { "message": "This month vs the same $1 days" },
+  "panelTrendHeading": { "message": "Running total, day by day" },
+  "panelTrendLabel": {
+    "message": "Running total this month: $1. All of last month: $2.",
+    "description": "Chart description for screen readers. $1 and $2 = amounts"
+  },
+  "panelTrendUnavailable": { "message": "Daily trend unavailable." },
+  "panelBudget": {
+    "message": "Budget $1",
+    "description": "$1 = amount of the resource group's monthly budget"
+  },
+  "panelBudgetUsed": {
+    "message": "Budget $1 ($2 used)",
+    "description": "$1 = budget amount, $2 = share used, e.g. 40%"
+  },
+  "panelTipsLoading": { "message": "Loading savings tips…" },
+  "panelRefreshing": {
+    "message": "Showing figures from $1 while they refresh…",
+    "description": "$1 = a time of day, e.g. 14:05"
+  },
+  "panelRefreshFailed": {
+    "message": "Couldn't refresh. Figures from $1.",
+    "description": "$1 = a time of day, e.g. 14:05"
+  }
 }

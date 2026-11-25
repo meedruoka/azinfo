@@ -25,6 +25,11 @@ export function createTtlCache<T>(
       return entry;
     },
 
+    /** The stored value whatever its age, or null. */
+    async peek(key: string): Promise<{ value: T; storedAt: number } | null> {
+      return (await storage.getItem<Entry<T>>(storageKey(key))) ?? null;
+    },
+
     async set(key: string, value: T): Promise<void> {
       await storage.setItem<Entry<T>>(storageKey(key), { value, storedAt: now() });
     },

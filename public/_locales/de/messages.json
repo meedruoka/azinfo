@@ -170,5 +170,36 @@
   "optClearCache": { "message": "Zwischenspeicher leeren" },
   "optCacheCleared": {
     "message": "Zwischenspeicher geleert. Die nächste Ansicht fragt Azure erneut ab."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "Nur lesend: azinfo braucht die Rolle Cost Management Reader (oder Leser) und ändert nie etwas in Azure. Kostendaten gehen direkt von Microsoft an diesen Browser."
+  },
+  "privacyPolicy": { "message": "Datenschutzerklärung" },
+  "costTypeActual": { "message": "Tatsächliche Kosten" },
+  "costTypeAmortized": { "message": "Amortisierte Kosten" },
+  "optCostTypeTitle": { "message": "Kostenart" },
+  "optCostTypeActualHelp": {
+    "message": "Was abgerechnet wurde. Der Kauf einer Reservierung oder eines Sparplans erscheint als eine Belastung, daher können die Ressourcen, die ihn nutzen, kostenlos wirken."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Käufe von Reservierungen und Sparplänen werden auf die Tage und Ressourcen verteilt, die sie nutzen. Entspricht der Ansicht „Amortisierte Kosten“ in der Kostenanalyse."
+  },
+  "optCostTypeHelp": {
+    "message": "Gilt für die nächsten geladenen Zahlen. Jede Kostenart wird getrennt zwischengespeichert."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Letzter Monat, erster $1 Tag" },
+  "panelSameDaysLastMonth_other": { "message": "Letzter Monat, erste $1 Tage" },
+  "panelVsSameDays_one": { "message": "Dieser Monat ggü. demselben $1 Tag" },
+  "panelVsSameDays_other": { "message": "Dieser Monat ggü. denselben $1 Tagen" },
+  "panelTrendHeading": { "message": "Laufende Summe, Tag für Tag" },
+  "panelTrendLabel": { "message": "Laufende Summe diesen Monat: $1. Ganzer letzter Monat: $2." },
+  "panelTrendUnavailable": { "message": "Täglicher Verlauf nicht verfügbar." },
+  "panelBudget": { "message": "Budget $1" },
+  "panelBudgetUsed": { "message": "Budget $1 ($2 genutzt)" },
+  "panelTipsLoading": { "message": "Spartipps werden geladen…" },
+  "panelRefreshing": {
+    "message": "Zahlen von $1 werden angezeigt, während sie aktualisiert werden…"
+  },
+  "panelRefreshFailed": { "message": "Aktualisierung fehlgeschlagen. Zahlen von $1." }
 }

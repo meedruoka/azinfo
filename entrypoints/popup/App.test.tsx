@@ -114,6 +114,12 @@ describe('popup sign-in choice (decision 006)', () => {
     });
   }
 
+  it('says what azinfo needs and does next to the sign-in choice', async () => {
+    render(<App request={signedOut({ chooseAccount: true, lastPortalTenant: null }) as never} />);
+    expect(await screen.findByText(/Cost Management Reader role \(or Reader\)/)).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Privacy policy' })).toBeTruthy();
+  });
+
   it('signs a work or school account in through the default', async () => {
     const request = signedOut({ chooseAccount: true, lastPortalTenant: null });
     render(<App request={request as never} />);

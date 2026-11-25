@@ -337,5 +337,34 @@
   },
   "optCacheCleared": {
     "message": "تم مسح البيانات المخزنة مؤقتًا. سيُستعلم من Azure مرة أخرى عند العرض التالي."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "للقراءة فقط: يحتاج azinfo إلى دور Cost Management Reader (أو القارئ) ولا يغيّر أي شيء في Azure. تنتقل بيانات التكلفة مباشرة من Microsoft إلى هذا المتصفح."
+  },
+  "privacyPolicy": { "message": "سياسة الخصوصية" },
+  "costTypeActual": { "message": "التكلفة الفعلية" },
+  "costTypeAmortized": { "message": "التكلفة المستهلكة" },
+  "optCostTypeTitle": { "message": "نوع التكلفة" },
+  "optCostTypeActualHelp": {
+    "message": "ما تمت فوترته. يظهر شراء الحجز أو خطة التوفير كرسم واحد، لذا قد تبدو الموارد التي تستخدمه مجانية."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "تُوزَّع مشتريات الحجوزات وخطط التوفير على الأيام والموارد التي تستخدمها. يطابق عرض التكلفة المستهلكة في تحليل التكلفة."
+  },
+  "optCostTypeHelp": {
+    "message": "يُطبَّق على الأرقام التالية التي يتم تحميلها. يُخزَّن كل نوع تكلفة مؤقتًا بشكل منفصل."
+  },
+  "panelSameDaysLastMonth_one": { "message": "الشهر الماضي، أول يوم ($1)" },
+  "panelSameDaysLastMonth_other": { "message": "الشهر الماضي، أول $1 يوم" },
+  "panelVsSameDays_one": { "message": "هذا الشهر مقارنةً بنفس اليوم ($1)" },
+  "panelVsSameDays_other": { "message": "هذا الشهر مقارنةً بنفس $1 يوم" },
+  "panelTrendHeading": { "message": "الإجمالي التراكمي يومًا بيوم" },
+  "panelTrendLabel": { "message": "الإجمالي التراكمي هذا الشهر: $1. الشهر الماضي كاملًا: $2." },
+  "panelTrendUnavailable": { "message": "الاتجاه اليومي غير متاح." },
+  "panelBudget": { "message": "الميزانية $1" },
+  "panelBudgetUsed": { "message": "الميزانية $1 (المستخدم $2)" },
+  "panelTipsLoading": { "message": "جارٍ تحميل نصائح التوفير…" },
+  "panelRefreshing": { "message": "عرض أرقام الساعة $1 أثناء تحديثها…" },
+  "panelRefreshFailed": { "message": "تعذّر التحديث. أرقام الساعة $1." }
 }

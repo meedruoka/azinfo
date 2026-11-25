@@ -170,5 +170,34 @@
     "message": "Elimina los datos de costes, los consejos de ahorro y la lista de inquilinos guardados en este dispositivo. Su sesión y esta configuración se mantienen."
   },
   "optClearCache": { "message": "Borrar datos en caché" },
-  "optCacheCleared": { "message": "Caché borrada. La próxima vista volverá a consultar Azure." }
+  "optCacheCleared": { "message": "Caché borrada. La próxima vista volverá a consultar Azure." },
+
+  "signInTrustNote": {
+    "message": "Solo lectura: azinfo necesita el rol Cost Management Reader (o Lector) y nunca cambia nada en Azure. Los datos de costos van directamente de Microsoft a este navegador."
+  },
+  "privacyPolicy": { "message": "Política de privacidad" },
+  "costTypeActual": { "message": "Costo real" },
+  "costTypeAmortized": { "message": "Costo amortizado" },
+  "optCostTypeTitle": { "message": "Tipo de costo" },
+  "optCostTypeActualHelp": {
+    "message": "Lo facturado. La compra de una reserva o de un plan de ahorro aparece como un solo cargo, así que los recursos que la usan pueden parecer gratis."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Las compras de reservas y planes de ahorro se reparten entre los días y los recursos que las usan. Coincide con la vista Costo amortizado del análisis de costos."
+  },
+  "optCostTypeHelp": {
+    "message": "Se aplica a las próximas cifras que se carguen. Cada tipo de costo se guarda en caché por separado."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Mes pasado, primer $1 día" },
+  "panelSameDaysLastMonth_other": { "message": "Mes pasado, primeros $1 días" },
+  "panelVsSameDays_one": { "message": "Este mes frente al mismo $1 día" },
+  "panelVsSameDays_other": { "message": "Este mes frente a los mismos $1 días" },
+  "panelTrendHeading": { "message": "Total acumulado, día a día" },
+  "panelTrendLabel": { "message": "Total acumulado este mes: $1. Todo el mes pasado: $2." },
+  "panelTrendUnavailable": { "message": "Tendencia diaria no disponible." },
+  "panelBudget": { "message": "Presupuesto $1" },
+  "panelBudgetUsed": { "message": "Presupuesto $1 ($2 usado)" },
+  "panelTipsLoading": { "message": "Cargando consejos de ahorro…" },
+  "panelRefreshing": { "message": "Mostrando cifras de las $1 mientras se actualizan…" },
+  "panelRefreshFailed": { "message": "No se pudo actualizar. Cifras de las $1." }
 }
