@@ -8,4 +8,9 @@ export const API_VERSIONS = {
   costQuery: '2026-06-01',
   /** Advisor Recommendations - List. Checked 2026-10-05. */
   advisor: '2025-01-01',
+  /**
+   * Consumption Budgets - List. Not checked against Microsoft Learn: the docs
+   * were unreachable when this was added (decision 008).
+   */
+  budgets: '2023-05-01',
 } as const;

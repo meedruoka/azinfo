@@ -1,8 +1,11 @@
 import type { Savings, Tip } from './azure/advisor';
+import type { MonthlyBudget } from './azure/budgets';
 import type { DirectorySubscription } from './azure/directory';
 import type { MeterShare } from './cost/breakdown';
 import type { ResourceCost } from './cost/normalise';
 import type { SpikeAssessment } from './cost/spike';
+import type { TrendSummary } from './cost/trend';
+import type { CostType } from './settings';
 
 /** Requests from popup/content script to the background worker. */
 export type Request =
@@ -26,6 +29,8 @@ export type Request =
       /** The portal URL's `#@<tenant>`, used if the subscription isn't in the directory. */
       tenantHint?: string;
       force?: boolean;
+      /** Answer at once from an expired cache entry if there is one (decision 008). */
+      staleOk?: boolean;
     }
   /** null resets to the build default. Signs out: tokens belong to the old authority. */
   | { type: 'setAuthority'; authority: string | null }
@@ -34,6 +39,17 @@ export type Request =
       type: 'getResourceGroupCosts';
       subscriptionId: string;
       resourceGroupId: string;
+      tenantHint?: string;
+      force?: boolean;
+      staleOk?: boolean;
+    }
+  /** Daily costs for this month and last, asked for after the main figures (decision 008). */
+  | {
+      type: 'getTrend';
+      subscriptionId: string;
+      target:
+        | { kind: 'resource'; resourceId: string }
+        | { kind: 'resourceGroup'; resourceGroupId: string };
       tenantHint?: string;
       force?: boolean;
     };
@@ -77,7 +93,8 @@ export interface AssessedCost extends TopCost {
  */
 export type TipsResult =
   | { ok: true; items: Tip[]; total: Savings | null }
-  | { ok: false; reason: 'noAccess' | 'error' };
+  /** `pending`: a quick answer from old data had no stored tips; the refresh brings them. */
+  | { ok: false; reason: 'noAccess' | 'error' | 'pending' };
 
 /** Spike settings and timing the worker used; shown so flags are explainable. */
 export interface SpikeContext {
@@ -116,11 +133,14 @@ export interface ResponseMap {
   };
   setAuthority: { authority: string };
   clearCache: { cleared: true };
-  getTopCosts: { subscriptionId: string; fetchedAt: number; top: TopCost[] };
+  getTopCosts: { subscriptionId: string; fetchedAt: number; costType: CostType; top: TopCost[] };
   /** `cost` is null when the resource has no cost rows this month or last. */
   getResourceCost: {
     resourceId: string;
     fetchedAt: number;
+    /** From an expired cache entry: the panel asks again to refresh. */
+    stale?: boolean;
+    costType: CostType;
     cost: ResourceCost | null;
     assessment: SpikeAssessment | null;
     spikeContext: SpikeContext;
@@ -131,6 +151,8 @@ export interface ResponseMap {
   getResourceGroupCosts: {
     resourceGroupId: string;
     fetchedAt: number;
+    stale?: boolean;
+    costType: CostType;
     /** Sorted by month-to-date cost, highest first. */
     resources: AssessedCost[];
     /** Null when there are no resources or they use different currencies. */
@@ -140,6 +162,14 @@ export interface ResponseMap {
     breakdown: MeterShare[];
     /** Tips for any resource in the group, including ones without cost. */
     tips: TipsResult;
+  };
+  getTrend: {
+    summary: TrendSummary;
+    /** Null when Azure's answer carried no currency: use the main figures' currency. */
+    currency: string | null;
+    /** Resource groups only: a monthly budget covering the whole group. */
+    budget: MonthlyBudget | null;
+    fetchedAt: number;
   };
 }
 

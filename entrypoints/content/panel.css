@@ -332,3 +332,76 @@ button.link {
   background: var(--accent);
   color: #ffffff;
 }
+
+/* Running total, day by day (decision 008). */
+.trend {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+
+.trend polyline {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.trend-current {
+  stroke: var(--accent);
+}
+
+.trend-previous {
+  stroke: var(--muted);
+  stroke-dasharray: 3 3;
+}
+
+.trend-dot {
+  fill: var(--accent);
+}
+
+.trend-budget {
+  stroke: var(--warn-fg);
+  stroke-width: 1;
+  stroke-dasharray: 1 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.trend-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+  margin: 2px 0 0;
+}
+
+.trend-legend {
+  column-gap: 12px;
+}
+
+.trend-legend > span {
+  white-space: nowrap;
+}
+
+.trend-legend .key {
+  display: inline-block;
+  width: 12px;
+  vertical-align: middle;
+  border-top: 2px solid var(--accent);
+}
+
+.trend-legend .key.previous {
+  border-top: 2px dashed var(--muted);
+}
+
+.trend-legend .key.budget {
+  border-top: 2px dotted var(--warn-fg);
+}
+
+.trust {
+  margin-top: 8px;
+}
+
+.trust a {
+  color: var(--accent);
+}

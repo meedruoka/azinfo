@@ -22,13 +22,20 @@ account, your administrator may need to approve azinfo once:
 Open any resource in the Azure portal and azinfo shows:
 
 - the cost this month so far, and last month
+- this month against the same days of last month, so the 3rd of the month isn't read as a win
+- a running total, day by day, of this month over last month
 - the projected cost at the end of the month
 - a warning when this month looks much higher than last month
 - what the cost is made of (compute, storage, bandwidth…)
 - Azure Advisor's savings tips, with estimated savings
 
-Open a resource group and you get every resource in it, sorted by cost. The toolbar button shows
+Open a resource group and you get every resource in it, sorted by cost, and its monthly budget
+as a line on the chart when one is set on the group. The toolbar button shows
 the five most expensive resources in a subscription.
+
+Choose **actual cost** (what was billed) or **amortized cost** (reservations and savings plans
+spread over the resources that use them) on the options page. The panel shows the last figures it
+has straight away and refreshes them behind.
 
 Available in 15 languages. Cost figures come from Azure Cost Management, which updates every few
 hours.
@@ -94,9 +101,25 @@ gh attestation verify azinfo-<version>-chrome.zip -R meedruoka/azinfo
 ```
 
 The output names the commit it was built from, so you can read the code of that exact version.
-The stores add a few files of their own (such as `_metadata/`) and re-sign what they serve, so to
-compare with the extension installed in your browser, unzip the package and compare the files,
-leaving those out.
+
+### Compare with your installed copy
+
+The stores re-sign what they serve and add a few things of their own (the `_metadata/` folder,
+and `update_url` and `key` in `manifest.json`). To check that the copy your browser installed is
+the release package:
+
+1. Download the release zip for your browser and its version, and unzip it.
+2. Find the installed folder. Open `chrome://version` (or `edge://version`) and copy the
+   **Profile Path**. The extension is in `Extensions/<extension ID>/<version>_0` under it. The ID
+   is on `chrome://extensions` (or `edge://extensions`) with developer mode on.
+3. Compare them:
+
+```sh
+node scripts/compare-builds.mjs <unzipped release folder> <installed extension folder>
+```
+
+It prints `Identical` when every file matches, leaving out only what the stores add, and lists
+any file that differs otherwise.
 
 ## Build it from source
 

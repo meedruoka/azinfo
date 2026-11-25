@@ -1,21 +1,32 @@
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from 'wxt/utils/storage';
 import type { Savings, Tip } from '@/lib/azure/advisor';
+import type { MonthlyBudget } from '@/lib/azure/budgets';
 import { describeResourceId } from '@/lib/azure/resource-id';
 import { type MeterShare, OTHER_METERS } from '@/lib/cost/breakdown';
 import { costStatusItem } from '@/lib/cost/cost-service';
 import { formatMoney, formatPercent, formatShare, formatTime } from '@/lib/format';
 import { t, tp } from '@/lib/i18n';
-import type { AssessedCost, Request, Result, SpikeContext, TipsResult } from '@/lib/messages';
+import type {
+  AssessedCost,
+  Request,
+  ResponseMap,
+  Result,
+  SpikeContext,
+  TipsResult,
+} from '@/lib/messages';
 import { sendRequest } from '@/lib/messages';
 import {
+  changeFrom,
   errorState,
   groupPanelStateFromResult,
   type PanelState,
   panelStateFromResult,
+  replacesOldFigures,
   tipCount,
 } from '@/lib/panel/panel-state';
 import type { PortalContext } from '@/lib/portal/parse-portal-url';
+import type { CostType } from '@/lib/settings';
 
 /** Per-browser convenience only: whether the panel is shrunk to a pill. */
 export const panelCollapsedItem = storage.defineItem<boolean>('local:panel.collapsed', {
@@ -30,6 +41,16 @@ export interface PanelProps {
 
 type ResourceContext = Extract<PortalContext, { kind: 'resource' }>;
 type GroupContext = Extract<PortalContext, { kind: 'resourceGroup' }>;
+type TrendRequest = Extract<Request, { type: 'getTrend' }>;
+type FetchOptions = { force: boolean; staleOk: boolean };
+
+/** The daily trend, asked for once the main figures are on screen (decision 008). */
+type TrendState =
+  | { kind: 'loading' }
+  | { kind: 'ready'; data: ResponseMap['getTrend'] }
+  | { kind: 'failed' };
+
+const PRIVACY_URL = 'https://meedruoka.github.io/azinfo/privacy-policy.html';
 
 /** Shown on resource and resource-group pages; hidden everywhere else. */
 export function Panel({ context, request = sendRequest }: PanelProps) {
@@ -51,7 +72,7 @@ function ResourcePanel({
   request: typeof sendRequest;
 }) {
   const fetchState = useCallback(
-    async (force: boolean) =>
+    async ({ force, staleOk }: FetchOptions) =>
       panelStateFromResult(
         await request({
           type: 'getResourceCost',
@@ -59,6 +80,7 @@ function ResourcePanel({
           resourceId: context.resourceId,
           tenantHint: context.tenant,
           force,
+          staleOk,
         }),
       ),
     [context.subscriptionId, context.resourceId, context.tenant, request],
@@ -71,6 +93,7 @@ function ResourcePanel({
       subtitle={type}
       titleTooltip={context.resourceId}
       fetchState={fetchState}
+      trendTarget={{ kind: 'resource', resourceId: context.resourceId }}
       request={request}
       tenantLabel={context.tenant}
     />
@@ -79,7 +102,7 @@ function ResourcePanel({
 
 function GroupPanel({ context, request }: { context: GroupContext; request: typeof sendRequest }) {
   const fetchState = useCallback(
-    async (force: boolean) =>
+    async ({ force, staleOk }: FetchOptions) =>
       groupPanelStateFromResult(
         await request({
           type: 'getResourceGroupCosts',
@@ -87,6 +110,7 @@ function GroupPanel({ context, request }: { context: GroupContext; request: type
           resourceGroupId: context.resourceId,
           tenantHint: context.tenant,
           force,
+          staleOk,
         }),
       ),
     [context.subscriptionId, context.resourceId, context.tenant, request],
@@ -98,6 +122,7 @@ function GroupPanel({ context, request }: { context: GroupContext; request: type
       subtitle={t('panelResourceGroup')}
       titleTooltip={context.resourceId}
       fetchState={fetchState}
+      trendTarget={{ kind: 'resourceGroup', resourceGroupId: context.resourceId }}
       request={request}
       tenantLabel={context.tenant}
     />
@@ -111,6 +136,7 @@ function CostPanel({
   subtitle,
   titleTooltip,
   fetchState,
+  trendTarget,
   request,
   tenantLabel,
 }: {
@@ -118,24 +144,69 @@ function CostPanel({
   title: string;
   subtitle: string;
   titleTooltip: string;
-  fetchState: (force: boolean) => Promise<PanelState>;
+  fetchState: (opts: FetchOptions) => Promise<PanelState>;
+  trendTarget: TrendRequest['target'];
   request: typeof sendRequest;
   /** Tenant from the portal URL, to name it in "sign in to …". */
   tenantLabel?: string;
 }) {
   const [state, setState] = useState<PanelState>({ kind: 'loading' });
+  const [trend, setTrend] = useState<TrendState>({ kind: 'loading' });
   const [collapsed, setCollapsed] = useState(true);
   const latest = useRef(0);
+  // An object prop: compared by value so a re-render doesn't reload.
+  const trendKind = trendTarget.kind;
+  const trendId =
+    trendTarget.kind === 'resource' ? trendTarget.resourceId : trendTarget.resourceGroupId;
 
+  const loadTrend = useCallback(
+    async (id: number, force: boolean) => {
+      setTrend({ kind: 'loading' });
+      const target: TrendRequest['target'] =
+        trendKind === 'resource'
+          ? { kind: 'resource', resourceId: trendId }
+          : { kind: 'resourceGroup', resourceGroupId: trendId };
+      const res = await request({
+        type: 'getTrend',
+        subscriptionId,
+        target,
+        tenantHint: tenantLabel,
+        force,
+      });
+      if (id !== latest.current) return;
+      // No reply at all (the worker restarted) is a failed trend, not a crash.
+      setTrend(res?.ok ? { kind: 'ready', data: res.data } : { kind: 'failed' });
+    },
+    [request, subscriptionId, tenantLabel, trendKind, trendId],
+  );
+
+  /**
+   * Old figures first when the cache has them, then the refresh (decision
+   * 008); the daily trend after that, so it never delays the main figures.
+   */
   const load = useCallback(
     async (force = false) => {
       const id = ++latest.current;
       setState({ kind: 'loading' });
-      const next = await fetchState(force);
+      const first = await fetchState({ force, staleOk: !force });
       // Ignore answers overtaken by a newer request or an unmount.
-      if (id === latest.current) setState(next);
+      if (id !== latest.current) return;
+      setState(first);
+      let final = first;
+      if ((first.kind === 'data' || first.kind === 'group') && first.refreshing) {
+        const next = await fetchState({ force: false, staleOk: false });
+        if (id !== latest.current) return;
+        if (next.kind === 'rateLimited' || next.kind === 'error') {
+          setState({ ...first, refreshing: false, refreshFailed: true });
+        } else {
+          setState(next);
+          final = next;
+        }
+        if (replacesOldFigures(next)) return;
+      }
+      if (final.kind === 'data' || final.kind === 'group') void loadTrend(id, force);
     },
-    [fetchState],
+    [fetchState, loadTrend],
   );
 
   useEffect(() => {
@@ -214,6 +285,7 @@ function CostPanel({
       </header>
       <Body
         state={state}
+        trend={trend}
         onRetry={() => load(true)}
         onSignIn={signIn}
         onSignInPersonal={signInPersonal}
@@ -225,12 +297,14 @@ function CostPanel({
 
 function Body({
   state,
+  trend,
   onRetry,
   onSignIn,
   onSignInPersonal,
   tenantLabel,
 }: {
   state: PanelState;
+  trend: TrendState;
   onRetry: () => void;
   onSignIn: (tenantId?: string) => void;
   /** Absent when the page address names no tenant. */
@@ -263,6 +337,7 @@ function Body({
             )}
           </div>
           {!onSignInPersonal && <p className="muted small">{t('panelPersonalUsePopup')}</p>}
+          <TrustNote />
         </>
       );
     case 'tenantSignIn':
@@ -319,24 +394,30 @@ function Body({
             </dd>
             <dt>{t('lastMonth')}</dt>
             <dd>{formatMoney(state.lastMonth, state.currency)}</dd>
-            <dt>{t('panelVsLastMonth')}</dt>
-            <dd>{changeText(state.change)}</dd>
+            <Comparison
+              trend={trend}
+              currency={state.currency}
+              fallback={changeText(state.change)}
+            />
           </dl>
+          <TrendChart trend={trend} currency={state.currency} />
           <Breakdown rows={state.breakdown} currency={state.currency} />
           <Tips tips={state.tips} />
-          <Footer fetchedAt={state.fetchedAt} onRefresh={onRetry} />
+          <Footer {...state} onRefresh={onRetry} />
         </>
       );
     case 'group':
-      return <GroupBody state={state} onRefresh={onRetry} />;
+      return <GroupBody state={state} trend={trend} onRefresh={onRetry} />;
   }
 }
 
 function GroupBody({
   state,
+  trend,
   onRefresh,
 }: {
   state: Extract<PanelState, { kind: 'group' }>;
+  trend: TrendState;
   onRefresh: () => void;
 }) {
   if (state.resources.length === 0) {
@@ -344,7 +425,7 @@ function GroupBody({
       <>
         <p>{t('panelGroupNoCost')}</p>
         {state.tips.ok && state.tips.items.length > 0 && <Tips tips={state.tips} showResource />}
-        <Footer fetchedAt={state.fetchedAt} onRefresh={onRefresh} />
+        <Footer {...state} onRefresh={onRefresh} />
       </>
     );
   }
@@ -357,14 +438,169 @@ function GroupBody({
           <dd className="big">{formatMoney(state.total.mtd, state.total.currency)}</dd>
           <dt>{t('panelGroupLastMonth')}</dt>
           <dd>{formatMoney(state.total.lastMonth, state.total.currency)}</dd>
+          <Comparison trend={trend} currency={state.total.currency} />
         </dl>
+      )}
+      {state.total && (
+        <TrendChart trend={trend} currency={state.total.currency} mtd={state.total.mtd} />
       )}
       <Breakdown rows={state.breakdown} currency={state.total?.currency} />
       <p className="muted small list-label">{t('panelGroupListLabel')}</p>
       <ResourceTable resources={state.resources} />
       <Tips tips={state.tips} showResource />
-      <Footer fetchedAt={state.fetchedAt} onRefresh={onRefresh} />
+      <Footer {...state} onRefresh={onRefresh} />
     </>
+  );
+}
+
+/** The trend's figures, when they are in the currency shown above them. */
+function usableTrend(trend: TrendState, currency: string) {
+  if (trend.kind !== 'ready') return null;
+  const { currency: trendCurrency } = trend.data;
+  return trendCurrency === null || trendCurrency === currency ? trend.data : null;
+}
+
+/**
+ * Like for like: this month's completed days against the same days of last
+ * month. Until the trend is in (or on the 1st), the month-to-date against all
+ * of last month, as before.
+ */
+function Comparison({
+  trend,
+  currency,
+  fallback,
+}: {
+  trend: TrendState;
+  currency: string;
+  /** Shown while the trend loads or when it can't compare; omitted, nothing is shown. */
+  fallback?: string;
+}) {
+  const sameDays = usableTrend(trend, currency)?.summary.sameDays;
+  const days = usableTrend(trend, currency)?.summary.daysCompared ?? 0;
+  if (!sameDays) {
+    if (fallback === undefined) return null;
+    return (
+      <>
+        <dt>{t('panelVsLastMonth')}</dt>
+        <dd>{fallback}</dd>
+      </>
+    );
+  }
+  return (
+    <>
+      <dt>{tp('panelSameDaysLastMonth', days)}</dt>
+      <dd>{formatMoney(sameDays.lastMonth, currency)}</dd>
+      <dt>{tp('panelVsSameDays', days)}</dt>
+      <dd>{changeText(changeFrom(sameDays.thisMonth, sameDays.lastMonth, currency))}</dd>
+    </>
+  );
+}
+
+const CHART = { width: 296, height: 64, pad: 2 } as const;
+
+/**
+ * Running total, day by day: this month (solid) over last month (dashed), and
+ * the group's monthly budget as a line when it has one.
+ */
+function TrendChart({
+  trend,
+  currency,
+  mtd,
+}: {
+  trend: TrendState;
+  currency: string;
+  /** Resource groups: this month so far, for the share of the budget used. */
+  mtd?: number;
+}) {
+  if (trend.kind === 'failed') {
+    return <p className="muted small section-label">{t('panelTrendUnavailable')}</p>;
+  }
+  const data = usableTrend(trend, currency);
+  if (!data) return null;
+  const { current, previous, daysInMonth } = data.summary;
+  const budget = budgetFor(data.budget, currency);
+  const lastCurrent = current[current.length - 1] ?? 0;
+  const lastPrevious = previous[previous.length - 1] ?? 0;
+  const top = Math.max(lastCurrent, lastPrevious, budget?.amount ?? 0);
+  if (!(top > 0)) return null;
+
+  const days = Math.max(daysInMonth, previous.length, 2);
+  const x = (i: number) => CHART.pad + (i / (days - 1)) * (CHART.width - 2 * CHART.pad);
+  const y = (v: number) =>
+    CHART.height - CHART.pad - (Math.max(0, v) / top) * (CHART.height - 2 * CHART.pad);
+  const line = (values: number[]) =>
+    values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+
+  const label = t(
+    'panelTrendLabel',
+    formatMoney(lastCurrent, currency),
+    formatMoney(lastPrevious, currency),
+  );
+  return (
+    <>
+      <p className="section-label">{t('panelTrendHeading')}</p>
+      <svg
+        className="trend"
+        viewBox={`0 0 ${CHART.width} ${CHART.height}`}
+        role="img"
+        aria-label={label}
+      >
+        <title>{label}</title>
+        {budget && (
+          <line
+            className="trend-budget"
+            x1={CHART.pad}
+            x2={CHART.width - CHART.pad}
+            y1={y(budget.amount)}
+            y2={y(budget.amount)}
+          />
+        )}
+        {previous.length > 1 && <polyline className="trend-previous" points={line(previous)} />}
+        {current.length > 1 && <polyline className="trend-current" points={line(current)} />}
+        {current.length === 1 && (
+          <circle className="trend-dot" cx={x(0)} cy={y(current[0] ?? 0)} r={2} />
+        )}
+      </svg>
+      <p className="trend-legend small muted">
+        {/* Each key stays with its label when the legend wraps. */}
+        <span>
+          <span className="key current" aria-hidden="true" /> {t('thisMonth')}
+        </span>
+        <span>
+          <span className="key previous" aria-hidden="true" /> {t('lastMonth')}
+        </span>
+        {budget && (
+          <span>
+            <span className="key budget" aria-hidden="true" />{' '}
+            {mtd !== undefined
+              ? t(
+                  'panelBudgetUsed',
+                  formatMoney(budget.amount, currency),
+                  formatShare(mtd / budget.amount),
+                )
+              : t('panelBudget', formatMoney(budget.amount, currency))}
+          </span>
+        )}
+      </p>
+    </>
+  );
+}
+
+/** A budget in another currency can't be drawn against these figures. */
+function budgetFor(budget: MonthlyBudget | null, currency: string): MonthlyBudget | null {
+  if (!budget) return null;
+  return budget.currency === null || budget.currency === currency ? budget : null;
+}
+
+/** What azinfo can and can't do, next to every sign-in button (decision 008). */
+export function TrustNote() {
+  return (
+    <p className="muted small trust">
+      {t('signInTrustNote')}{' '}
+      <a href={PRIVACY_URL} target="_blank" rel="noreferrer">
+        {t('privacyPolicy')}
+      </a>
+    </p>
   );
 }
 
@@ -449,7 +685,11 @@ function Tips({ tips, showResource = false }: { tips: TipsResult; showResource?:
   if (!tips.ok) {
     return (
       <p className="muted small section-label">
-        {tips.reason === 'noAccess' ? t('panelTipsNoAccess') : t('panelTipsUnavailable')}
+        {tips.reason === 'noAccess'
+          ? t('panelTipsNoAccess')
+          : tips.reason === 'pending'
+            ? t('panelTipsLoading')
+            : t('panelTipsUnavailable')}
       </p>
     );
   }
@@ -512,15 +752,39 @@ function SpikeNote({ context, count }: { context: SpikeContext; count?: number }
   );
 }
 
-function Footer({ fetchedAt, onRefresh }: { fetchedAt: number; onRefresh: () => void }) {
+function Footer({
+  fetchedAt,
+  onRefresh,
+  costType,
+  refreshing,
+  refreshFailed,
+}: {
+  fetchedAt: number;
+  onRefresh: () => void;
+  costType?: CostType;
+  refreshing?: boolean;
+  refreshFailed?: boolean;
+}) {
+  const time = formatTime(fetchedAt);
   return (
     <p className="muted small footer">
-      {t('updatedAt', formatTime(fetchedAt))}{' '}
-      <button type="button" className="link" onClick={onRefresh}>
-        {t('refresh')}
-      </button>
+      {costType && <span className="cost-type">{costTypeLabel(costType)} · </span>}
+      {refreshing
+        ? t('panelRefreshing', time)
+        : refreshFailed
+          ? t('panelRefreshFailed', time)
+          : t('updatedAt', time)}{' '}
+      {!refreshing && (
+        <button type="button" className="link" onClick={onRefresh}>
+          {t('refresh')}
+        </button>
+      )}
     </p>
   );
+}
+
+export function costTypeLabel(costType: CostType): string {
+  return costType === 'AmortizedCost' ? t('costTypeAmortized') : t('costTypeActual');
 }
 
 function projectionText(projected: number | null, currency: string, context: SpikeContext) {

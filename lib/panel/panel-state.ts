@@ -1,6 +1,17 @@
 import type { MeterShare } from '../cost/breakdown';
 import { roundToDisplayed } from '../format';
 import type { AssessedCost, ResponseMap, Result, SpikeContext, TipsResult } from '../messages';
+import type { CostType } from '../settings';
+
+/** Shared by the resource and resource-group views. */
+interface Freshness {
+  fetchedAt: number;
+  costType: CostType;
+  /** Shown from an expired cache entry while a refresh runs. */
+  refreshing: boolean;
+  /** The refresh after a quick answer failed: the figures shown are old. */
+  refreshFailed?: boolean;
+}
 
 /** Month-to-date versus all of last month. */
 export type Change =
@@ -23,7 +34,7 @@ export type PanelState =
   | { kind: 'loading'; rateLimitedUntil?: number; signingIn?: boolean }
   | ErrorState
   | { kind: 'noData'; fetchedAt: number }
-  | {
+  | ({
       kind: 'data';
       mtd: number;
       lastMonth: number;
@@ -32,20 +43,18 @@ export type PanelState =
       projected: number | null;
       spike: boolean;
       spikeContext: SpikeContext;
-      fetchedAt: number;
       breakdown: MeterShare[];
       tips: TipsResult;
-    }
-  | {
+    } & Freshness)
+  | ({
       kind: 'group';
       resources: AssessedCost[];
       total: { mtd: number; lastMonth: number; currency: string } | null;
       spikes: number;
       spikeContext: SpikeContext;
-      fetchedAt: number;
       breakdown: MeterShare[];
       tips: TipsResult;
-    };
+    } & Freshness);
 
 /**
  * Compares the amounts as the panel shows them, so a fraction of a cent last month
@@ -79,7 +88,8 @@ export function errorState(result: Extract<Result<unknown>, { ok: false }>): Err
 /** Maps the worker's answer for a single resource to what the panel shows. */
 export function panelStateFromResult(result: Result<ResponseMap['getResourceCost']>): PanelState {
   if (!result.ok) return errorState(result);
-  const { cost, assessment, spikeContext, fetchedAt, breakdown, tips } = result.data;
+  const { cost, assessment, spikeContext, fetchedAt, breakdown, tips, stale, costType } =
+    result.data;
   if (!cost) return { kind: 'noData', fetchedAt };
   return {
     kind: 'data',
@@ -91,6 +101,8 @@ export function panelStateFromResult(result: Result<ResponseMap['getResourceCost
     spike: assessment?.spike ?? false,
     spikeContext,
     fetchedAt,
+    costType: costType ?? 'ActualCost',
+    refreshing: stale === true,
     breakdown,
     tips,
   };
@@ -101,7 +113,8 @@ export function groupPanelStateFromResult(
   result: Result<ResponseMap['getResourceGroupCosts']>,
 ): PanelState {
   if (!result.ok) return errorState(result);
-  const { resources, total, spikeContext, fetchedAt, breakdown, tips } = result.data;
+  const { resources, total, spikeContext, fetchedAt, breakdown, tips, stale, costType } =
+    result.data;
   return {
     kind: 'group',
     resources,
@@ -109,9 +122,22 @@ export function groupPanelStateFromResult(
     spikes: resources.filter((r) => r.assessment.spike).length,
     spikeContext,
     fetchedAt,
+    costType: costType ?? 'ActualCost',
+    refreshing: stale === true,
     breakdown,
     tips,
   };
+}
+
+/**
+ * Errors that replace old figures shown during a refresh: the account can't
+ * see this subscription any more. Others (throttling, a network error) keep
+ * the old figures, marked as not refreshed.
+ */
+export function replacesOldFigures(state: PanelState): boolean {
+  return (
+    state.kind === 'notSignedIn' || state.kind === 'tenantSignIn' || state.kind === 'noCostAccess'
+  );
 }
 
 /** Number of Advisor tips to mention in the collapsed pill. */

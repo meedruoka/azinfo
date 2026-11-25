@@ -187,4 +187,61 @@ describe('cost service', () => {
     await costs.getSubscriptionCosts(SUB);
     expect(requests).toHaveLength(2);
   });
+
+  describe('cost type and quick answers (decision 008)', () => {
+    let types: string[] = [];
+
+    function serviceWith(costType: () => 'ActualCost' | 'AmortizedCost') {
+      return createCostService({
+        getAccessToken: async () => 'AT',
+        now: () => now,
+        costType,
+        client: { sleep: async () => {} },
+      });
+    }
+
+    beforeEach(() => {
+      types = [];
+      server.use(
+        http.post(QUERY_URL, async ({ request }) => {
+          types.push(((await request.json()) as { type: string }).type);
+          return HttpResponse.json(mca);
+        }),
+      );
+    });
+
+    it('asks for the chosen cost type and caches each type separately', async () => {
+      let type: 'ActualCost' | 'AmortizedCost' = 'AmortizedCost';
+      const costs = serviceWith(() => type);
+      expect((await costs.getSubscriptionCosts(SUB)).costType).toBe('AmortizedCost');
+      type = 'ActualCost';
+      await costs.getSubscriptionCosts(SUB);
+      type = 'AmortizedCost';
+      await costs.getSubscriptionCosts(SUB);
+      expect(types).toEqual(['AmortizedCost', 'ActualCost']);
+    });
+
+    it('offers no quick answer while the cache is fresh, or when it is empty', async () => {
+      const costs = serviceWith(() => 'ActualCost');
+      expect(await costs.getStaleCosts(SUB)).toBeNull();
+      await costs.getSubscriptionCosts(SUB);
+      expect(await costs.getStaleCosts(SUB)).toBeNull();
+    });
+
+    it('returns an expired entry at once, marked stale, without a request', async () => {
+      const costs = serviceWith(() => 'ActualCost');
+      await costs.getSubscriptionCosts(SUB);
+      now += 5 * HOUR;
+      const stale = await costs.getStaleCosts(SUB);
+      expect(stale).toMatchObject({ stale: true, fetchedAt: START });
+      expect(types).toHaveLength(1);
+    });
+
+    it("never offers last month's entry as a quick answer", async () => {
+      const costs = serviceWith(() => 'ActualCost');
+      await costs.getSubscriptionCosts(SUB);
+      now = Date.UTC(2026, 10, 1, 1);
+      expect(await costs.getStaleCosts(SUB)).toBeNull();
+    });
+  });
 });

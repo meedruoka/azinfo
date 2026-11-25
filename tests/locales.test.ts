@@ -68,6 +68,7 @@ describe('locales', () => {
     const keep: [string, string][] = [
       ['popupNoCostAccess', 'Cost Management Reader'],
       ['panelNoCostAccess', 'Cost Management Reader'],
+      ['signInTrustNote', 'Cost Management Reader'],
       ['panelTipsHeading', 'Azure Advisor'],
       ['optInvalidTenant', 'organizations'],
       ['optInvalidTenant', 'common'],

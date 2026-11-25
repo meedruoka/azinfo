@@ -76,7 +76,7 @@ export function TopCosts({
     );
   }
 
-  const { top, fetchedAt } = state.data;
+  const { top, fetchedAt, costType } = state.data;
   return (
     <>
       {top.length === 0 ? (
@@ -105,6 +105,7 @@ export function TopCosts({
         </table>
       )}
       <p className="muted small footer">
+        {costType === 'AmortizedCost' ? t('costTypeAmortized') : t('costTypeActual')} ·{' '}
         {t('updatedAt', formatTime(fetchedAt))}{' '}
         <button type="button" className="link" onClick={() => load(true)}>
           {t('refresh')}

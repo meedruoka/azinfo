@@ -140,5 +140,32 @@
     "message": "删除此设备上存储的成本数据、节省建议和租户列表。你的登录状态和这些设置会保留。"
   },
   "optClearCache": { "message": "清除缓存的数据" },
-  "optCacheCleared": { "message": "缓存已清除。下次查看时将重新查询 Azure。" }
+  "optCacheCleared": { "message": "缓存已清除。下次查看时将重新查询 Azure。" },
+
+  "signInTrustNote": {
+    "message": "只读：azinfo 需要 Cost Management Reader 角色（或读者），绝不会更改 Azure 中的任何内容。成本数据直接从 Microsoft 发送到此浏览器。"
+  },
+  "privacyPolicy": { "message": "隐私政策" },
+  "costTypeActual": { "message": "实际成本" },
+  "costTypeAmortized": { "message": "摊销成本" },
+  "optCostTypeTitle": { "message": "成本类型" },
+  "optCostTypeActualHelp": {
+    "message": "实际计费的金额。预留或节省计划的购买显示为一笔费用，因此使用它的资源可能看起来是免费的。"
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "将预留和节省计划的购买分摊到使用它们的日期和资源上。与成本分析中的“摊销成本”视图一致。"
+  },
+  "optCostTypeHelp": { "message": "从下次加载的数据开始生效。每种成本类型单独缓存。" },
+  "panelSameDaysLastMonth_one": { "message": "上月前 $1 天" },
+  "panelSameDaysLastMonth_other": { "message": "上月前 $1 天" },
+  "panelVsSameDays_one": { "message": "本月与上月同期 $1 天相比" },
+  "panelVsSameDays_other": { "message": "本月与上月同期 $1 天相比" },
+  "panelTrendHeading": { "message": "每日累计" },
+  "panelTrendLabel": { "message": "本月累计：$1。上月全月：$2。" },
+  "panelTrendUnavailable": { "message": "每日趋势不可用。" },
+  "panelBudget": { "message": "预算 $1" },
+  "panelBudgetUsed": { "message": "预算 $1（已用 $2）" },
+  "panelTipsLoading": { "message": "正在加载节省建议…" },
+  "panelRefreshing": { "message": "正在刷新，暂时显示 $1 的数据…" },
+  "panelRefreshFailed": { "message": "无法刷新。显示的是 $1 的数据。" }
 }

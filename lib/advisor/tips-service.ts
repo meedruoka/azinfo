@@ -40,6 +40,11 @@ export function createTipsService(deps: TipsServiceDeps) {
   }
 
   return {
+    /** Stored tips whatever their age, without a request; null if none. */
+    async peekSubscriptionTips(subscriptionId: string): Promise<SubscriptionTips | null> {
+      return (await cache.peek(subscriptionId.toLowerCase()))?.value ?? null;
+    },
+
     /** Cached tips if fresh, otherwise one Advisor request (shared by concurrent callers). */
     getSubscriptionTips(
       subscriptionId: string,

@@ -337,5 +337,34 @@
   },
   "optCacheCleared": {
     "message": "Data tersimpan dihapus. Tampilan berikutnya akan mengambil data dari Azure lagi."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "Hanya baca: azinfo memerlukan peran Cost Management Reader (atau Pembaca) dan tidak pernah mengubah apa pun di Azure. Data biaya langsung dari Microsoft ke browser ini."
+  },
+  "privacyPolicy": { "message": "Kebijakan privasi" },
+  "costTypeActual": { "message": "Biaya aktual" },
+  "costTypeAmortized": { "message": "Biaya diamortisasi" },
+  "optCostTypeTitle": { "message": "Jenis biaya" },
+  "optCostTypeActualHelp": {
+    "message": "Yang ditagihkan. Pembelian reservasi atau paket penghematan muncul sebagai satu tagihan, sehingga sumber daya yang memakainya bisa terlihat gratis."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Pembelian reservasi dan paket penghematan dibagi ke hari dan sumber daya yang memakainya. Sama dengan tampilan Biaya diamortisasi di Analisis biaya."
+  },
+  "optCostTypeHelp": {
+    "message": "Berlaku untuk angka berikutnya yang dimuat. Setiap jenis biaya disimpan di cache terpisah."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Bulan lalu, $1 hari pertama" },
+  "panelSameDaysLastMonth_other": { "message": "Bulan lalu, $1 hari pertama" },
+  "panelVsSameDays_one": { "message": "Bulan ini vs $1 hari yang sama" },
+  "panelVsSameDays_other": { "message": "Bulan ini vs $1 hari yang sama" },
+  "panelTrendHeading": { "message": "Total berjalan, hari demi hari" },
+  "panelTrendLabel": { "message": "Total berjalan bulan ini: $1. Seluruh bulan lalu: $2." },
+  "panelTrendUnavailable": { "message": "Tren harian tidak tersedia." },
+  "panelBudget": { "message": "Anggaran $1" },
+  "panelBudgetUsed": { "message": "Anggaran $1 ($2 terpakai)" },
+  "panelTipsLoading": { "message": "Memuat tips penghematan…" },
+  "panelRefreshing": { "message": "Menampilkan angka pukul $1 selama diperbarui…" },
+  "panelRefreshFailed": { "message": "Gagal memperbarui. Angka pukul $1." }
 }

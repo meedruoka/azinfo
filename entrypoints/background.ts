@@ -19,12 +19,15 @@ import { type CostService, createCostService } from '@/lib/cost/cost-service';
 import { type ResourceCost, topByMtd } from '@/lib/cost/normalise';
 import { groupMatcher, resourcesInGroup, totalOf } from '@/lib/cost/resource-group';
 import { assessSpike, monthProgress } from '@/lib/cost/spike';
+import { summariseTrend } from '@/lib/cost/trend';
+import { createTrendService, type TrendService, type TrendTarget } from '@/lib/cost/trend-service';
 import type { ErrorKind, Request, ResponseMap, Result, TipsResult } from '@/lib/messages';
 import { isAllowedRequest, originOf } from '@/lib/sender-policy';
 import {
   authorityItem,
   normaliseAuthority,
   readCacheTtlMs,
+  readCostType,
   readSpikeThresholdPct,
 } from '@/lib/settings';
 
@@ -35,6 +38,7 @@ export default defineBackground(() => {
   let costService: CostService | undefined;
   let directoryService: DirectoryService | undefined;
   let tipsService: TipsService | undefined;
+  let trendService: TrendService | undefined;
   /** Subscription → tenant named in the portal URL ('#@<tenant>'), from panel requests. */
   const tenantHints = new Map<string, string>();
 
@@ -86,6 +90,7 @@ export default defineBackground(() => {
   async function clearAccountData() {
     await getCosts().clear();
     await getTips().clear();
+    await getTrends().clear();
     await getDirectory().clear();
     tenantHints.clear();
   }
@@ -95,6 +100,7 @@ export default defineBackground(() => {
       getAccessToken: async (subscriptionId) =>
         (await getAuth()).getAccessToken(await tenantFor(subscriptionId)),
       ttlMs: readCacheTtlMs,
+      costType: readCostType,
       client: {
         takeSimulated429: () => {
           const take = simulate429;
@@ -110,6 +116,54 @@ export default defineBackground(() => {
         (await getAuth()).getAccessToken(await tenantFor(subscriptionId)),
       ttlMs: readCacheTtlMs,
     }));
+
+  const getTrends = () =>
+    (trendService ??= createTrendService({
+      getAccessToken: async (subscriptionId) =>
+        (await getAuth()).getAccessToken(await tenantFor(subscriptionId)),
+      ttlMs: readCacheTtlMs,
+      costType: readCostType,
+    }));
+
+  /**
+   * Tips for a quick answer from old cost data: whatever is stored, without a
+   * request. With nothing stored, `pending` until the refresh brings them.
+   */
+  async function storedTipsFor(
+    subscriptionId: string,
+    belongs: (resourceId: string) => boolean,
+  ): Promise<TipsResult> {
+    const stored = await getTips().peekSubscriptionTips(subscriptionId);
+    if (!stored) return { ok: false, reason: 'pending' };
+    const items = Object.entries(stored.byResource)
+      .filter(([resourceId]) => belongs(resourceId))
+      .flatMap(([, tips]) => tips);
+    return { ok: true, items, total: totalSavings(items) };
+  }
+
+  /**
+   * Costs for a panel request. With `staleOk`, an expired entry comes back at
+   * once (with stored tips) and the panel asks again to refresh it; otherwise
+   * costs and tips are fetched side by side.
+   */
+  async function costsAndTips(
+    request: { subscriptionId: string; force?: boolean; staleOk?: boolean },
+    belongs: (resourceId: string) => boolean,
+  ) {
+    if (request.staleOk && !request.force) {
+      const stale = await getCosts().getStaleCosts(request.subscriptionId);
+      if (stale)
+        return { costs: stale, tips: await storedTipsFor(request.subscriptionId, belongs) };
+    }
+    // Started first so it runs alongside the cost query.
+    const tips = tipsFor(request.subscriptionId, request.force, belongs);
+    // Served from the subscription's cached query: navigating between
+    // resources makes no extra Azure calls while the cache is fresh.
+    const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
+      force: request.force,
+    });
+    return { costs, tips: await tips };
+  }
 
   /**
    * Advisor tips matching `belongs`. Never throws: tips are extra, so a
@@ -227,47 +281,46 @@ export default defineBackground(() => {
           ...r,
           ...describeResourceId(r.resourceId),
         }));
-        return { subscriptionId: costs.subscriptionId, fetchedAt: costs.fetchedAt, top };
+        return {
+          subscriptionId: costs.subscriptionId,
+          fetchedAt: costs.fetchedAt,
+          costType: costs.costType,
+          top,
+        };
       }
       case 'getResourceCost': {
         rememberHint(request.subscriptionId, request.tenantHint);
         const resourceId = request.resourceId.toLowerCase();
-        // Started first so it runs alongside the cost query.
-        const tips = tipsFor(request.subscriptionId, request.force, (id) => id === resourceId);
-        // Served from the subscription's cached query: navigating between
-        // resources makes no extra Azure calls while the cache is fresh.
-        const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
-          force: request.force,
-        });
+        const { costs, tips } = await costsAndTips(request, (id) => id === resourceId);
         const cost = costs.resources[resourceId] ?? null;
         const spike = await spikeSettings(costs.fetchedAt);
         return {
           resourceId,
           fetchedAt: costs.fetchedAt,
+          stale: costs.stale,
+          costType: costs.costType,
           cost,
           assessment: cost ? spike.assess(cost) : null,
           spikeContext: spike.context,
           breakdown: meterBreakdown(cost?.byMeter),
-          tips: await tips,
+          tips,
         };
       }
       case 'getResourceGroupCosts': {
         rememberHint(request.subscriptionId, request.tenantHint);
         const inThisGroup = groupMatcher(request.resourceGroupId);
-        const tips = tipsFor(request.subscriptionId, request.force, inThisGroup);
-        const costs = await getCosts().getSubscriptionCosts(request.subscriptionId, {
-          force: request.force,
-        });
+        const { costs, tips: groupTips } = await costsAndTips(request, inThisGroup);
         const inGroup = resourcesInGroup(costs.resources, request.resourceGroupId).sort(
           (a, b) => b.mtd - a.mtd,
         );
         const spike = await spikeSettings(costs.fetchedAt);
-        const groupTips = await tips;
         const tipCount = (resourceId: string) =>
           groupTips.ok ? groupTips.items.filter((t) => t.resourceId === resourceId).length : 0;
         return {
           resourceGroupId: request.resourceGroupId.toLowerCase(),
           fetchedAt: costs.fetchedAt,
+          stale: costs.stale,
+          costType: costs.costType,
           resources: inGroup.map((r) => ({
             ...r,
             ...describeResourceId(r.resourceId),
@@ -278,6 +331,17 @@ export default defineBackground(() => {
           spikeContext: spike.context,
           breakdown: meterBreakdown(sumByMeter(inGroup)),
           tips: groupTips,
+        };
+      }
+      case 'getTrend': {
+        rememberHint(request.subscriptionId, request.tenantHint);
+        const target = trendTarget(request.subscriptionId, request.target);
+        const trend = await getTrends().getTrend(target, { force: request.force });
+        return {
+          summary: summariseTrend(trend.daily, trend.fetchedAt),
+          currency: trend.daily.currency,
+          budget: trend.budget,
+          fetchedAt: trend.fetchedAt,
         };
       }
     }
@@ -304,6 +368,19 @@ export default defineBackground(() => {
     return true; // Keep the channel open for the async response.
   });
 });
+
+/** The resource group's name from its ARM ID, which the trend query runs at. */
+function trendTarget(
+  subscriptionId: string,
+  target: Extract<Request, { type: 'getTrend' }>['target'],
+): TrendTarget {
+  if (target.kind === 'resource') {
+    return { kind: 'resource', subscriptionId, resourceId: target.resourceId };
+  }
+  const name = /\/resourcegroups\/([^/]+)/i.exec(target.resourceGroupId)?.[1];
+  if (!name) throw new Error(`Not a resource group ID: ${target.resourceGroupId}`);
+  return { kind: 'resourceGroup', subscriptionId, resourceGroup: decodeURIComponent(name) };
+}
 
 /**
  * Spike evaluation as of the data's fetch time: month-to-date reflects that

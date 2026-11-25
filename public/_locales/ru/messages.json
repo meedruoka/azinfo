@@ -337,5 +337,34 @@
   },
   "optCacheCleared": {
     "message": "Кэшированные данные очищены. При следующем просмотре Azure будет запрошен снова."
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "Только чтение: azinfo нужна роль Cost Management Reader (или Читатель), и он ничего не меняет в Azure. Данные о стоимости идут напрямую от Microsoft в этот браузер."
+  },
+  "privacyPolicy": { "message": "Политика конфиденциальности" },
+  "costTypeActual": { "message": "Фактическая стоимость" },
+  "costTypeAmortized": { "message": "Амортизированная стоимость" },
+  "optCostTypeTitle": { "message": "Тип стоимости" },
+  "optCostTypeActualHelp": {
+    "message": "То, что выставлено в счёте. Покупка резервирования или плана экономии показывается одним платежом, поэтому ресурсы, которые его используют, могут выглядеть бесплатными."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "Покупки резервирований и планов экономии распределяются по дням и ресурсам, которые их используют. Совпадает с представлением «Амортизированная стоимость» в анализе затрат."
+  },
+  "optCostTypeHelp": {
+    "message": "Применяется к следующим загруженным данным. Для каждого типа стоимости свой кэш."
+  },
+  "panelSameDaysLastMonth_one": { "message": "Прошлый месяц, первые дни: $1" },
+  "panelSameDaysLastMonth_other": { "message": "Прошлый месяц, первые дни: $1" },
+  "panelVsSameDays_one": { "message": "Этот месяц к тем же дням (дней: $1)" },
+  "panelVsSameDays_other": { "message": "Этот месяц к тем же дням (дней: $1)" },
+  "panelTrendHeading": { "message": "Нарастающий итог по дням" },
+  "panelTrendLabel": { "message": "Нарастающий итог за этот месяц: $1. Весь прошлый месяц: $2." },
+  "panelTrendUnavailable": { "message": "Динамика по дням недоступна." },
+  "panelBudget": { "message": "Бюджет $1" },
+  "panelBudgetUsed": { "message": "Бюджет $1 (использовано $2)" },
+  "panelTipsLoading": { "message": "Загрузка советов по экономии…" },
+  "panelRefreshing": { "message": "Показаны данные на $1, пока они обновляются…" },
+  "panelRefreshFailed": { "message": "Не удалось обновить. Данные на $1." }
 }

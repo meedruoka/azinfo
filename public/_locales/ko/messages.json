@@ -160,5 +160,34 @@
     "message": "이 장치에 저장된 비용 데이터, 절감 팁, 테넌트 목록을 제거합니다. 로그인 상태와 이 설정은 유지됩니다."
   },
   "optClearCache": { "message": "캐시된 데이터 지우기" },
-  "optCacheCleared": { "message": "캐시를 지웠습니다. 다음 보기에서 Azure를 다시 쿼리합니다." }
+  "optCacheCleared": { "message": "캐시를 지웠습니다. 다음 보기에서 Azure를 다시 쿼리합니다." },
+
+  "signInTrustNote": {
+    "message": "읽기 전용: azinfo에는 Cost Management Reader 역할(또는 읽기 권한자)이 필요하며 Azure에서 아무것도 변경하지 않습니다. 비용 데이터는 Microsoft에서 이 브라우저로 바로 전달됩니다."
+  },
+  "privacyPolicy": { "message": "개인정보 처리방침" },
+  "costTypeActual": { "message": "실제 비용" },
+  "costTypeAmortized": { "message": "상각 비용" },
+  "optCostTypeTitle": { "message": "비용 유형" },
+  "optCostTypeActualHelp": {
+    "message": "청구된 금액입니다. 예약 또는 절감 플랜 구매는 한 번의 요금으로 표시되므로 이를 사용하는 리소스는 무료처럼 보일 수 있습니다."
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "예약 및 절감 플랜 구매를 이를 사용하는 날짜와 리소스에 나누어 반영합니다. 비용 분석의 상각 비용 보기와 같습니다."
+  },
+  "optCostTypeHelp": {
+    "message": "다음에 불러오는 수치부터 적용됩니다. 비용 유형마다 따로 캐시됩니다."
+  },
+  "panelSameDaysLastMonth_one": { "message": "지난달 처음 $1일" },
+  "panelSameDaysLastMonth_other": { "message": "지난달 처음 $1일" },
+  "panelVsSameDays_one": { "message": "지난달 같은 $1일 대비 이번 달" },
+  "panelVsSameDays_other": { "message": "지난달 같은 $1일 대비 이번 달" },
+  "panelTrendHeading": { "message": "일별 누적 합계" },
+  "panelTrendLabel": { "message": "이번 달 누적 합계: $1. 지난달 전체: $2." },
+  "panelTrendUnavailable": { "message": "일별 추세를 표시할 수 없습니다." },
+  "panelBudget": { "message": "예산 $1" },
+  "panelBudgetUsed": { "message": "예산 $1 ($2 사용)" },
+  "panelTipsLoading": { "message": "절감 팁을 불러오는 중…" },
+  "panelRefreshing": { "message": "새로 고치는 동안 $1 기준 수치를 표시합니다…" },
+  "panelRefreshFailed": { "message": "새로 고치지 못했습니다. $1 기준 수치입니다." }
 }

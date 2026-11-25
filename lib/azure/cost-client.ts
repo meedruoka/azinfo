@@ -3,11 +3,18 @@ import { API_VERSIONS } from './api-versions';
 import { ARM_HOST, ArmError } from './arm-client';
 
 /**
- * The only POST the extension may send: Cost Management's read-only query.
- * nextLinks use `Query` with a capital Q, hence case-insensitive.
+ * The only POST the extension may send: Cost Management's read-only query, at
+ * subscription or resource-group scope. nextLinks use `Query` with a capital
+ * Q, hence case-insensitive.
  */
 const COST_QUERY_PATH =
-  /^\/subscriptions\/[0-9a-f-]+\/providers\/microsoft\.costmanagement\/query$/i;
+  /^\/subscriptions\/[0-9a-f-]+(\/resourcegroups\/[-\w.()%]+)?\/providers\/microsoft\.costmanagement\/query$/i;
+
+/** Where a query runs: a subscription, or one resource group in it. */
+export interface CostQueryScope {
+  subscriptionId: string;
+  resourceGroup?: string;
+}
 
 /** Max pages followed per query; guards against a nextLink loop. */
 const MAX_PAGES = 50;
@@ -62,13 +69,20 @@ export class CostRateLimitError extends Error {
   }
 }
 
-export function costQueryUrl(subscriptionId: string): string {
-  return `${ARM_HOST}/subscriptions/${subscriptionId}/providers/Microsoft.CostManagement/query?api-version=${API_VERSIONS.costQuery}`;
+export function costQueryUrl(scope: string | CostQueryScope): string {
+  const { subscriptionId, resourceGroup } =
+    typeof scope === 'string' ? { subscriptionId: scope, resourceGroup: undefined } : scope;
+  // `.` and `..` would be resolved away by URL parsing and change the path.
+  if (resourceGroup === '.' || resourceGroup === '..') {
+    throw new Error(`Not a resource group name: ${resourceGroup}`);
+  }
+  const group = resourceGroup ? `/resourceGroups/${encodeURIComponent(resourceGroup)}` : '';
+  return `${ARM_HOST}/subscriptions/${subscriptionId}${group}/providers/Microsoft.CostManagement/query?api-version=${API_VERSIONS.costQuery}`;
 }
 
 /** Runs a query and follows every nextLink (re-POSTing the same body). */
 export async function runCostQuery(
-  subscriptionId: string,
+  scope: string | CostQueryScope,
   body: unknown,
   accessToken: string,
   deps: CostClientDeps = {},
@@ -76,7 +90,7 @@ export async function runCostQuery(
   let columns: QueryColumn[] = [];
   const rows: unknown[][] = [];
   const seen = new Set<string>();
-  let next: string | null | undefined = costQueryUrl(subscriptionId);
+  let next: string | null | undefined = costQueryUrl(scope);
   let pages = 0;
 
   for (let page = 0; next; page++) {

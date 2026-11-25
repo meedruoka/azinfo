@@ -1,3 +1,5 @@
+import type { CostType } from '../settings';
+
 /** Cost column to aggregate. Name depends on the billing agreement. */
 export type CostColumnName = 'Cost' | 'PreTaxCost';
 
@@ -50,13 +52,13 @@ function monthKey(year: number, monthIndex: number): string {
  * per resource and (when `shape.meter` is set) per meter category. Gives last
  * month's total, month-to-date and what this month's cost is made of.
  */
-export function buildCostQuery(shape: QueryShape, now: number) {
+export function buildCostQuery(shape: QueryShape, now: number, costType: CostType = 'ActualCost') {
   const { previous } = monthsFor(now);
   const today = new Date(now).toISOString().slice(0, 10);
   const grouping = [{ type: 'Dimension', name: 'ResourceId' }];
   if (shape.meter) grouping.push({ type: 'Dimension', name: shape.meter });
   return {
-    type: 'ActualCost',
+    type: costType,
     timeframe: 'Custom',
     timePeriod: {
       from: `${previous}-01T00:00:00Z`,

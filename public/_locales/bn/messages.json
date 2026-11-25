@@ -337,5 +337,34 @@
   },
   "optCacheCleared": {
     "message": "ক্যাশ করা ডেটা মুছে ফেলা হয়েছে। পরের বার Azure থেকে আবার ডেটা আনা হবে।"
-  }
+  },
+
+  "signInTrustNote": {
+    "message": "শুধু পড়ার জন্য: azinfo-এর Cost Management Reader ভূমিকা (বা Reader) দরকার এবং এটি Azure-এ কখনও কিছু পরিবর্তন করে না। খরচের ডেটা সরাসরি Microsoft থেকে এই ব্রাউজারে আসে।"
+  },
+  "privacyPolicy": { "message": "গোপনীয়তা নীতি" },
+  "costTypeActual": { "message": "প্রকৃত খরচ" },
+  "costTypeAmortized": { "message": "বণ্টিত খরচ" },
+  "optCostTypeTitle": { "message": "খরচের ধরন" },
+  "optCostTypeActualHelp": {
+    "message": "যা বিল করা হয়েছে। রিজার্ভেশন বা সেভিংস প্ল্যান কেনা একটি চার্জ হিসেবে দেখায়, তাই যে রিসোর্সগুলো এটি ব্যবহার করে সেগুলো বিনামূল্যের মনে হতে পারে।"
+  },
+  "optCostTypeAmortizedHelp": {
+    "message": "রিজার্ভেশন ও সেভিংস প্ল্যানের কেনাকাটা যে দিন ও রিসোর্সগুলো সেগুলো ব্যবহার করে তাদের মধ্যে ভাগ করা হয়। Cost analysis-এর বণ্টিত খরচ ভিউয়ের সাথে মেলে।"
+  },
+  "optCostTypeHelp": {
+    "message": "পরের বার লোড হওয়া সংখ্যাগুলোতে প্রযোজ্য। প্রতিটি খরচের ধরন আলাদাভাবে ক্যাশ হয়।"
+  },
+  "panelSameDaysLastMonth_one": { "message": "গত মাস, প্রথম $1 দিন" },
+  "panelSameDaysLastMonth_other": { "message": "গত মাস, প্রথম $1 দিন" },
+  "panelVsSameDays_one": { "message": "গত মাসের একই $1 দিনের তুলনায় এই মাস" },
+  "panelVsSameDays_other": { "message": "গত মাসের একই $1 দিনের তুলনায় এই মাস" },
+  "panelTrendHeading": { "message": "দিনে দিনে মোট" },
+  "panelTrendLabel": { "message": "এই মাসের মোট: $1। পুরো গত মাস: $2।" },
+  "panelTrendUnavailable": { "message": "দৈনিক প্রবণতা পাওয়া যাচ্ছে না।" },
+  "panelBudget": { "message": "বাজেট $1" },
+  "panelBudgetUsed": { "message": "বাজেট $1 ($2 ব্যবহৃত)" },
+  "panelTipsLoading": { "message": "সাশ্রয়ের পরামর্শ লোড হচ্ছে…" },
+  "panelRefreshing": { "message": "রিফ্রেশ হওয়া পর্যন্ত $1-এর সংখ্যা দেখানো হচ্ছে…" },
+  "panelRefreshFailed": { "message": "রিফ্রেশ করা যায়নি। $1-এর সংখ্যা।" }
 }

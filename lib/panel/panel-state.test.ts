@@ -45,6 +45,7 @@ describe('panelStateFromResult', () => {
         data: {
           resourceId: ID,
           fetchedAt: AT,
+          costType: 'ActualCost',
           cost: { resourceId: ID, mtd: 30, lastMonth: 12, currency: 'EUR' },
           assessment: { projected: 103.3, spike: true },
           spikeContext: SPIKE_CONTEXT,
@@ -62,6 +63,8 @@ describe('panelStateFromResult', () => {
       spike: true,
       spikeContext: SPIKE_CONTEXT,
       fetchedAt: AT,
+      costType: 'ActualCost',
+      refreshing: false,
       breakdown: BREAKDOWN,
       tips: NO_TIPS,
     });
@@ -74,6 +77,7 @@ describe('panelStateFromResult', () => {
         data: {
           resourceId: ID,
           fetchedAt: AT,
+          costType: 'ActualCost',
           cost: null,
           assessment: null,
           spikeContext: SPIKE_CONTEXT,
@@ -114,6 +118,7 @@ describe('groupPanelStateFromResult', () => {
       data: {
         resourceGroupId: '/subscriptions/s/resourcegroups/rg',
         fetchedAt: AT,
+        costType: 'ActualCost',
         resources: [row('a', true), row('b', false), row('c', true)],
         total: { mtd: 3, lastMonth: 3, currency: 'EUR' },
         spikeContext: SPIKE_CONTEXT,
